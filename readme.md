@@ -1,11 +1,13 @@
 # [tix](https://github.com/74k1/tix)pkgs
 
-packages for myself
+packages and modules for myself
 
 ## currently available
 
-n/a
+### Packages
+
+- [lumen](https://github.com/jnsahaj/lumen/)
 
 ## in progress
 
-- [ ] [maccel](https://github.com/Gnarus-G/maccel)
+- [ ] [soularr](https://github.com/mrusse/soularr)
