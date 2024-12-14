@@ -44,7 +44,7 @@ rustPlatform.buildRustPackage rec {
     description = "Instant AI Git Commit message generator";
     homepage = "https://github.com/jnsahaj/lumen";
     license = lib.licenses.mit;
-    maintainers = [ ];
+    maintainers = [ "74k1" ];
     platforms = lib.platforms.all;
   };
 }

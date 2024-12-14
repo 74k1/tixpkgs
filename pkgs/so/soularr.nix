@@ -1,10 +1,32 @@
 { lib
-, fetchFromGitHub
 , python3Packages
+, fetchFromGitHub
+, fetchPypi
 , writeTextFile
 }:
 
 let
+  slskd-api = python3Packages.buildPythonPackage rec {
+    pname = "slskd-api";
+    version = "0.1.5";
+    format = "pyproject";
+
+    src = fetchPypi {
+      inherit pname version;
+      hash = "sha256-LmWP7bnK5IVid255qS2NGOmyKzGpUl3xsO5vi5uJI88=";
+    };
+
+    nativeBuildInputs = [
+      python3Packages.pip
+      python3Packages.setuptools-git-versioning
+      python3Packages.wheel
+    ];
+
+    propagatedBuildInputs = [
+      python3Packages.requests
+    ];
+  };
+
   defaultConfig = writeTextFile {
     name = "soularr-default-config.ini";
     text = /* ini */ ''
@@ -76,38 +98,28 @@ setup(
 PYTHON
   '';
 
-    dependencies = with python3Packages; [
-      requests #prolly not
-      music-tag
-      pyarr
-      configparser
-      (python3Packages.buildPythonPackage rec {
-        pname = "slskd-api";
-        version = "0.1.5";
+  postInstall = ''
+    mv -v $out/bin/${pname}.py $out/bin/${pname}
+    
+    mkdir -p $out/share/${pname}
+    cp ${defaultConfig} $out/share/${pname}/config.ini.example
+  '';
 
-        src = fetchPypi {
-          inherit pname version;
-          hash = "sha256-LmWP7bnK5IVid255qS2NGOmyKzGpUl3xsO5vi5uJI88=";
-        };
+  dependencies = [
+    python3Packages.music-tag
+    python3Packages.pyarr
+    slskd-api
+  ];
 
-        build-system = with python3Packages; [
-          pip
-        ];
-      })
-    ];
+  build-system = [
+    python3Packages.pip
+  ];
 
-
-    postInstall = ''
-      mv -v $out/bin/${pname}.py $out/bin/${pname}
-
-      mkdir -p $out/share/${pname}
-      cp ${defaultConfig} $out/share/${pname}/config.ini.example
-    '';
-
-    meta = with lib; {
-      description = "A Python script that connects Lidarr with Soulseek";
-      homepage = "https://github.com/mrusse/soularr";
-      license = licenses.gpl3;
-      platforms = platforms.all;
-    };
-  }
+  meta = {
+    description = "A Python script that connects Lidarr with Soulseek!";
+    homepage = "https://github.com/mrusse/soularr";
+    maintainers = [ "74k1" ];
+    license = lib.licenses.gpl3;
+    platforms = lib.platforms.all;
+  };
+}
