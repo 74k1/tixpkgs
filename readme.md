@@ -11,3 +11,4 @@ packages and modules for myself
 ## in progress
 
 - [ ] [soularr](https://github.com/mrusse/soularr)
+- [ ] [LibreChat](https://github.com/danny-avila/LibreChat) (docker..)
