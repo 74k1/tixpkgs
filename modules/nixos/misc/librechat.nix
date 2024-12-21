@@ -1,13 +1,23 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+
+let
   cfg = config.services.librechat;
-in {
+in
+{
   options.services.librechat = {
     enable = lib.mkEnableOption "librechat";
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.librechat;
+      description = "LibreChat package to use";
+    };
+
+    host = lib.mkOption {
+      type = lib.types.str;
+      default = "0.0.0.0";
+      description = "Host to bind to";
+    };
 
     port = lib.mkOption {
       type = lib.types.port;
@@ -17,16 +27,31 @@ in {
 
     environmentFile = lib.mkOption {
       type = lib.types.path;
-      description = "Path to the environment file containing secrets";
+      description = "Path to the environment file containing secrets (like API keys)";
     };
 
-    version = lib.mkOption {
-      type = lib.types.str;
-      default = "v0.7.6";
-      description = "LibreChat version to use";
+    settings = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything;
+      default = {};
+      example = lib.literalExpression ''
+        {
+          ENDPOINTS = "openAI,google,bingAI,gptPlugins";
+          REFRESH_TOKEN_EXPIRY = "2592000000"; # 30 days
+          REQUEST_TIMEOUT = "120000";
+          TITLE_CONVO = "true";
+          COOKIE_NAME = "librechat";
+          DEBUG_PLUGINS = "true";
+        }
+      '';
+      description = ''
+        Settings for LibreChat passed as environment variables.
+        Keys should be uppercase with underscores as per LibreChat's configuration.
+        
+        See all available options at:
+        https://www.librechat.ai/docs/configuration/dotenv
+      '';
     };
 
-    # Add MongoDB options
     database = {
       createLocally = lib.mkOption {
         type = lib.types.bool;
@@ -40,50 +65,64 @@ in {
         description = "MongoDB connection URL";
       };
     };
+
+    openFirewall = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Open port in firewall for LibreChat";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    virtualisation.oci-containers.containers = {
-      librechat = {
-        image = "ghcr.io/danny-avila/librechat:${cfg.version}";
+    systemd.services.librechat = {
+      description = "LibreChat AI Service";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network.target" ] ++ lib.optional cfg.database.createLocally "mongodb.service";
+      
+      environment = {
+        HOST = cfg.host;
+        PORT = toString cfg.port;
+        MONGO_URI = cfg.database.url;
+      } // cfg.settings;
 
-        environment = {
-          HOST = "0.0.0.0";
-          PORT = toString cfg.port;
-          MONGO_URI = cfg.database.url;
-          ENDPOINTS = "openAI,google,bingAI,gptPlugins";
-          REFRESH_TOKEN_EXPIRY = toString (1000 * 60 * 60 * 24 * 30); # 30 days
-        };
-
-        environmentFiles = [
-          cfg.environmentFile
-        ];
-
-        ports = [
-          "${toString cfg.port}:${toString cfg.port}"
-        ];
-
-        extraOptions = [
-          "--network=host"
-        ];
+      serviceConfig = {
+        Type = "simple";
+        User = "librechat";
+        Group = "librechat";
+        EnvironmentFile = cfg.environmentFile;
+        WorkingDirectory = "${cfg.package}";
+        ExecStart = "${pkgs.nodejs}/bin/node api/server";
+        Restart = "always";
+        RestartSec = "10";
+        
+        # Hardening options
+        NoNewPrivileges = true;
+        ProtectSystem = "strict";
+        ProtectHome = true;
+        PrivateTmp = true;
+        PrivateDevices = true;
+        ProtectKernelTunables = true;
+        ProtectKernelModules = true;
+        ProtectControlGroups = true;
+        ReadWritePaths = [ "/var/lib/librechat" ];
       };
     };
 
     services.mongodb = lib.mkIf cfg.database.createLocally {
       enable = true;
       bind_ip = "127.0.0.1";
-      # Basic security practices
-      enableAuth = false; # Set to true if you want to enable authentication
-      # If enableAuth is true, you'll need to set up initial admin user
+      enableAuth = false;
     };
 
-    virtualisation.oci-containers.backend = "podman";
-    virtualisation.podman.dockerSocket.enable = true;
-    virtualisation.podman.dockerCompat = true;
-
-    networking.firewall = {
-      allowedTCPPorts = [cfg.port];
-      trustedInterfaces = ["podman0"];
+    users.users.librechat = {
+      isSystemUser = true;
+      group = "librechat";
+      home = "/var/lib/librechat";
+      createHome = true;
     };
+
+    users.groups.librechat = {};
+
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
   };
 }
