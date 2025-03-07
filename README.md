@@ -7,8 +7,10 @@ packages and modules for myself
 ### Packages
 
 - [lumen 1.7.1](https://github.com/jnsahaj/lumen/)
+- [Zui 1.18.0](https://github.com/brimdata/zui/)
 
 ## in progress
 
+- [ ] [brimcap](https://github.com/brimdata/brimcap/) (go)
 - [ ] [soularr](https://github.com/mrusse/soularr) (python)
 - [ ] [LibreChat](https://github.com/danny-avila/LibreChat) (npm)
