@@ -1,62 +1,98 @@
 { lib
 , stdenv
 , fetchFromGitHub
+, fetchYarnDeps
 , nodejs
-, nodePackages
+, yarn
+, makeBinaryWrapper
+, jq
 }:
 
+let
+  src = fetchFromGitHub {
+    owner = "danny-avila";
+    repo = "LibreChat";
+    rev = "v0.7.6";
+    sha256 = "sha256-pyAF7FQcOoSO1a7XXGXdyahS1MUcc+LA0MetJv4ApqU=";
+  };
+
+  # Now we can use src
+  yarnDeps = fetchYarnDeps {
+    yarnLock = ./yarn.lock;
+    hash = "sha256-VcUANDxyv/b1YC8GKkhGVl7sWNNf4l3jpBfZQv1pdGs=";
+  };
+in
 stdenv.mkDerivation rec {
   pname = "librechat";
   version = "0.7.6";
 
-  src = fetchFromGitHub {
-    owner = "danny-avila";
-    repo = "LibreChat";
-    rev = "v${version}";
-    sha256 = "sha256-pyAF7FQcOoSO1a7XXGXdyahS1MUcc+LA0MetJv4ApqU=";
-  };
+  inherit src;  # Use the src we defined above
 
-  buildInputs = [ nodejs ];
-  nativeBuildInputs = [ nodePackages.npm ];
+  nativeBuildInputs = [
+    nodejs
+    yarn
+    makeBinaryWrapper
+    jq
+  ];
+
+  patchPhase = ''
+    # Add "private": true to package.json
+    cat package.json | jq '. + {"private":true}' > package.json.new
+    mv package.json.new package.json
+    
+    # Remove package-lock.json to avoid yarn warnings
+    rm -f package-lock.json
+  '';
+
+  configurePhase = ''
+    runHook preConfigure
+
+    export HOME=$(mktemp -d)
+    export YARN_CACHE_FOLDER="$HOME/.yarn"
+    
+    # Link the offline cache
+    yarn config set yarn-offline-mirror ${yarnDeps}
+    
+    # Install dependencies in offline mode
+    yarn install --offline --frozen-lockfile --ignore-scripts
+
+    runHook postConfigure
+  '';
 
   buildPhase = ''
-    # Set home for npm
-    export HOME=$TMPDIR
+    runHook preBuild
 
-    # Install dependencies
-    npm ci
+    export NODE_ENV=production
+    yarn build
 
-    # Build the frontend (this creates a production build)
-    cd client
-    npm ci
-    npm run build
-    cd ..
-
-    # Clean up development dependencies
-    npm ci --omit=dev
+    runHook postBuild
   '';
 
   installPhase = ''
-    mkdir -p $out/bin
-    mkdir -p $out/lib/node_modules/librechat
+    runHook preInstall
 
-    # Copy the backend and built frontend
-    cp -r ./* $out/lib/node_modules/librechat/
-    cp -r client/dist $out/lib/node_modules/librechat/client/dist
+    mkdir -p $out/{bin,lib/librechat,share/librechat}
+    
+    cp -r api/dist/* $out/lib/librechat/
+    cp -r node_modules $out/lib/librechat/
+    cp package.json $out/lib/librechat/
+    
+    cp -r client/dist/* $out/share/librechat/
 
-    # Create startup script
-    cat > $out/bin/librechat << EOF
-    #!${stdenv.shell}
-    exec ${nodejs}/bin/node $out/lib/node_modules/librechat/api/server
-    EOF
-    chmod +x $out/bin/librechat
+    makeWrapper ${nodejs}/bin/node $out/bin/librechat \
+      --add-flags "$out/lib/librechat/server.js" \
+      --set NODE_ENV production \
+      --chdir $out/lib/librechat
+
+    runHook postInstall
   '';
 
-  meta = {
-    description = "Self-hosted ChatGPT clone";
-    homepage = "https://github.com/danny-avila/LibreChat";
-    license = lib.licenses.mit;
-    maintainers = [ "74k1" ];
-    platforms = lib.platforms.unix;
+  meta = with lib; {
+    description = "Enhanced ChatGPT Clone with multiple AI model support and advanced features";
+    homepage = "https://www.librechat.ai";
+    license = licenses.mit;
+    maintainers = [ maintainers."74k1" ];
+    platforms = platforms.all;
+    mainProgram = "librechat";
   };
 }
