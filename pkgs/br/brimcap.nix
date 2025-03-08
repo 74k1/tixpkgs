@@ -50,79 +50,58 @@ buildGoModule rec {
     stripRoot = false;
   };
 
+  preBuild = ''
+    mkdir -p dist
+    cp -r ${zeekBinary}/* dist/
+    cp -r ${suricataBinary}/* dist/
+
+    chmod +x dist/zeek/bin/* dist/suricata/bin/*
+  '';
+
+  buildPhase = ''
+    runHook preBuild
+
+    go build -ldflags="-s -w -X github.com/brimdata/brimcap/cli.Version=${version}" \
+      -o dist/brimcap ./cmd/brimcap
+
+    runHook postBuild
+  '';
+
   installPhase = ''
     runHook preInstall
+
+    mkdir -p $out/bin $out/share/brimcap
+    cp -r dist/* $out/share/brimcap/
     
-    # Install Go binaries
-    mkdir -p $out/bin
-    install -Dm755 $GOPATH/bin/brimcap $out/bin/brimcap
+    ln -s $out/share/brimcap/brimcap $out/bin/brimcap
     
-    # Create directory structure
-    mkdir -p $out/share/brimcap/zeek
-    mkdir -p $out/share/brimcap/suricata
-    
-    # Copy zeek files
-    cp -r ${zeekBinary}/* $out/share/brimcap/zeek/
-    
-    # Create zeekrunner script (pointing to the correct path)
-    cat > $out/share/brimcap/zeek/zeekrunner << 'EOF'
-    #!/bin/sh
-    SCRIPTPATH="$(cd "$(dirname "\$0")" && pwd)"
-    exec "$SCRIPTPATH/zeek/bin/zeek" "$@"
-    EOF
-    chmod 755 $out/share/brimcap/zeek/zeekrunner
-    
-    # Copy suricata files
-    cp -r ${suricataBinary}/* $out/share/brimcap/suricata/
-    
-    # Create suricatarunner script
-    cat > $out/share/brimcap/suricata/suricatarunner << 'EOF'
-    #!/bin/sh
-    SCRIPTPATH="$(cd "$(dirname "$0")" && pwd)"
-    BASEDIR="$SCRIPTPATH/suricata"
-    mkdir -p "$HOME/.cache/brimcap/suricata"
-    cp -n "$BASEDIR/etc/suricata/brim-conf.yaml" "$HOME/.cache/brimcap/suricata/brim-conf-run.yaml"
-    exec "$BASEDIR/bin/suricata" -c "$HOME/.cache/brimcap/suricata/brim-conf-run.yaml" "$@"
-    EOF
-    chmod 755 $out/share/brimcap/suricata/suricatarunner
-    
-    # Create symlinks to runners in main bin directory
-    ln -sf $out/share/brimcap/zeek/zeekrunner $out/bin/zeekrunner
-    ln -sf $out/share/brimcap/suricata/suricatarunner $out/bin/suricatarunner
-    
-    # Create symlink for brimcap in the brimcap directory
-    ln -sf $out/bin/brimcap $out/share/brimcap/brimcap
-    
-    # Wrap the brimcap binary
     wrapProgram $out/bin/brimcap \
-      --prefix PATH : $out/bin \
       --prefix PATH : $out/share/brimcap \
-      --prefix PATH : $out/share/brimcap/zeek \
-      --prefix PATH : $out/share/brimcap/suricata \
       --prefix PATH : ${lib.makeBinPath [ zq ]} \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [
         stdenv.cc.cc.lib
         zlib
         nss
         nspr
-      ]}
-      
+      ]} \
+      --set BRIM_SURICATA_USER_DIR "."
+      # --set BRIM_SURICATA_USER_DIR "\$HOME/.local/share/brimcap"
+
     runHook postInstall
   '';
 
-  # Skip default autoPatchelf
   dontAutoPatchelf = true;
 
   postFixup = ''
-    find $out/share/brimcap/zeek/bin -type f -executable -exec autoPatchelf {} \; || true
-    find $out/share/brimcap/suricata/bin -type f -executable -exec autoPatchelf {} \; || true
+    autoPatchelf $out/share/brimcap/zeek/bin/*
+    autoPatchelf $out/share/brimcap/suricata/bin/*
   '';
 
   meta = with lib; {
     description = "Convert pcap files into richly-typed ZNG summary logs";
     homepage = "https://github.com/brimdata/brimcap";
-    license = licenses.bsd3;
-    maintainers = with maintainers; [ ];
-    platforms = platforms.linux;
+    license = with lib.licenses; [bsd3];
+    maintainers = with lib.maintainers; ["74k1"];
+    platforms = platforms.unix;
   };
 }

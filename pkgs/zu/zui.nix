@@ -34,6 +34,7 @@
   xdg-utils,
   xdg-desktop-portal,
   xdg-desktop-portal-gtk,
+  # brimcap,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -89,6 +90,7 @@ stdenv.mkDerivation (finalAttrs: {
     xdg-desktop-portal
     xdg-desktop-portal-gtk
     xdg-utils
+    # brimcap
   ];
 
   installPhase = ''
@@ -116,9 +118,6 @@ stdenv.mkDerivation (finalAttrs: {
       find $out/opt/Zui/resources/app.asar.unpacked/zdeps/suricata/bin -type f -exec chmod +x {} \;
     fi
 
-    # Create plugin directory structure
-    mkdir -p $out/opt/Zui/resources/app.asar.unpacked/zdeps/plugins
-
     runHook postInstall
   '';
 
@@ -133,7 +132,7 @@ stdenv.mkDerivation (finalAttrs: {
       --set ELECTRON_IS_DEV 0 \
       --set ELECTRON_TRASH "xdg-open" \
       --set ELECTRON_OZONE_PLATFORM_HINT "auto" \
-      --set ZUI_PLUGIN_ROOT "$out/opt/Zui/resources/app.asar.unpacked/zdeps/plugins" \
+      --set ZUI_PLUGIN_ROOT "$out/opt/Zui/resources/app.asar.unpacked/zdeps" \
       --add-flags "--ozone-platform-hint=auto" \
       --add-flags "--enable-features=UseOzonePlatform,WaylandWindowDecorations" \
       --add-flags "--no-sandbox"

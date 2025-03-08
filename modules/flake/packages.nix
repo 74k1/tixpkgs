@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  perSystem = {pkgs, ...}: let
+  perSystem = {pkgs, system, ...}: let
     pkgs-base = "${inputs.self.outPath}/pkgs";
 
     # Get all .nix files in ./by-name directories
@@ -15,6 +15,15 @@
       (file: lib.strings.hasSuffix ".nix" file)
       nixFiles;
 
+
+      pkgs' = import inputs.nixpkgs {
+        inherit system;
+        overlays = [
+          # Pseudo-overlay to add our own packages everywhere
+          (_: _: inputs.self.packages.${system})
+        ];
+      };
+    
     # Create an attribute set where the key is the base name (without .nix)
     # and the value is the imported Nix file
     importedPackages = lib.listToAttrs (
@@ -30,7 +39,7 @@
         filePath = builtins.unsafeDiscardStringContext "${pkgs-base}/${nameDir}/${fileName}";
       in {
         name = lib.strings.removeSuffix ".nix" fileNameSafe;
-        value = pkgs.callPackage filePath {};
+        value = pkgs'.callPackage filePath {};
       })
       filteredFiles
     );
