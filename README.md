@@ -15,4 +15,3 @@ packages and modules for myself
 
 - [ ] [brimcap](https://github.com/brimdata/brimcap/) (go)
 - [ ] [soularr](https://github.com/mrusse/soularr) (python)
-- [ ] [LibreChat](https://github.com/danny-avila/LibreChat) (npm)
