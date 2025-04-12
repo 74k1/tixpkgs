@@ -31,8 +31,9 @@
       (file: let
         # Extract the name by getting the last two path components
         parts = lib.splitString "/" file;
-        nameDir = lib.elemAt parts (lib.length parts - 2);
-        fileName = lib.elemAt parts (lib.length parts - 1);
+        offset = if lib.elemAt parts (lib.length parts - 1) == "default.nix" then 2 else 1;
+        nameDir = lib.elemAt parts (lib.length parts - offset - 1);
+        fileName = lib.elemAt parts (lib.length parts - offset);
         # Call `unsafeDiscardStringContext` to fix weird dependency issue
         # (because of `lib.filesystem.listFilesRecursive`)
         fileNameSafe = builtins.unsafeDiscardStringContext "${fileName}";
