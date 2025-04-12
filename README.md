@@ -10,6 +10,7 @@ packages and modules for myself
 - [Zui 1.18.0](https://github.com/brimdata/zui/)
 - [Logria 0.2.0](https://github.com/ReagentX/Logria)
 - [gale 1.5.6](https://github.com/Kesomannen/gale)
+- [Lidarr 2.11.1.4613 (plugins branch)](https://github.com/Lidarr/Lidarr/tree/plugins)
 
 ## in progress
 
