@@ -25,7 +25,7 @@
 
       imports = [
         ./modules/flake/packages.nix
-        # ./modules/flake/modules.nix
+        ./modules/flake/modules.nix
       ];
 
       debug = true;

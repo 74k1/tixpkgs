@@ -14,13 +14,14 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-TP5ox0bIE+opu0c+nQVoLjCv2W5v1eJzi4KMdnnOSw0=";
   };
 
-  cargoHash = "sha256-fQBf8RvO+0+XwzN1Jvwy2nt8fxUGjhsIAqBQFEpEilY=";
+  cargoHash = "sha256-BcEVrFHqEqD6zRBMYHRHEKxln+2B6ntXRDzF0bGFBn4=";
 
   meta = {
     description = "Eww notification daemon (in Rust)";
     homepage = "https://github.com/Dr-42/end-rs";
+    mainProgram = pname;
     license = lib.licenses.bsd2;
     maintainers = [ "74k1" ];
-    platforms = lib.platforms.all;
+    platforms = lib.platforms.linux;
   };
 }
