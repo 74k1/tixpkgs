@@ -1,0 +1,40 @@
+name: "Documentation request"
+description: "Request documentation to an existing package."
+title: "Missing Documentation: MODULENAME/PACKAGENAME"
+labels: ["0. request"]
+assignees: 74k1
+body:
+  - type: "input"
+    id: "name"
+    attributes:
+      label: "Package / Module name"
+      description: "What Module / Package is missing Documentation?"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "proposal"
+    attributes:
+      label: "Proposed solution"
+      description: "If possible, please draft something."
+      render: "markdown"
+    validations:
+      required: false
+  - type: "textarea"
+    id: "additional-context"
+    attributes:
+      label: "Anything else?"
+      description: "Extra details that might be useful"
+    validations:
+      required: false
+  - type: "textarea"
+    id: "prioritisation"
+    attributes:
+      label: "Is this important to you?"
+      description: |
+        ---
+        **Please don't edit this section!**
+        Help me prioritize by adding 👍 reactions to issues that matter to you.
+      value: |
+        Add a 👍 [reaction] to [issues you care about].
+        [reaction]: https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/
+        [issues you care about]: https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc

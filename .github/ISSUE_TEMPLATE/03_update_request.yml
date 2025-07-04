@@ -1,0 +1,39 @@
+name: "Update request"
+description: "Request an update for an existing package."
+title: "Update Request: PACKAGENAME OLDVERSION → NEWVERSION"
+labels: ["0. request"]
+assignees: 74k1
+body:
+  - type: "input"
+    id: "pkg-name"
+    attributes:
+      label: "Package name"
+      description: "Tell me the name of the package I should take a look at."
+    validations:
+      required: true
+  - type: "input"
+    id: "changelog"
+    attributes:
+      label: "Changelog"
+      description: "If applicable, link the changelog for the latest version"
+    validations:
+      required: false
+  - type: "textarea"
+    id: "additional-context"
+    attributes:
+      label: "Anything else?"
+      description: "Extra details that might help"
+    validations:
+      required: false
+  - type: "textarea"
+    id: "prioritisation"
+    attributes:
+      label: "Is this important to you?"
+      description: |
+        ---
+        **Please don't edit this section!**
+        Help me prioritize by adding 👍 reactions to issues that matter to you.
+      value: |
+        Add a 👍 [reaction] to [issues you care about].
+        [reaction]: https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/
+        [issues you care about]: https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc

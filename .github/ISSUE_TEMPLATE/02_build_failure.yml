@@ -1,0 +1,64 @@
+name: "Build failure"
+description: "Report a package that is failing to build."
+title: "Build Failure: PACKAGENAME"
+labels: ["0. build failure"]
+assignees: 74k1
+body:
+  - type: "input"
+    id: "version"
+    attributes:
+      label: "NixOS / Nix version"
+      description: |
+        What Nix version are you using?
+        `nix --version` or `nix-env --version`
+    validations:
+      required: true
+  - type: "input"
+    id: "os"
+    attributes:
+      label: "What's your Operating System & Version?"
+      description: |
+        What OS do you use? What's the version of it?
+        Run and paste:
+          - Linux/macOS: `uname -a && lsb_release -a 2>/dev/null || sw_vers`
+          - NixOS: `nixos-version`
+    validations:
+      required: true
+  - type: "textarea"
+    id: "logs"
+    attributes:
+      label: "Relevant logs"
+      description: |
+        Paste any useful log output here.
+        No need for formatting - that's already handled.
+      render: "console"
+    validations:
+      required: false
+  - type: "textarea"
+    id: "additional-context"
+    attributes:
+      label: "Anything else?"
+      description: "Extra details that might help"
+    validations:
+      required: false
+  - type: "checkboxes"
+    id: "sanity-check"
+    attributes:
+      label: "Quick checklist"
+      options:
+        - label: "This is a real bug (not a support request)"
+          required: true
+        - label: "Not a [duplicate issue](https://github.com/74k1/tixpkgs/issues?q=is%3Aopen%20is%3Aissue%20label%3A%220.%20bug%22)"
+          required: true
+  - type: "textarea"
+    id: "prioritisation"
+    attributes:
+      label: "Is this important to you?"
+      description: |
+        ---
+        **Please don't edit this section!**
+        Help me prioritize by adding 👍 reactions to issues that matter to you.
+      value: |
+        Add a 👍 [reaction] to [issues you care about].
+        [reaction]: https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/
+        [issues you care about]: https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc
