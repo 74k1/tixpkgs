@@ -6,7 +6,7 @@ packages and modules for myself
 
 ### FOSS Packages not in nixpkgs
 
-- [Lidarr 2.11.1.4613 (plugins branch)](https://github.com/Lidarr/Lidarr/tree/plugins)
+- [Lidarr 2.13.1.4676 (plugins branch)](https://github.com/Lidarr/Lidarr/tree/plugins)
 - [Logria 0.2.0](https://github.com/ReagentX/Logria)
 - [Zui 1.18.0](https://github.com/brimdata/zui/)
 - [end-rs v0.1.22](https://github.com/Dr-42/end-rs)
