@@ -16,12 +16,12 @@
 }:
 stdenv.mkDerivation rec {
   pname = "lidarr";
-  version = "2.13.2.4686";
+  version = "2.14.0.4695";
 
   src = fetchurl {
-    url = "https://dev.azure.com/Lidarr/Lidarr/_apis/build/builds/4641/artifacts?artifactName=Packages&fileId=C17A20351165094D192AA2B3CCB902BFB106340C6F1EB91DDBD050B95232AA8002&fileName=Lidarr.merge.${version}.linux-core-x64.tar.gz&api-version=5.1";
+    url = "https://dev.azure.com/Lidarr/Lidarr/_apis/build/builds/4650/artifacts?artifactName=Packages&fileId=44B6DDAF1485D9BC89231CE58599C067F7A2B6BA950DDBB05238AB2288EC4A3502&fileName=Lidarr.merge.${version}.linux-core-x64.tar.gz&api-version=5.1";
     name = "Lidarr.merge.${version}.linux-core-x64.tar.gz";
-    hash = "sha256-fC590SlA2KCIJNxTP5uYaXfMBi0GvLohaNUDVKLejfI=";
+    hash = "sha256-0CtNb4Eo9DfdTkfaBFR28mpGWhUHj44QPxrv5zFcXWw=";
   };
 
   nativeBuildInputs = [makeWrapper];
@@ -49,8 +49,8 @@ stdenv.mkDerivation rec {
     description = "Usenet/BitTorrent music downloader";
     homepage = "https://lidarr.audio/";
     license = licenses.gpl3;
-    maintainers = [ maintainers."74k1" ];
+    maintainers = [maintainers."74k1"];
     mainProgram = "Lidarr";
-    platforms = ["x86_64-linux"]; 
+    platforms = ["x86_64-linux"];
   };
 }
