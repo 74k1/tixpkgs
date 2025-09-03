@@ -35,5 +35,6 @@ body:
         Help me prioritize by adding 👍 reactions to issues that matter to you.
       value: |
         Add a 👍 [reaction] to [issues you care about].
+
         [reaction]: https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/
         [issues you care about]: https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc
