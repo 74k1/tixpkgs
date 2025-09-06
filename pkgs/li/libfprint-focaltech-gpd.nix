@@ -95,5 +95,7 @@ in stdenv.mkDerivation rec {
     homepage = "https://github.com/ftfpteams/focaltech-linux-fingerprint-driver/";
     maintainers = [maintainers."74k1"];
     platforms = ["x86_64-linux"];
+    sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
+    # broken = true; # needs older version of fprintd (v1.94.4)
   };
 }
