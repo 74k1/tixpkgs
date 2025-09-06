@@ -17,8 +17,16 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [dpkg];
 
   unpackPhase = ''
-    dpkg-deb -x $src $out
+    dpkg-deb -x $src .
   '';
+
+  installPhase = ''
+    runHook preInstall
+    install -Dm444 usr/lib/x86_64-linux-gnu/libfprint-2.so.2.0.0 -t $out/lib/libfprint-2/tod-1/
+    runHook postInstall
+  '';
+
+  passthru.driverPath = "/lib/libfprint-2/tod-1";
 
   meta = with lib; {
     description = "The newer fingerprint driver from focaltech for the GPD Pocket 4";
