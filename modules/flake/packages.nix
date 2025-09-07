@@ -22,6 +22,9 @@
           # Pseudo-overlay to add our own packages everywhere
           (_: _: inputs.self.packages.${system})
         ];
+        config = { 
+          allowUnfree = true;
+        };
       };
     
     # Create an attribute set where the key is the base name (without .nix)
