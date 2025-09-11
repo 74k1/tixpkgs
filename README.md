@@ -1,4 +1,6 @@
-# [tix](https://github.com/74k1/tix)pkgs
+<img align="left" src="/.github/assets/tixpkgs_colored.png" width="400px"/>
+
+### [tix](https://github.com/74k1/tix)pkgs
 
 packages and modules for myself
 
