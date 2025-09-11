@@ -1,15 +1,22 @@
 <img align="left" src="/.github/assets/tixpkgs_colored.png" width="400px"/>
 
-### [tix](https://github.com/74k1/tix)pkgs
+<br>
 
-packages and modules for myself
+<div align="right">
+    <h3><samp><a href="https://github.com/74k1/tix">tix</a>pkgs</samp> ❄️</h3>
+    packages and modules for myself.
+</div>
 
 <br>
 <br>
-<br>
-<br>
+
+## TODO
+
+See [Issues](https://github.com/74k1/issues)
 
 ## currently available
+
+out-of-date docs, see Issues..
 
 ### FOSS Packages not in nixpkgs
 
