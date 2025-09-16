@@ -16,23 +16,8 @@ See [Issues](https://github.com/74k1/issues)
 
 ## currently available
 
-out-of-date docs, see Issues..
+Feel free to explore /pkgs and /modules
 
-### FOSS Packages not in nixpkgs
-
-- [Lidarr 2.14.0.4695 (plugins branch)](https://github.com/Lidarr/Lidarr/tree/plugins)
-- [Logria 0.2.0](https://github.com/ReagentX/Logria)
-- [Zui 1.18.0](https://github.com/brimdata/zui/)
-- [end-rs v0.1.22](https://github.com/Dr-42/end-rs)
-- [gale 1.5.6](https://github.com/Kesomannen/gale)
-- [lumen 1.9.0](https://github.com/jnsahaj/lumen/)
-- [outerbase studio desktop 0.1.29](https://github.com/outerbase/studio-desktop)
-
-### My own Packages
-
-- [Duvolbr](/pkgs/du/duvolbr.nix) (shell)
-
-## in progress
-
-- [ ] [brimcap](https://github.com/brimdata/brimcap/) (go)
-- [ ] [soularr](https://github.com/mrusse/soularr) (python)
+Some Packages are not fully working, and some might be outdated.
+If something is unmaintained, it simply means, I don't use it anymore.
+Feel free to PR though.
