@@ -1,4 +1,4 @@
-{tixpkgs}:
+{ tixpkgs }:
 # check out my module :)
 # rest is provided by user nixos config, we cant control their params
 {
@@ -6,11 +6,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) mkOption types;
   cfg = config.services.end-rs;
-in {
-  meta.maintainers = ["74k1"];
+in
+{
+  meta.maintainers = [ "74k1" ];
 
   options = {
     services.end-rs = {
@@ -38,12 +40,12 @@ in {
       };
 
       config = mkOption {
-        default = {};
+        default = { };
         type = types.submodule {
           options = {
             icon_pkgs = mkOption {
               type = types.listOf types.package;
-              default = [pkgs.adwaita-icon-theme];
+              default = [ pkgs.adwaita-icon-theme ];
               description = "Icon packages to use.";
             };
             icon_theme = mkOption {
@@ -52,7 +54,7 @@ in {
               description = "The theme to use for the icons";
             };
             eww = mkOption {
-              default = {};
+              default = { };
               type = types.submodule {
                 options = {
                   package = mkOption {
@@ -62,7 +64,7 @@ in {
                   };
 
                   notification = mkOption {
-                    default = {};
+                    default = { };
                     type = types.submodule {
                       options = {
                         window = mkOption {
@@ -87,7 +89,7 @@ in {
                   };
 
                   history = mkOption {
-                    default = {};
+                    default = { };
                     type = types.submodule {
                       options = {
                         window = mkOption {
@@ -112,7 +114,7 @@ in {
                   };
 
                   reply = mkOption {
-                    default = {};
+                    default = { };
                     type = types.submodule {
                       options = {
                         window = mkOption {
@@ -164,7 +166,7 @@ in {
             };
 
             timeout = mkOption {
-              default = {};
+              default = { };
               description = "The timeouts for different types of notifications in seconds. A value of 0 means that the notification will never timeout";
               type = types.submodule {
                 options = {
@@ -195,48 +197,52 @@ in {
       cfg.package
     ];
 
-    xdg.configFile."end-rs/config.toml" = let
-      iconDirs = lib.flatten (map (p: "${p}/share/icons") cfg.config.icon_pkgs);
+    xdg.configFile."end-rs/config.toml" =
+      let
+        iconDirs = lib.flatten (map (p: "${p}/share/icons") cfg.config.icon_pkgs);
 
-      configOptions = {
-        eww_binary_path = lib.getExe cfg.config.eww.package;
-        icon_dirs = iconDirs;
-        icon_theme = cfg.config.icon_theme;
-        eww_notification_window = cfg.config.eww.notification.window;
-        eww_notification_widget = cfg.config.eww.notification.widget;
-        eww_notification_var = cfg.config.eww.notification.var;
-        eww_history_window = cfg.config.eww.history.window;
-        eww_history_widget = cfg.config.eww.history.widget;
-        eww_history_var = cfg.config.eww.history.var;
-        eww_reply_window = cfg.config.eww.reply.window;
-        eww_reply_widget = cfg.config.eww.reply.widget;
-        eww_reply_var = cfg.config.eww.reply.var;
-        eww_reply_text = cfg.config.eww.reply.text;
-        max_notifications = cfg.config.max_notifications;
-        notification_orientation = cfg.config.notification_orientation;
-        update_history = cfg.config.update_history;
-        timeout = cfg.config.timeout;
+        configOptions = {
+          eww_binary_path = lib.getExe cfg.config.eww.package;
+          icon_dirs = iconDirs;
+          icon_theme = cfg.config.icon_theme;
+          eww_notification_window = cfg.config.eww.notification.window;
+          eww_notification_widget = cfg.config.eww.notification.widget;
+          eww_notification_var = cfg.config.eww.notification.var;
+          eww_history_window = cfg.config.eww.history.window;
+          eww_history_widget = cfg.config.eww.history.widget;
+          eww_history_var = cfg.config.eww.history.var;
+          eww_reply_window = cfg.config.eww.reply.window;
+          eww_reply_widget = cfg.config.eww.reply.widget;
+          eww_reply_var = cfg.config.eww.reply.var;
+          eww_reply_text = cfg.config.eww.reply.text;
+          max_notifications = cfg.config.max_notifications;
+          notification_orientation = cfg.config.notification_orientation;
+          update_history = cfg.config.update_history;
+          timeout = cfg.config.timeout;
+        };
+
+        generatedToml = (pkgs.formats.toml { }).generate "config.toml" configOptions;
+      in
+      {
+        onChange = "${lib.getExe' pkgs.systemd "systemctl"} --user restart end-rs.service";
+        source = generatedToml;
       };
-
-      generatedToml = (pkgs.formats.toml {}).generate "config.toml" configOptions;
-    in {
-      onChange = "${lib.getExe' pkgs.systemd "systemctl"} --user restart end-rs.service";
-      source = generatedToml;
-    };
 
     systemd.user.services.end-rs = {
       Unit = {
         Description = "eww notification daemon service";
         Documentation = "https://github.com/Dr-42/end-rs";
-        After = [cfg.systemd.target];
-        PartOf = [cfg.systemd.target];
+        After = [ cfg.systemd.target ];
+        PartOf = [ cfg.systemd.target ];
       };
 
       Service = {
         ExecStart = "${lib.getExe cfg.package} daemon";
       };
 
-      Install = {WantedBy = [cfg.systemd.target];};
+      Install = {
+        WantedBy = [ cfg.systemd.target ];
+      };
     };
   };
 }
