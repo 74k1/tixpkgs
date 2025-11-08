@@ -5,7 +5,7 @@
   dpkg,
   autoPatchelfHook,
   makeWrapper,
-  wrapGAppsHook,
+  wrapGAppsHook3,
   dbus,
   electron,
   gtk3,
@@ -52,7 +52,7 @@ stdenv.mkDerivation (finalAttrs: {
     dpkg
     autoPatchelfHook
     makeWrapper
-    wrapGAppsHook
+    wrapGAppsHook3
   ];
 
   buildInputs = [
