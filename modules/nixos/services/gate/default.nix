@@ -5,11 +5,19 @@
   ...
 }:
 let
-  cfg = config.services.gateService;
-  settingsFormat = pkgs.formats.yaml { };
+  cfg = config.services.gate;
+  rawYaml = (pkgs.formats.yaml { }).generate "gate-config.yaml" { inherit (cfg) config; };
+  fixedYaml = pkgs.runCommand "gate-config-fixed.yaml" { buildInputs = [ pkgs.gnused ]; } ''
+    cp ${rawYaml} config.yaml
+    # VERY NAIVE: only works for the exact layout produced now
+    sed -E -i '
+      s/- backend: ([^[:space:]]+)[[:space:]]+host: ([^[:space:]]+)/- host: \2\n  backend: \1/
+    ' config.yaml
+    cp config.yaml $out
+  '';
 in
 {
-  options.services.gateService = {
+  options.services.gate = {
     enable = lib.mkEnableOption "Gate Service";
     config = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything;
@@ -19,20 +27,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # add system packages Debugging
-    environment.systemPackages = [
-      (pkgs.writeShellScriptBin "gateConfigPrint" ''
-        cat ${settingsFormat.generate "gate-config.yaml" { inherit (cfg) config; }}
-      '')
-    ];
-    systemd.services.gateService = {
+    systemd.services.gate = {
       description = "Gate Service";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.gate}/bin/gate -c ${
-          settingsFormat.generate "gate-config.yaml" { inherit (cfg) config; }
-        }";
+        ExecStart = "${pkgs.gate}/bin/gate -c ${fixedYaml}";
         Restart = "always";
         User = "root";
       };
