@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.services.gate;
+  cfg = config.services.mc-gate;
   rawYaml = (pkgs.formats.yaml { }).generate "gate-config.yaml" { inherit (cfg) config; };
   fixedYaml = pkgs.runCommand "gate-config-fixed.yaml" { buildInputs = [ pkgs.gnused ]; } ''
     cp ${rawYaml} config.yaml
@@ -17,17 +17,17 @@ let
   '';
 in
 {
-  options.services.gate = {
+  options.services.mc-gate = {
     enable = lib.mkEnableOption "Gate Service";
     config = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything;
       default = { };
-      description = "Configuration for the gate service";
+      description = "Configuration for the gate minecraft proxy service";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services.gate = {
+    systemd.services.mc-gate = {
       description = "Gate Service";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
