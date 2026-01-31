@@ -16,12 +16,12 @@
 }:
 stdenv.mkDerivation rec {
   pname = "lidarr";
-  version = "3.1.1.4881";
+  version = "3.1.2.4902";
 
   src = fetchurl {
-    url = "https://dev.azure.com/Lidarr/Lidarr/_apis/build/builds/4840/artifacts?artifactName=Packages&fileId=81CB4F0D17A75D124AB67BC28A2EE094312E67B9BF8B701CD140B78E06D4EE4A02&fileName=Lidarr.merge.${version}.linux-core-x64.tar.gz&api-version=5.1";
-    name = "Lidarr.merge.${version}.linux-core-x64.tar.gz";
-    hash = "sha256-T5cIvwSgaois3rTwDVgqPRIa4UPLeennT3icEa7RpYc=";
+    url = "https://github.com/Lidarr/Lidarr/releases/download/v${version}/Lidarr.develop.${version}.linux-core-x64.tar.gz";
+    name = "Lidarr.develop.${version}.linux-core-x64.tar.gz";
+    hash = "sha256-1oSFJtQ9/ICACFBFgp2kPzfP0dKitMg7vqAN7iT0KTA=";
   };
 
   nativeBuildInputs = [makeWrapper];
