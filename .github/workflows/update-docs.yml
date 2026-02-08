@@ -3,6 +3,11 @@ name: Update docs
 on:
   push:
     branches: [main]
+    paths:
+      - 'pkgs/**'
+      - 'modules/**'
+      - 'flake.nix'
+      - 'flake.lock'
   workflow_dispatch:
 
 permissions:
