@@ -10,14 +10,20 @@
 <br>
 <br>
 
-## TODO
+## Packages
 
-See [Issues](https://github.com/74k1/issues)
+<!-- BEGIN PACKAGES -->
+<!-- END PACKAGES -->
 
-## currently available
+## Modules
 
-Feel free to explore /pkgs and /modules
+<!-- BEGIN MODULES -->
+<!-- END MODULES -->
 
-Some Packages are not fully working, and some might be outdated.
-If something is unmaintained, it simply means, I don't use it anymore.
-Feel free to PR though.
+---
+
+> Some packages are not fully working, and some might be outdated.
+> If something is unmaintained, it simply means I don't use it anymore.
+> Feel free to PR though.
+>
+> See [Issues](https://github.com/74k1/tixpkgs/issues)
