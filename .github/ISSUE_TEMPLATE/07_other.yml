@@ -1,23 +1,23 @@
-name: "Other Issue"
-description: "For all other issues, use this module."
-title: "Other: REQUEST"
+name: "Other"
+description: "Doesn't fit the other templates."
+title: "TITLE"
 labels: ["0. request"]
 assignees: 74k1
 body:
   - type: "textarea"
     id: "description"
     attributes:
-      label: "Description"
+      label: "What's on your mind?"
+      description: "Go ahead."
     validations:
       required: true
   - type: "textarea"
     id: "prioritisation"
     attributes:
-      label: "Is this important to you?"
+      label: "Prioritisation"
       description: |
         ---
-        **Please don't edit this section!**
-        Help me prioritize by adding 👍 reactions to issues that matter to you.
+        **Don't edit this.** Use 👍 reactions on issues to help prioritize.
       value: |
         Add a 👍 [reaction] to [issues you care about].
 
