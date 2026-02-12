@@ -1,5 +1,5 @@
-name: "Bug report (package)"
-description: "Report a bug in a package"
+name: "Bug report"
+description: "Something broke. Tell me about it."
 title: "PACKAGENAME: BUG TITLE"
 labels: ["0. bug"]
 assignees: 74k1
@@ -7,67 +7,54 @@ body:
   - type: "textarea"
     id: "description"
     attributes:
-      label: "What's up?"
-      description: "Clearly describe what's not working right"
+      label: "What broke?"
+      description: "Be specific. Vague bug reports age like milk."
     validations:
       required: true
   - type: "textarea"
     id: "how-to-reproduce"
     attributes:
-      label: "How to make it happen"
-      description: "Numbered steps to recreate the issue"
+      label: "Reproduction steps"
+      description: "Numbered steps. If I can't reproduce it, it doesn't exist."
     validations:
       required: true
   - type: "input"
     id: "expected-behaviour"
     attributes:
-      label: "What should've happened"
-      description: "Quick description of expected results"
+      label: "Expected behavior"
+      description: "What was supposed to happen instead?"
     validations:
       required: true
   - type: "textarea"
-    id: "screenshots"
+    id: "evidence"
     attributes:
-      label: "Got screenshots?"
-      description: |
-        If helpful, add images to show what's wrong.
-        Need image help? See [GitHub's image guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#uploading-assets).
-    validations:
-      required: false
-  - type: "textarea"
-    id: "logs"
-    attributes:
-      label: "Relevant logs"
-      description: |
-        Paste any useful log output here.
-        No need for formatting - that's already handled.
+      label: "Logs / screenshots"
+      description: "The more context, the less back-and-forth."
       render: "console"
     validations:
       required: false
   - type: "textarea"
     id: "additional-context"
     attributes:
-      label: "Anything else?"
-      description: "Extra details that might help"
+      label: "Anything else"
     validations:
       required: false
   - type: "checkboxes"
     id: "sanity-check"
     attributes:
-      label: "Quick checklist"
+      label: "Before you submit"
       options:
-        - label: "This is a real bug (not a support request)"
+        - label: "This is an actual bug, not a question"
           required: true
-        - label: "Not a [duplicate issue](https://github.com/74k1/tixpkgs/issues?q=is%3Aopen%20is%3Aissue%20label%3A%220.%20bug%22)"
+        - label: "I checked [existing issues](https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+label%3A%220.+bug%22)"
           required: true
   - type: "textarea"
     id: "prioritisation"
     attributes:
-      label: "Is this important to you?"
+      label: "Prioritisation"
       description: |
         ---
-        **Please don't edit this section!**
-        Help me prioritize by adding 👍 reactions to issues that matter to you.
+        **Don't edit this.** Use 👍 reactions on issues to help prioritize.
       value: |
         Add a 👍 [reaction] to [issues you care about].
 

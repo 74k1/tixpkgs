@@ -1,45 +1,43 @@
 name: "Package request"
-description: "Request a package."
-title: "Package Request: PACKAGENAME VERSION"
+description: "Something's missing from nixpkgs and you want it here."
+title: "Package Request: PACKAGENAME"
 labels: ["0. request"]
 assignees: 74k1
 body:
   - type: "input"
     id: "pkg-name"
     attributes:
-      label: "Package name"
-      description: "Tell me the name of the package I should take a look at."
+      label: "Package"
+      description: "Name of the software."
     validations:
       required: true
   - type: "input"
     id: "source"
     attributes:
-      label: "Source / Website"
-      description: "Link to the source or website."
+      label: "Source"
+      description: "Link to the repo or project page."
     validations:
       required: true
-  - type: "input"
-    id: "docs"
+  - type: "textarea"
+    id: "context"
     attributes:
-      label: "Documentation"
-      description: "Link to the documentation if it exists."
+      label: "Why here and not nixpkgs?"
+      description: "Genuinely asking. If it belongs upstream, it should go upstream."
     validations:
       required: false
   - type: "textarea"
     id: "additional-context"
     attributes:
-      label: "Anything else?"
-      description: "Extra details that might be useful"
+      label: "Anything else"
     validations:
       required: false
   - type: "textarea"
     id: "prioritisation"
     attributes:
-      label: "Is this important to you?"
+      label: "Prioritisation"
       description: |
         ---
-        **Please don't edit this section!**
-        Help me prioritize by adding 👍 reactions to issues that matter to you.
+        **Don't edit this.** Use 👍 reactions on issues to help prioritize.
       value: |
         Add a 👍 [reaction] to [issues you care about].
 
