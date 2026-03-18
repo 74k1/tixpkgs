@@ -40,6 +40,7 @@
 | `services.mc-gate` | - |
 | `services.onyx` | [README](modules/nixos/services/onyx/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
+| `home-manager.programs.waterfox` | [README](modules/home-manager/programs/waterfox/README.md) |
 <!-- END MODULES -->
 
 ---
