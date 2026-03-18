@@ -43,33 +43,39 @@ jobs:
           mod_table="| Module | Docs |"
           mod_table+=$'\n'"|---|---|"
 
-          while IFS= read -r nix_file; do
-            # Derive the module attribute path from the file path
-            # e.g. modules/nixos/services/booklore/default.nix -> services.booklore
-            rel="${nix_file#modules/nixos/}"
-            dir="$(dirname "$rel")"
+          append_modules() {
+            local base_dir="$1"
+            local prefix="$2"
 
-            # For default.nix, use the parent directory path; for name.nix, append the name
-            basename="$(basename "$rel")"
-            if [ "$basename" = "default.nix" ]; then
-              mod_path="$dir"
-            else
-              mod_path="$dir/$(echo "$basename" | sed 's/\.nix$//')"
-            fi
+            while IFS= read -r nix_file; do
+              rel="${nix_file#${base_dir}/}"
+              dir="$(dirname "$rel")"
 
-            # Convert slashes to dots for the attribute path
-            attr_path=$(echo "$mod_path" | tr '/' '.')
+              basename="$(basename "$rel")"
+              if [ "$basename" = "default.nix" ]; then
+                mod_path="$dir"
+              else
+                mod_path="$dir/$(echo "$basename" | sed 's/\.nix$//')"
+              fi
 
-            # Check if a README.md exists alongside the module
-            mod_dir="$(dirname "$nix_file")"
-            if [ -f "$mod_dir/README.md" ]; then
-              docs="[README]($mod_dir/README.md)"
-            else
-              docs="-"
-            fi
+              attr_path=$(echo "$mod_path" | tr '/' '.')
+              if [ -n "$prefix" ]; then
+                attr_path="$prefix.$attr_path"
+              fi
 
-            mod_table+=$'\n'"| \`$attr_path\` | $docs |"
-          done < <(find modules/nixos -name '*.nix' | sort)
+              mod_dir="$(dirname "$nix_file")"
+              if [ -f "$mod_dir/README.md" ]; then
+                docs="[README]($mod_dir/README.md)"
+              else
+                docs="-"
+              fi
+
+              mod_table+=$'\n'"| \`$attr_path\` | $docs |"
+            done < <(find "$base_dir" -name '*.nix' | sort)
+          }
+
+          append_modules modules/nixos ""
+          append_modules modules/home-manager "home-manager"
 
           # --- Patch README.md ---
           # Replace content between markers
