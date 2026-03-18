@@ -36,7 +36,6 @@
 <!-- BEGIN MODULES -->
 | Module | Docs |
 |---|---|
-| `services.booklore` | - |
 | `services.mc-gate` | - |
 | `services.onyx` | [README](modules/nixos/services/onyx/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
