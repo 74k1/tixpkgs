@@ -19,21 +19,25 @@ RSSHub delivers millions of contents aggregated from all kinds of sources, our v
 
 ```nix
 {
-  config,
-  lib,
-  pkgs,
+  inputs,
   ...
 }: {
-    services.rsshub = {
-        enable = true;
-        settings = {
-            caching.enable = true;
-        };
-        environmentFile = ./my_env_file; # Holds TWITTER_AUTH_TOKEN for example (use agenix)
-        environment = {
-            PORT = 1200; # already set to 1200 per default
-        };
+  imports = [
+    inputs.tixpkgs.nixosModules'.services.rsshub
+    # or
+    inputs.tixpkgs.nixosModules."services/rsshub"
+  ];
+
+  services.rsshub = {
+    enable = true;
+    settings = {
+      caching.enable = true;
     };
+    environmentFile = ./my_env_file; # Holds TWITTER_AUTH_TOKEN for example (use agenix)
+    environment = {
+      PORT = 1200; # already set to 1200 per default
+    };
+  };
 }
 ```
 
