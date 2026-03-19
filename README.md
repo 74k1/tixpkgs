@@ -41,7 +41,43 @@ In your `flake.nix`:
 
 # Modules
 
-This flake exports modules via `nixosModules'` or `homeManagerModules'` respectively.
+This flake exports modules in two ways:
+
+- via `nixosModules'` or `homeManagerModules'`, which are nested (like `legacyPackages` package sets)
+
+<details>
+  <summary>example</summary>
+
+```nix
+{
+  nixosModules' = {
+    services = {
+      a = <NixOS module>;
+      b = <NixOS module>;
+    };
+    programs = {
+      c = <NixOS module>;
+    };
+  };
+}
+```
+</details>
+
+- via the classic `nixosModules` or `homeManagerModules`, flat
+
+<details>
+  <summary>example</summary>
+
+```nix
+{
+  nixosModules = {
+    "services/a" = <NixOS module>;
+    "services/b" = <NixOS module>;
+    "programs/c" = <NixOS module>;
+  };
+}
+```
+</details>
 
 ## NixOS Modules
 
