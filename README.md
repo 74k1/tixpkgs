@@ -32,17 +32,24 @@
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 
-## Modules
+## NixOS Modules
 
-<!-- BEGIN MODULES -->
+<!-- BEGIN NIXOS MODULES -->
 | Module | Docs |
 |---|---|
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.mc-gate` | - |
 | `services.onyx` | [README](modules/nixos/services/onyx/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
-| `home-manager.programs.waterfox` | [README](modules/home-manager/programs/waterfox/README.md) |
-<!-- END MODULES -->
+<!-- END NIXOS MODULES -->
+
+## Home Manager Modules
+
+<!-- BEGIN HOME MANAGER MODULES -->
+| Module | Docs |
+|---|---|
+| `programs.waterfox` | [README](modules/home-manager/programs/waterfox/README.md) |
+<!-- END HOME MANAGER MODULES -->
 
 ---
 
