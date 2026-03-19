@@ -1,39 +1,22 @@
-# `home-manager.programs.waterfox`
+> [!IMPORTANT]
+> This Module _might_ not have all the capabilities you'd want / expect. Please raise an [issue](https://github.com/74k1/tixpkgs/issues) or figure out a fix for a PR. :)
+> 
+> Contributions are always welcome!
 
-Home Manager module for configuring Waterfox via Home Manager's Firefox module machinery.
+# `homeManagerModules'.programs.waterfox`
 
-It is exported from this flake as `homeManagerModules'.programs.waterfox`.
+Home Manager module for configuring Waterfox via Home Manager's Firefox module magic.
+
+## Info
+
+- Project Website: `https://www.waterfox.com/`
+- Project Source: `https://github.com/BrowserWorks/waterfox`
 
 ## Requirements
 
-- Add this flake as an input.
-- Make `home-manager` follow the same `nixpkgs` as your system if you use flakes.
-- Use a `pkgs.waterfox` package compatible with Firefox wrapping, such as the nixpkgs Waterfox package from the upstream PR that provides both `waterfox` and `waterfox-unwrapped`.
+- Use a `pkgs.waterfox` package compatible with Firefox wrapping, such as the nixpkgs Waterfox package from the upstream PR that provides both `waterfox` and `waterfox-unwrapped`. (like https://github.com/NixOS/nixpkgs/pull/475318)
 
-## Import
-
-in your flake.nix
-
-```nix
-{
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    tixpkgs = {
-      url = "github:74k1/tixpkgs";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-      };
-    };
-
-    ...
-}
-```
-
-## Basic usage
+## Basic Usage
 
 ```nix
 {
@@ -83,7 +66,7 @@ in your flake.nix
       };
     };
 
-    profiles.taki = {
+    profiles."taki" = {
       id = 0;
       isDefault = true;
       search.default = "DuckDuckGo";
