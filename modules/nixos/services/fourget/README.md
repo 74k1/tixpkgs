@@ -18,6 +18,16 @@
 
 ```nix
 {
+  inputs,
+  ...
+}:
+{
+  imports = [
+    inputs.tixpkgs.nixosModules'.services.fourget
+    # or
+    inputs.tixpkgs.nixosModules."services/fourget"
+  ];
+
   services.fourget = {
     enable = true;
 

@@ -19,13 +19,13 @@ RSSHub delivers millions of contents aggregated from all kinds of sources, our v
 
 ```nix
 {
-  config,
-  lib,
-  pkgs,
+  inputs,
   ...
 }: {
   imports = [
     inputs.tixpkgs.nixosModules'.services.mc-gate
+    # or
+    inputs.tixpkgs.nixosModules."services/mc-gate"
   ];
 
   services.mc-gate = {

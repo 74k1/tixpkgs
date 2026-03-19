@@ -21,11 +21,12 @@ Home Manager module for configuring Waterfox via Home Manager's Firefox module m
 ```nix
 {
   inputs,
-  pkgs,
   ...
 }: {
   imports = [
     inputs.tixpkgs.homeManagerModules'.programs.waterfox
+    # or
+    inputs.tixpkgs.homeManagerModules."programs/waterfox"
   ];
 
   programs.waterfox = {
