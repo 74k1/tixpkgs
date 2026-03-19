@@ -40,12 +40,10 @@ jobs:
           ')
 
           # --- Modules ---
-          mod_table="| Module | Docs |"
-          mod_table+=$'\n'"|---|---|"
-
-          append_modules() {
+          make_module_table() {
             local base_dir="$1"
-            local prefix="$2"
+            local table="| Module | Docs |"
+            table+=$'\n'"|---|---|"
 
             while IFS= read -r nix_file; do
               rel="${nix_file#${base_dir}/}"
@@ -59,9 +57,6 @@ jobs:
               fi
 
               attr_path=$(echo "$mod_path" | tr '/' '.')
-              if [ -n "$prefix" ]; then
-                attr_path="$prefix.$attr_path"
-              fi
 
               mod_dir="$(dirname "$nix_file")"
               if [ -f "$mod_dir/README.md" ]; then
@@ -70,20 +65,24 @@ jobs:
                 docs="-"
               fi
 
-              mod_table+=$'\n'"| \`$attr_path\` | $docs |"
+              table+=$'\n'"| \`$attr_path\` | $docs |"
             done < <(find "$base_dir" -name '*.nix' | sort)
+
+            printf '%s\n' "$table"
           }
 
-          append_modules modules/nixos ""
-          append_modules modules/home-manager "home-manager"
+          nixos_mod_table=$(make_module_table modules/nixos)
+          home_manager_mod_table=$(make_module_table modules/home-manager)
 
           # --- Patch README.md ---
           # Replace content between markers
-          awk -v pkg="$pkg_table" -v mod="$mod_table" '
+          awk -v pkg="$pkg_table" -v nixos_mods="$nixos_mod_table" -v home_manager_mods="$home_manager_mod_table" '
             /<!-- BEGIN PACKAGES -->/ { print; print pkg; skip=1; next }
             /<!-- END PACKAGES -->/   { skip=0 }
-            /<!-- BEGIN MODULES -->/  { print; print mod; skip=1; next }
-            /<!-- END MODULES -->/    { skip=0 }
+            /<!-- BEGIN NIXOS MODULES -->/         { print; print nixos_mods; skip=1; next }
+            /<!-- END NIXOS MODULES -->/           { skip=0 }
+            /<!-- BEGIN HOME MANAGER MODULES -->/  { print; print home_manager_mods; skip=1; next }
+            /<!-- END HOME MANAGER MODULES -->/    { skip=0 }
             !skip { print }
           ' README.md > README.md.tmp
 
