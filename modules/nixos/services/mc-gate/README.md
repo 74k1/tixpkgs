@@ -3,7 +3,7 @@
 > 
 > Contributions are always welcome!
 
-# `nixosModules'.services.rsshub`
+# `nixosModules'.services.mcgate`
 
 > 🧡 Everything is RSSible
 
@@ -24,16 +24,24 @@ RSSHub delivers millions of contents aggregated from all kinds of sources, our v
   pkgs,
   ...
 }: {
-    services.rsshub = {
-        enable = true;
-        settings = {
-            caching.enable = true;
-        };
-        environmentFile = ./my_env_file; # Holds TWITTER_AUTH_TOKEN for example (use agenix)
-        environment = {
-            PORT = 1200; # already set to 1200 per default
-        };
+  imports = [
+    inputs.tixpkgs.nixosModules'.services.mc-gate
+  ];
+
+  services.mc-gate = {
+    enable = true;
+    config = {
+      lite = {
+        enabled = true;
+        routes = [
+          {
+            host = "mc.your.domain"; # Your Domain
+            backend = "10.0.0.2:25566"; # Your Minecraft Server IP
+          }
+        ];
+      };
     };
+  };
 }
 ```
 

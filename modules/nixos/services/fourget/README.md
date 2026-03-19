@@ -1,13 +1,18 @@
-# 4get search
-
-- Project Source: `https://git.lolcat.ca/lolcat/4get/`
-- Project Maintainer: `https://git.lolcat.ca/lolcat`
-- Donate to the Project here: `https://4get.ca/donate`
-
-> [!NOTE]
-> This Module _might_ not have all the capabilities you'd want. Please raise an [issue](https://github.com/74k1/tixpkgs/issues) or figure out a fix for a PR. :)
+> [!IMPORTANT]
+> This Module _might_ not have all the capabilities you'd want / expect. Please raise an [issue](https://github.com/74k1/tixpkgs/issues) or figure out a fix for a PR. :)
 > 
 > Contributions are always welcome!
+
+# `nixosModules'.services.fourget`
+
+**4get** is a proxy search engine that doesn't suck.
+
+## Info
+
+- Project Website: `https://4get.ca/`
+- Project Source: `https://git.lolcat.ca/lolcat/4get/`
+- Project Docs: `https://git.lolcat.ca/lolcat/4get/src/branch/master/docs`
+- Donate to the Project here: `https://4get.ca/donate`
 
 ## Usage
 
@@ -18,7 +23,7 @@
 
     nginx = {
       enable = true;
-      hostName = "search.example.com";
+      hostName = "4get.your.domain";
       enableACME = true;
       forceSSL = true;
       openFirewall = true;
