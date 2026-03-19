@@ -10,7 +10,60 @@
 <br>
 <br>
 
-## Packages
+# Usage
+
+To use this flake in your own setup, make sure to include it in your flake inputs. (also make `home-manager` follow your `nixpkgs`)
+
+In your `flake.nix`:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    tixpkgs = {
+      url = "github:74k1/tixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
+    ...
+  };
+  outputs = {
+    ...
+  };
+}
+```
+
+# Modules
+
+This flake exports modules via `nixosModules'` or `homeManagerModules'` respectively.
+
+## NixOS Modules
+
+<!-- BEGIN NIXOS MODULES -->
+| Module | Docs |
+|---|---|
+| `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
+| `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
+| `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
+<!-- END NIXOS MODULES -->
+
+## Home Manager Modules
+
+<!-- BEGIN HOME MANAGER MODULES -->
+| Module | Docs |
+|---|---|
+| `programs.waterfox` | [README](modules/home-manager/programs/waterfox/README.md) |
+<!-- END HOME MANAGER MODULES -->
+
+# Packages
+
+Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.system}.<packageName>`. (if it's buildable for your system.)
 
 <!-- BEGIN PACKAGES -->
 | Package | Version |
@@ -32,29 +85,10 @@
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 
-## NixOS Modules
-
-<!-- BEGIN NIXOS MODULES -->
-| Module | Docs |
-|---|---|
-| `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
-| `services.mc-gate` | - |
-| `services.onyx` | [README](modules/nixos/services/onyx/README.md) |
-| `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
-<!-- END NIXOS MODULES -->
-
-## Home Manager Modules
-
-<!-- BEGIN HOME MANAGER MODULES -->
-| Module | Docs |
-|---|---|
-| `programs.waterfox` | [README](modules/home-manager/programs/waterfox/README.md) |
-<!-- END HOME MANAGER MODULES -->
-
 ---
 
-> Some packages are not fully working, and some might be outdated.
+> Some packages & modules might not be what you expect, and some might be extremely outdated.
 > If something is unmaintained, it simply means I don't use it anymore.
-> Feel free to PR though.
+> A PR is very welcome! :)
 >
-> See [Issues](https://github.com/74k1/tixpkgs/issues)
+> Also see [Issues](https://github.com/74k1/tixpkgs/issues) and [Pull Requests](https://github.com/74k1/tixpkgs/pulls).
