@@ -112,7 +112,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `godap` | `2.10.4` |
 | `ida-ios-helper` | `1.0.19` |
 | `idahelper` | `1.0.17` |
-| `lidarr` | `3.1.2.4902` |
+| `lidarr` | `3.1.2.4928` |
 | `logria` | `0.4.2` |
 | `mtkclient` | `031957d` |
 | `outerbase-studio-desktop` | `0.1.29` |
