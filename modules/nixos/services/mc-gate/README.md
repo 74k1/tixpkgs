@@ -5,15 +5,13 @@
 
 # `nixosModules'.services.mcgate`
 
-> 🧡 Everything is RSSible
-
-RSSHub delivers millions of contents aggregated from all kinds of sources, our vibrant open source community is ensuring the deliver of RSSHub's new routes, new features and bug fixes.
+High-performance, resource-efficient Minecraft reverse proxy and library with robust multi-protocol version support.
 
 ## Info
 
-- Project Website: `https://rsshub.app/`
-- Project Source: `https://github.com/diygod/rsshub`
-- Project Docs: `https://docs.rsshub.app/`
+- Project Website: `https://gate.minekube.com`
+- Project Source: `https://github.com/minekube/gate`
+- Project Docs: `https://gate.minekube.com/guide/`
 
 ## Usage
 
