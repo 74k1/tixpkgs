@@ -86,6 +86,7 @@ This flake exports modules in two ways:
 |---|---|
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
+| `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
 <!-- END NIXOS MODULES -->
 
@@ -115,6 +116,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `lidarr` | `3.1.2.4928` |
 | `logria` | `0.4.2` |
 | `mtkclient` | `031957d` |
+| `multi-scrobbler` | `0.12.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `rybbit` | `1.6.1` |
 | `waterfox` | `6.6.7` |
