@@ -27,7 +27,7 @@
     inputs.tixpkgs.nixosModules."services/multi-scrobbler"
   ];
 
-  services.multi-scrobbler = {
+  services.multi-scrobbler = rec {
     enable = true;
     stateDir = "/srv/multi-scrobbler";
 
@@ -45,22 +45,26 @@
     };
 
     configFiles = {
+      # Clients
+      lastfm_client = {
+        configureAs = "client";
+        data = {
+          apiKey = "[[LASTFM_API_KEY]]";
+          secret = "[[LASTFM_SECRET]]";
+          redirectUri = "${baseUrl}/lastfm/callback";
+        };
+      };
+
+      # Sources
       spotify = {
         clients = [ "lastfm" ];
         data = {
           clientId = "[[SPOTIFY_CLIENT_ID]]";
           clientSecret = "[[SPOTIFY_CLIENT_SECRET]]";
+          redirectUri = "${baseUrl}/callback";
+          interval = 60;
         };
       };
-
-      lastfm = [
-        {
-          data = {
-            apiKey = "[[LASTFM_API_KEY]]";
-            secret = "[[LASTFM_SECRET]]";
-          };
-        }
-      ];
     };
 
     config = {
@@ -84,10 +88,10 @@
 Example `environmentFile` contents:
 
 ```env
-SPOTIFY_CLIENT_ID=...
-SPOTIFY_CLIENT_SECRET=...
 LASTFM_API_KEY=...
 LASTFM_SECRET=...
+SPOTIFY_CLIENT_ID=...
+SPOTIFY_CLIENT_SECRET=...
 ```
 
 ## Notes
@@ -103,24 +107,26 @@ LASTFM_SECRET=...
 Use a list when you need multiple entries of the same type:
 
 ```nix
-services.multi-scrobbler.configFiles.spotify = [
-  {
-    name = "main";
-    clients = [ "lastfm-main" ];
-    data = {
-      clientId = "[[SPOTIFY_CLIENT_ID]]";
-      clientSecret = "[[SPOTIFY_CLIENT_SECRET]]";
-    };
-  }
-  {
-    name = "alt";
-    clients = [ "lastfm-alt" ];
-    data = {
-      clientId = "[[SPOTIFY_ALT_CLIENT_ID]]";
-      clientSecret = "[[SPOTIFY_ALT_CLIENT_SECRET]]";
-    };
-  }
-];
+{
+  services.multi-scrobbler.configFiles.spotify = [
+    {
+      name = "main";
+      clients = [ "lastfm-main" ];
+      data = {
+        clientId = "[[SPOTIFY_CLIENT_ID]]";
+        clientSecret = "[[SPOTIFY_CLIENT_SECRET]]";
+      };
+    }
+    {
+      name = "alt";
+      clients = [ "lastfm-alt" ];
+      data = {
+        clientId = "[[SPOTIFY_ALT_CLIENT_ID]]";
+        clientSecret = "[[SPOTIFY_ALT_CLIENT_SECRET]]";
+      };
+    }
+  ];
+}
 ```
 
 The module supports all upstream configuration modes simultaneously:
