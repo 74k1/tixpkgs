@@ -32,6 +32,100 @@ let
   jsonObjectType = lib.types.submodule {
     freeformType = jsonFormat.type;
   };
+  configEntryType = lib.types.submodule {
+    freeformType = jsonFormat.type;
+    options = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        description = "Runtime name for this source/client entry.";
+      };
+
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Whether this source/client entry is enabled.";
+      };
+    };
+  };
+
+  sourceTypes = [
+    "spotify"
+    "plex"
+    "subsonic"
+    "jellyfin"
+    "lastfm"
+    "librefm"
+    "deezer"
+    "endpointlz"
+    "endpointlfm"
+    "ytmusic"
+    "mpris"
+    "mopidy"
+    "musiccast"
+    "listenbrainz"
+    "jriver"
+    "kodi"
+    "webscrobbler"
+    "chromecast"
+    "maloja"
+    "musikcube"
+    "mpd"
+    "vlc"
+    "icecast"
+    "azuracast"
+    "koito"
+    "tealfm"
+    "rocksky"
+    "sonos"
+  ];
+
+  clientTypes = [
+    "maloja"
+    "lastfm"
+    "librefm"
+    "listenbrainz"
+    "koito"
+    "tealfm"
+    "rocksky"
+    "discord"
+  ];
+
+  configFileTypes = lib.unique (sourceTypes ++ clientTypes);
+
+  upstreamAutoConfigEnvPrefixes = [
+    "AZURACAST_"
+    "CHROMECAST_"
+    "DEEZER_"
+    "DISCORD_"
+    "ENDPOINTLFM_"
+    "ENDPOINTLZ_"
+    "ICECAST_"
+    "JELLYFIN_"
+    "JRIVER_"
+    "KODI_"
+    "KOITO_"
+    "LASTFM_"
+    "LIBREFM_"
+    "LIBRFM_"
+    "LISTENBRAINZ_"
+    "LZ_"
+    "MALOJA_"
+    "MOPIDY_"
+    "MPD_"
+    "MPRIS_"
+    "MUSICCAST_"
+    "MUSIKCUBE_"
+    "PLEX_"
+    "ROCKSKY_"
+    "SONOS_"
+    "SPOTIFY_"
+    "SUBSONIC_"
+    "TEALFM_"
+    "VLC_"
+    "WEBSCROBBLER_"
+    "YMBRIDGE_"
+    "YTMUSIC_"
+  ];
 
   reservedEnvironmentKeys = [
     "BASE_URL"
@@ -46,21 +140,20 @@ let
 
   invalidEnvironmentKeys = filter (key: hasAttr key cfg.environment) reservedEnvironmentKeys;
   invalidAioKeys = filter (key: cfg.config != null && hasAttr key cfg.config) reservedConfigKeys;
-  invalidConfigFileKeys = filter (key: key == "config") (attrNames cfg.configFiles);
+  reservedConfigFileKeys = filter (key: key == "config") (attrNames cfg.configFiles);
+  invalidConfigFileTypeKeys = filter (
+    key:
+    key != "config" && !(builtins.elem key configFileTypes)
+  ) (attrNames cfg.configFiles);
+
+  upstreamAutoConfigEnvironmentKeys = filter (
+    key:
+    lib.any (prefix: lib.hasPrefix prefix key) upstreamAutoConfigEnvPrefixes
+  ) (attrNames cfg.environment);
 
   normalizeConfigEntries =
-    fileType: value:
-    let
-      entries = if builtins.isList value then value else [ value ];
-    in
-    map (
-      entry:
-      {
-        enable = true;
-        name = fileType;
-      }
-      // entry
-    ) entries;
+    _: value:
+    if builtins.isList value then value else [ value ];
 
   normalizedConfigFiles = lib.mapAttrs normalizeConfigEntries cfg.configFiles;
 
@@ -151,6 +244,14 @@ in
         This is the recommended place for source/client credentials and other
         secrets, since multi-scrobbler supports extensive ENV-based configuration
         and ENV interpolation inside JSON config files.
+
+        WARNING: upstream also treats many source/client env keys like
+        `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, and
+        similar as single-user config. If those names are present alongside
+        `configFiles` or `config`, multi-scrobbler will auto-create additional
+        `unnamed` / `unnamed-lfm` configs.
+
+        Prefer neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` for interpolation.
       '';
     };
 
@@ -171,6 +272,15 @@ in
 
         Secrets should go in `services.multi-scrobbler.environmentFile` instead.
 
+        WARNING: upstream treats many source/client env keys like `SPOTIFY_*`,
+        `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, and similar as
+        single-user config and will auto-create additional `unnamed` or
+        `unnamed-lfm` sources/clients when they are present.
+
+        If you want ENV interpolation inside `configFiles` or `config`, prefer
+        neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON
+        as `[[CUSTOM_SPOTIFY_CLIENT_ID]]`.
+
         `PORT`, `BASE_URL`, and `CONFIG_DIR` are managed by dedicated module
         options and must not be set here.
       '';
@@ -178,41 +288,44 @@ in
 
     configFiles = lib.mkOption {
       type = lib.types.attrsOf (lib.types.oneOf [
-        jsonObjectType
-        (lib.types.listOf jsonObjectType)
+        configEntryType
+        (lib.types.listOf configEntryType)
       ]);
       default = { };
       example = lib.literalExpression ''
         {
-          spotify = {
-            clients = [ "lastfm-main" ];
+          lastfm = {
+            name = "lastfm_client";
+            configureAs = "client";
             data = {
-              clientId = "[[SPOTIFY_CLIENT_ID]]";
-              clientSecret = "[[SPOTIFY_CLIENT_SECRET]]";
+              apiKey = "[[CUSTOM_LASTFM_API_KEY]]";
+              secret = "[[CUSTOM_LASTFM_SECRET]]";
             };
           };
 
-          lastfm = [
-            {
-              name = "lastfm-main";
-              data = {
-                apiKey = "[[LASTFM_API_KEY]]";
-                secret = "[[LASTFM_SECRET]]";
-              };
-            }
-          ];
+          spotify = {
+            name = "spotify";
+            clients = [ "lastfm_client" ];
+            data = {
+              clientId = "[[CUSTOM_SPOTIFY_CLIENT_ID]]";
+              clientSecret = "[[CUSTOM_SPOTIFY_CLIENT_SECRET]]";
+            };
+          };
         }
       '';
       description = ''
         File-based source/client configuration written into the managed
         multi-scrobbler `CONFIG_DIR` as `<type>.json`.
 
+        The top-level attribute name becomes the upstream file type, so the key
+        must be a real upstream type like `spotify`, `lastfm`, or `maloja`.
+
         Values may be either a single JSON object or a list of JSON objects.
         Single objects are wrapped in a one-element array automatically because
         upstream file-based configuration expects arrays.
 
-        For single objects and list entries alike, `enable` defaults to `true`
-        and `name` defaults to the top-level attribute name when omitted.
+        For single objects and list entries alike, `name` is required and
+        `enable` defaults to `true`.
 
         The attribute name `config` is reserved for
         `services.multi-scrobbler.config`.
@@ -239,7 +352,7 @@ in
 
         This can be combined with `environmentFile`, `environment`, and
         `configFiles`. Secrets should still be referenced via ENV interpolation
-        like `[[SPOTIFY_CLIENT_SECRET]]`.
+        like `[[CUSTOM_SPOTIFY_CLIENT_SECRET]]`.
 
         Top-level `port` and `baseUrl` are managed by dedicated module options
         and must not be set here.
@@ -296,14 +409,34 @@ in
         message = "services.multi-scrobbler.config must not set reserved top-level keys: ${lib.concatStringsSep ", " invalidAioKeys}";
       }
       {
-        assertion = invalidConfigFileKeys == [ ];
+        assertion = reservedConfigFileKeys == [ ];
         message = "services.multi-scrobbler.configFiles must not define a `config` attribute; use services.multi-scrobbler.config for config.json.";
+      }
+      {
+        assertion = invalidConfigFileTypeKeys == [ ];
+        message = "services.multi-scrobbler.configFiles keys must be upstream file types: ${lib.concatStringsSep ", " configFileTypes}. Set the runtime name explicitly with `name = \"...\"`. Invalid keys: ${lib.concatStringsSep ", " invalidConfigFileTypeKeys}.";
       }
       {
         assertion = lib.hasPrefix "/" cfg.stateDir;
         message = "services.multi-scrobbler.stateDir must be an absolute path.";
       }
     ];
+
+    warnings =
+      lib.optional (
+        (attrNames cfg.configFiles != [ ] || cfg.config != null) && cfg.environmentFile != "/dev/null"
+      ) ''
+        services.multi-scrobbler is using `environmentFile` together with `configFiles` or `config`.
+        Upstream single-user ENV keys like `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, `LZ_*`, and similar will auto-create extra `unnamed` / `unnamed-lfm` configs.
+        Prefer neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON with `[[TIX_SPOTIFY_CLIENT_ID]]`.
+      ''
+      ++ lib.optional (
+        (attrNames cfg.configFiles != [ ] || cfg.config != null) && upstreamAutoConfigEnvironmentKeys != [ ]
+      ) ''
+        services.multi-scrobbler.environment contains upstream single-user ENV keys: ${lib.concatStringsSep ", " upstreamAutoConfigEnvironmentKeys}.
+        These will cause multi-scrobbler to auto-create additional single-user configs.
+        Use neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` instead.
+      '';
 
     systemd.tmpfiles.rules = lib.optionals (cfg.stateDir != defaultStateDir) [
       "d ${builtins.dirOf cfg.stateDir} 0755 root root -"

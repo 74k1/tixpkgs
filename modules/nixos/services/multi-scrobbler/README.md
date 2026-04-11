@@ -46,21 +46,23 @@
 
     configFiles = {
       # Clients
-      lastfm_client = {
+      lastfm = {
+        name = "lastfm_client";
         configureAs = "client";
         data = {
-          apiKey = "[[LASTFM_API_KEY]]";
-          secret = "[[LASTFM_SECRET]]";
+          apiKey = "[[CUSTOM_LASTFM_API_KEY]]";
+          secret = "[[CUSTOM_LASTFM_SECRET]]";
           redirectUri = "${baseUrl}/lastfm/callback";
         };
       };
 
       # Sources
       spotify = {
-        clients = [ "lastfm" ];
+        name = "spotify";
+        clients = [ "lastfm_client" ];
         data = {
-          clientId = "[[SPOTIFY_CLIENT_ID]]";
-          clientSecret = "[[SPOTIFY_CLIENT_SECRET]]";
+          clientId = "[[CUSTOM_SPOTIFY_CLIENT_ID]]";
+          clientSecret = "[[CUSTOM_SPOTIFY_CLIENT_SECRET]]";
           redirectUri = "${baseUrl}/callback";
           interval = 60;
         };
@@ -88,19 +90,26 @@
 Example `environmentFile` contents:
 
 ```env
-LASTFM_API_KEY=...
-LASTFM_SECRET=...
-SPOTIFY_CLIENT_ID=...
-SPOTIFY_CLIENT_SECRET=...
+CUSTOM_LASTFM_API_KEY=...
+CUSTOM_LASTFM_SECRET=...
+CUSTOM_SPOTIFY_CLIENT_ID=...
+CUSTOM_SPOTIFY_CLIENT_SECRET=...
 ```
+
+> [!WARNING]
+> Do not put upstream single-user env keys like `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, `LZ_*`, or similar into `environment` or `environmentFile` when you are also using `configFiles` or `config`.
+>
+> multi-scrobbler consumes those names directly and will auto-create additional single-user configs like `unnamed` or `unnamed-lfm`.
+>
+> Use neutral env names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON with `[[CUSTOM_SPOTIFY_CLIENT_ID]]`.
 
 ## Notes
 
 `configFiles` writes typed JSON config files like `spotify.json` and `lastfm.json`.
 
-- The attribute name becomes the file name.
+- The attribute name becomes the upstream file type.
 - A single attrset is wrapped into the upstream array format automatically.
-- `name` defaults to the top-level attribute name when omitted.
+- `name` is required.
 - `enable` defaults to `true` when omitted.
 - The attribute name `config` is reserved for `services.multi-scrobbler.config`.
 
@@ -110,19 +119,19 @@ Use a list when you need multiple entries of the same type:
 {
   services.multi-scrobbler.configFiles.spotify = [
     {
-      name = "main";
-      clients = [ "lastfm-main" ];
+      name = "spotify_main";
+      clients = [ "lastfm_main" ];
       data = {
-        clientId = "[[SPOTIFY_CLIENT_ID]]";
-        clientSecret = "[[SPOTIFY_CLIENT_SECRET]]";
+        clientId = "[[CUSTOM_SPOTIFY_CLIENT_ID]]";
+        clientSecret = "[[CUSTOM_SPOTIFY_CLIENT_SECRET]]";
       };
     }
     {
-      name = "alt";
-      clients = [ "lastfm-alt" ];
+      name = "spotify_alt";
+      clients = [ "lastfm_alt" ];
       data = {
-        clientId = "[[SPOTIFY_ALT_CLIENT_ID]]";
-        clientSecret = "[[SPOTIFY_ALT_CLIENT_SECRET]]";
+        clientId = "[[CUSTOM_SPOTIFY_ALT_CLIENT_ID]]";
+        clientSecret = "[[CUSTOM_SPOTIFY_ALT_CLIENT_SECRET]]";
       };
     }
   ];
