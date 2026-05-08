@@ -120,7 +120,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `multi-scrobbler` | `0.12.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `rybbit` | `1.6.1` |
-| `waterfox` | `6.6.7` |
+| `waterfox` | `6.6.9` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 
