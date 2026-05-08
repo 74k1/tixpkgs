@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs ? null,
   ...
 }:
 let
@@ -16,7 +17,6 @@ let
     mkMerge
     mkOption
     mkPackageOption
-    mkRenamedOptionModule
     optional
     optionalAttrs
     optionalString
@@ -27,21 +27,20 @@ let
   nginxCfg = cfg.nginx;
   poolName = "fourget";
   fpm = config.services.phpfpm.pools.${poolName};
-  servesHttps = nginxCfg.forceSSL || nginxCfg.addSSL || nginxCfg.onlySSL;
+  servesHttps =
+    if nginxCfg != null then nginxCfg.forceSSL || nginxCfg.addSSL || nginxCfg.onlySSL else false;
 
   publicUrl =
     if cfg.publicUrl != null then
       cfg.publicUrl
-    else if nginxCfg.hostName != null then
+    else
       let
         scheme = if servesHttps then "https" else "http";
         defaultPort = if scheme == "https" then 443 else 80;
-        actualPort = if scheme == "https" then nginxCfg.sslListenPort else nginxCfg.port;
+        actualPort = defaultPort;
         portSuffix = optionalString (actualPort != defaultPort) ":${toString actualPort}";
       in
-      "${scheme}://${nginxCfg.hostName}${portSuffix}"
-    else
-      null;
+      "${scheme}://${cfg.hostname}${portSuffix}";
 
   phpLiteral =
     value:
@@ -56,7 +55,11 @@ let
     else if builtins.isList value then
       "[ ${lib.concatMapStringsSep ", " phpLiteral value} ]"
     else if builtins.isAttrs value then
-      "[ ${lib.concatStringsSep ", " (mapAttrsToList (name: nestedValue: "${phpLiteral name} => ${phpLiteral nestedValue}") value)} ]"
+      "[ ${
+        lib.concatStringsSep ", " (
+          mapAttrsToList (name: nestedValue: "${phpLiteral name} => ${phpLiteral nestedValue}") value
+        )
+      } ]"
     else
       throw "services.fourget.settings contains an unsupported value type";
 
@@ -128,14 +131,18 @@ let
   renderedConfig = pkgs.writeText "fourget-config.php" ''
     <?php
     class config{
-    ${concatLines (mapAttrsToList (name: value: "  const ${name} = ${phpLiteral value};") (defaultSettings // cfg.settings))}
+    ${concatLines (
+      mapAttrsToList (name: value: "  const ${name} = ${phpLiteral value};") (
+        defaultSettings // cfg.settings
+      )
+    )}
     }
   '';
 
   renderedRobots = pkgs.writeText "fourget-robots.txt" ''
     User-agent: *
     Disallow:
-    Host: ${if nginxCfg.hostName != null then nginxCfg.hostName else "localhost"}
+    Host: ${cfg.hostname}
     Sitemap: ${if publicUrl != null then "${publicUrl}/sitemap" else "http://localhost/sitemap"}
   '';
 
@@ -166,26 +173,25 @@ let
         sodium
       ]);
   };
+
+  niksPath =
+    if inputs != null then
+      "${inputs.nixpkgs}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
+    else
+      "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 in
 {
-  imports = [
-    (mkRenamedOptionModule [ "services" "fourget" "configureNginx" ] [ "services" "fourget" "nginx" "enable" ])
-    (mkRenamedOptionModule [ "services" "fourget" "hostName" ] [ "services" "fourget" "nginx" "hostName" ])
-    (mkRenamedOptionModule [ "services" "fourget" "serverAliases" ] [ "services" "fourget" "nginx" "serverAliases" ])
-    (mkRenamedOptionModule [ "services" "fourget" "listenAddress" ] [ "services" "fourget" "nginx" "listenAddress" ])
-    (mkRenamedOptionModule [ "services" "fourget" "port" ] [ "services" "fourget" "nginx" "port" ])
-    (mkRenamedOptionModule [ "services" "fourget" "openFirewall" ] [ "services" "fourget" "nginx" "openFirewall" ])
-    (mkRenamedOptionModule [ "services" "fourget" "forceSSL" ] [ "services" "fourget" "nginx" "forceSSL" ])
-    (mkRenamedOptionModule [ "services" "fourget" "addSSL" ] [ "services" "fourget" "nginx" "addSSL" ])
-    (mkRenamedOptionModule [ "services" "fourget" "onlySSL" ] [ "services" "fourget" "nginx" "onlySSL" ])
-    (mkRenamedOptionModule [ "services" "fourget" "enableACME" ] [ "services" "fourget" "nginx" "enableACME" ])
-    (mkRenamedOptionModule [ "services" "fourget" "useACMEHost" ] [ "services" "fourget" "nginx" "useACMEHost" ])
-  ];
-
   options.services.fourget = {
     enable = mkEnableOption "4get";
 
     package = mkPackageOption pkgs "fourget" { };
+
+    hostname = mkOption {
+      type = types.str;
+      default = "localhost";
+      example = "search.example.com";
+      description = "Hostname to serve 4get on. Used for generating the base URL and robots.txt.";
+    };
 
     phpPackage = mkOption {
       type = types.package;
@@ -194,84 +200,22 @@ in
       description = "Base PHP package used to build the fourget PHP-FPM environment.";
     };
 
-    nginx = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to configure an nginx virtual host for fourget.
-
-          If disabled, the module still manages the PHP-FPM pool and generated web root,
-          which can be used from another web server.
-        '';
-      };
-
-      hostName = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        example = "search.example.com";
-        description = "Primary hostname for the generated nginx virtual host.";
-      };
-
-      serverAliases = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        description = "Additional hostnames for the generated nginx virtual host.";
-      };
-
-      listenAddress = mkOption {
-        type = types.str;
-        default = "0.0.0.0";
-        description = "Listen address for the generated nginx virtual host.";
-      };
-
-      port = mkOption {
-        type = types.port;
-        default = 80;
-        description = "HTTP listen port for the generated nginx virtual host.";
-      };
-
-      openFirewall = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to open the configured HTTP port in the firewall.";
-      };
-
-      forceSSL = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether the generated nginx virtual host should redirect HTTP to HTTPS.";
-      };
-
-      addSSL = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether the generated nginx virtual host should serve both HTTP and HTTPS.";
-      };
-
-      onlySSL = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether the generated nginx virtual host should only serve HTTPS.";
-      };
-
-      enableACME = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether the generated nginx virtual host should request its own ACME certificate.";
-      };
-
-      useACMEHost = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        description = "Existing ACME host whose certificate should be reused by the generated nginx virtual host.";
-      };
-
-      sslListenPort = mkOption {
-        type = types.port;
-        default = 443;
-        description = "HTTPS listen port for the generated nginx virtual host.";
-      };
+    nginx = mkOption {
+      type = types.nullOr (
+        types.submodule (lib.recursiveUpdate (import niksPath { inherit config lib; }).options { })
+      );
+      default = null;
+      example = literalExpression ''
+        {
+          forceSSL = true;
+          enableACME = true;
+        }
+      '';
+      description = ''
+        nginx virtual host configuration for 4get.
+        Set to a non-null value to enable the nginx reverse proxy.
+        See `services.nginx.virtualHosts` for available options.
+      '';
     };
 
     publicUrl = mkOption {
@@ -280,8 +224,7 @@ in
       example = "https://search.example.com";
       description = ''
         Canonical public URL used for generated defaults such as `robots.txt` and `INSTANCES`.
-
-        If unset, a URL is derived from `services.fourget.nginx.*` when nginx integration is enabled.
+        Defaults to `http''${s}://''${services.fourget.hostname}` when unset.
       '';
     };
 
@@ -316,13 +259,15 @@ in
     };
 
     poolSettings = mkOption {
-      type = types.attrsOf (types.oneOf [ types.str types.int types.bool ]);
+      type = types.attrsOf (
+        types.oneOf [
+          types.str
+          types.int
+          types.bool
+        ]
+      );
       default = { };
-      description = ''
-        Additional PHP-FPM pool directives for fourget.
-
-        This is merged on top of the module defaults.
-      '';
+      description = "Additional PHP-FPM pool directives for fourget. Merged on top of the module defaults.";
     };
 
     environment = mkOption {
@@ -332,11 +277,7 @@ in
         LD_PRELOAD = "/usr/local/lib/libcurl-impersonate-ff.so";
         CURL_IMPERSONATE = "firefox117";
       };
-      description = ''
-        Environment variables passed to the fourget PHP-FPM pool.
-
-        This is useful for setups such as `curl-impersonate`.
-      '';
+      description = "Environment variables passed to the fourget PHP-FPM pool.";
     };
 
     settings = mkOption {
@@ -349,7 +290,6 @@ in
       };
       description = ''
         Upstream `data/config.php` constants to override.
-
         Attribute names must match the upstream constant names exactly.
         Values defined here are written into the Nix store, so secrets should not be placed here.
       '';
@@ -358,25 +298,6 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      assertions = [
-        {
-          assertion = builtins.length (builtins.filter lib.id [ nginxCfg.forceSSL nginxCfg.addSSL nginxCfg.onlySSL ]) <= 1;
-          message = "services.fourget.nginx.addSSL, services.fourget.nginx.onlySSL, and services.fourget.nginx.forceSSL are mutually exclusive";
-        }
-        {
-          assertion = !(nginxCfg.enableACME && nginxCfg.useACMEHost != null);
-          message = "services.fourget.nginx.enableACME and services.fourget.nginx.useACMEHost are mutually exclusive";
-        }
-        {
-          assertion = !nginxCfg.enable || nginxCfg.hostName != null;
-          message = "services.fourget.nginx.enable requires services.fourget.nginx.hostName to be set";
-        }
-        {
-          assertion = !nginxCfg.openFirewall || nginxCfg.enable;
-          message = "services.fourget.nginx.openFirewall requires services.fourget.nginx.enable";
-        }
-      ];
-
       services.fourget.webRoot = "${webRoot}/share/4get";
       services.fourget.socket = fpm.socket;
 
@@ -385,20 +306,22 @@ in
         group = cfg.group;
         phpPackage = fourgetPhp;
         phpEnv = cfg.environment;
-        settings = (mapAttrs (_: mkDefault) {
-          "chdir" = "${webRoot}/share/4get";
-          "listen.owner" = if nginxCfg.enable then config.services.nginx.user else cfg.user;
-          "listen.group" = if nginxCfg.enable then config.services.nginx.group else cfg.group;
-          "listen.mode" = "0660";
-          "catch_workers_output" = true;
-          "php_admin_flag[log_errors]" = true;
-          "php_admin_value[error_log]" = "stderr";
-          "pm" = "dynamic";
-          "pm.max_children" = 16;
-          "pm.start_servers" = 2;
-          "pm.min_spare_servers" = 1;
-          "pm.max_spare_servers" = 4;
-        }) // cfg.poolSettings;
+        settings =
+          (mapAttrs (_: mkDefault) {
+            "chdir" = "${webRoot}/share/4get";
+            "listen.owner" = if nginxCfg != null then config.services.nginx.user else cfg.user;
+            "listen.group" = if nginxCfg != null then config.services.nginx.group else cfg.group;
+            "listen.mode" = "0660";
+            "catch_workers_output" = true;
+            "php_admin_flag[log_errors]" = true;
+            "php_admin_value[error_log]" = "stderr";
+            "pm" = "dynamic";
+            "pm.max_children" = 16;
+            "pm.start_servers" = 2;
+            "pm.min_spare_servers" = 1;
+            "pm.max_spare_servers" = 4;
+          })
+          // cfg.poolSettings;
       };
 
       systemd.tmpfiles.rules = [
@@ -421,71 +344,37 @@ in
         fourget = { };
       };
     }
-    (mkIf nginxCfg.enable {
+    (mkIf (nginxCfg != null) {
       services.nginx = {
         enable = true;
         recommendedTlsSettings = mkDefault true;
         recommendedGzipSettings = mkDefault true;
         recommendedOptimisation = mkDefault true;
-        virtualHosts.${nginxCfg.hostName} = {
-          forceSSL = nginxCfg.forceSSL;
-          addSSL = nginxCfg.addSSL;
-          onlySSL = nginxCfg.onlySSL;
-          serverAliases = nginxCfg.serverAliases;
-          enableACME = mkDefault (nginxCfg.enableACME || (nginxCfg.forceSSL && nginxCfg.useACMEHost == null));
-          useACMEHost = nginxCfg.useACMEHost;
-          root = cfg.webRoot;
-          listen =
-            if nginxCfg.onlySSL then
-              [
-                {
-                  addr = nginxCfg.listenAddress;
-                  port = nginxCfg.sslListenPort;
-                  ssl = true;
-                }
-              ]
-            else if nginxCfg.forceSSL || nginxCfg.addSSL then
-              [
-                {
-                  addr = nginxCfg.listenAddress;
-                  port = nginxCfg.port;
-                }
-                {
-                  addr = nginxCfg.listenAddress;
-                  port = nginxCfg.sslListenPort;
-                  ssl = true;
-                }
-              ]
-            else
-              [
-                {
-                  addr = nginxCfg.listenAddress;
-                  port = nginxCfg.port;
-                }
-              ];
-          locations = {
-            "/" = {
-              index = "index.php";
-              tryFiles = "$uri $uri/ @fourget_php";
+        virtualHosts.${cfg.hostname} = mkMerge [
+          nginxCfg
+          {
+            root = cfg.webRoot;
+            locations = {
+              "/" = {
+                index = "index.php";
+                tryFiles = "$uri $uri/ @fourget_php";
+              };
+              "@fourget_php".extraConfig = ''
+                rewrite ^/$ /index.php last;
+                rewrite ^/(.*)$ /$1.php last;
+              '';
+              "~ \\.php$".extraConfig = ''
+                try_files $uri =404;
+                fastcgi_pass unix:${cfg.socket};
+                fastcgi_index index.php;
+                include ${config.services.nginx.package}/conf/fastcgi.conf;
+                fastcgi_intercept_errors on;
+              '';
+              "^~ /data/".return = "403";
             };
-            "@fourget_php".extraConfig = ''
-              rewrite ^/$ /index.php last;
-              rewrite ^/(.*)$ /$1.php last;
-            '';
-            "~ \\.php$".extraConfig = ''
-              try_files $uri =404;
-              fastcgi_pass unix:${cfg.socket};
-              fastcgi_index index.php;
-              include ${config.services.nginx.package}/conf/fastcgi.conf;
-              fastcgi_intercept_errors on;
-            '';
-            "^~ /data/".return = "403";
-          };
-        };
+          }
+        ];
       };
-    })
-    (mkIf nginxCfg.openFirewall {
-      networking.firewall.allowedTCPPorts = [ nginxCfg.port ];
     })
   ]);
 }
