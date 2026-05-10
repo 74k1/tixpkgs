@@ -109,6 +109,7 @@ This flake exports modules in two ways:
 <!-- BEGIN NIXOS MODULES -->
 | Module | Docs |
 |---|---|
+| `services.brscan-skey` | [README](modules/nixos/services/brscan-skey/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
 | `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
@@ -134,6 +135,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 |---|---|
 | `arcbrush` | `1.2.0` |
 | `brimcap` | `1.18.0` |
+| `brscan-skey` | `0.3.5-0` |
 | `fogpanther` | `0.7.4` |
 | `fourget` | `unstable-2026-05-24` |
 | `godap` | `2.10.4` |
