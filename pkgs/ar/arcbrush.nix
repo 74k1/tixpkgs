@@ -9,7 +9,7 @@ let
 
   src = fetchurl {
     url = "https://arcbrush.com/downloads/ArcBrush-${version}-x86_64.AppImage";
-    hash = "sha256-WkaKywmtZDmnbzZOE8CPWYzVXpSRUMopCex38RfHQL0=";
+    hash = "sha256-JDKC1Fb85ShOsdGPkx6Nr67x/mYzXONfcbaiB9g5smo=";
   };
 in
 appimageTools.wrapType2 {
