@@ -105,7 +105,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 <!-- BEGIN PACKAGES -->
 | Package | Version |
 |---|---|
-| `arcbrush` | `1.1.1` |
+| `arcbrush` | `1.2.0` |
 | `booklore` | `1.10.0` |
 | `brimcap` | `1.18.0` |
 | `duvolbr` | `N/A` |
