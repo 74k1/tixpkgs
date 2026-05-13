@@ -2,7 +2,7 @@
 
 ## Code
 
-- Packages go in `pkgs/` using two-letter prefixes: `pkgs/bo/booklore/`, `pkgs/zu/zui.nix`
+- Packages go in `pkgs/` using two-letter prefixes: `pkgs/gr/grimmory/`, `pkgs/zu/zui.nix`
 - Modules go in `modules/nixos/services/<name>/default.nix`
 - Verify it builds: `nix build .#package-name`
 - If it's already in [nixpkgs](https://search.nixos.org/packages), it doesn't belong here
