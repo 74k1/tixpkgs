@@ -39,6 +39,19 @@ In your `flake.nix`:
 }
 ```
 
+## For Cachix
+
+`cachix use tixpkgs`
+
+or add 
+
+```nix
+nix.settings = {
+  substituters = ["https://tixpkgs.cachix.org"];
+  trusted-public-keys = ["tixpkgs.cachix.org-1:Q52x6PMD7ZuTC7oRihwp5lP9YaEaYtrfxYkwzEpjSRI="];
+}
+```
+
 # Modules
 
 This flake exports modules in two ways:

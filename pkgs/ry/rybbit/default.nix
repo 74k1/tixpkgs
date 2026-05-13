@@ -27,7 +27,7 @@ buildNpmPackage rec {
     description = "open-source and privacy-friendly alternative to Google Analytics that is 10x more intuitive.";
     homepage = "https://www.rybbit.io/";
     license = licenses.agpl3Only;
-    maintainers = with maintainers; [ "74k1" ];
+    maintainers = [ "74k1" ];
     mainProgram = "rybbit";
   };
 }
