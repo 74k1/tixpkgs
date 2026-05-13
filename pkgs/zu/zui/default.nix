@@ -22,7 +22,11 @@
   nss,
   pango,
   sqlite,
-  xorg,
+  libxcomposite,
+  libxdamage,
+  libxrandr,
+  libxtst,
+  libxshmfence,
   mesa,
   libGL,
   libdrm,
@@ -67,11 +71,11 @@ stdenv.mkDerivation (finalAttrs: {
     nss
     pango
     sqlite
-    xorg.libXcomposite
-    xorg.libXdamage
-    xorg.libXrandr
-    xorg.libXtst
-    xorg.libxshmfence
+    libxcomposite
+    libxdamage
+    libxrandr
+    libxtst
+    libxshmfence
     mesa
     libGL
     libdrm
@@ -154,7 +158,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "Zui (formerly Brim) is a GUI for exploring data in Zed lakes.";
     homepage = "https://zui.brimdata.io/";
     license = with lib.licenses; [bsd3];
-    maintainers = with lib.maintainers; ["74k1"];
+    maintainers = ["74k1"];
     platforms = ["x86_64-linux"];
     mainProgram = "zui";
     sourceProvenance = with lib.sourceTypes; [binaryNativeCode];
