@@ -1,0 +1,115 @@
+name: Push to Cachix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pkgs/**'
+      - 'modules/flake/packages.nix'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/push-to-cachix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CACHIX_CACHE_NAME: tixpkgs
+
+jobs:
+  push-to-cachix:
+    name: Build packages and push to Cachix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: ${{ env.CACHIX_CACHE_NAME }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build changed packages
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          package_json=$(nix eval .#packages.x86_64-linux \
+            --apply 'pkgs: builtins.attrNames pkgs' \
+            --json)
+          mapfile -t all_packages < <(jq -r '.[]' <<< "$package_json" | sort -u)
+
+          build_all=false
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] || [[ -z "$BEFORE_SHA" || "$BEFORE_SHA" =~ ^0+$ ]]; then
+            build_all=true
+          elif git cat-file -e "$BEFORE_SHA^{commit}" && git cat-file -e "$CURRENT_SHA^{commit}"; then
+            git diff --name-only "$BEFORE_SHA" "$CURRENT_SHA" > changed-files.txt
+          else
+            build_all=true
+          fi
+
+          candidates=()
+          if [ "$build_all" = false ]; then
+            while IFS= read -r file; do
+              case "$file" in
+                flake.nix|flake.lock|modules/flake/packages.nix|.github/workflows/push-to-cachix.yml)
+                  build_all=true
+                  ;;
+                pkgs/*)
+                  #             pkgs/fo/fogpanther/default.nix
+                  #              ^    ^      ^       ^
+                  IFS=/ read -r top bucket package rest <<< "$file"
+                  if [ -n "${package:-}" ]; then
+                    if [[ -z "${rest:-}" && "$package" == *.nix ]]; then
+                      package="${package%.nix}"
+                    fi
+                    candidates+=("$package")
+                  fi
+                  ;;
+              esac
+            done < changed-files.txt
+          fi
+
+          if [ "$build_all" = true ]; then
+            packages=("${all_packages[@]}")
+          else
+            printf '%s\n' "${all_packages[@]}" > all-packages.txt
+            printf '%s\n' "${candidates[@]}" | sort -u > candidate-packages.txt
+            mapfile -t packages < <(comm -12 candidate-packages.txt all-packages.txt)
+          fi
+
+          if [ "${#packages[@]}" -eq 0 ]; then
+            echo "No current packages changed; nothing to build."
+            exit 0
+          fi
+
+          printf 'Packages to build: %s\n' "${packages[*]}"
+
+          failed=()
+          for pkg in "${packages[@]}"; do
+            echo "::group::${pkg}"
+            if nix build --print-build-logs ".#${pkg}"; then
+              echo "Built ${pkg}"
+            else
+              failed+=("${pkg}")
+              echo "Failed ${pkg}"
+            fi
+            echo "::endgroup::"
+          done
+
+          if [ "${#failed[@]}" -ne 0 ]; then
+            printf 'Failed packages: %s\n' "${failed[*]}" >&2
+            exit 1
+          fi
