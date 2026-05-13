@@ -19,7 +19,7 @@ appimageTools.wrapType2 {
     contents = appimageTools.extractType2 { inherit pname version src; };
   in ''
     mkdir -p "$out/share/applications" "$out/share/icons/hicolor/256x256/apps"
-    install -m 444 ${contents}/arcbrush.desktop -t $out/share/applications
+    install -m 444 ${contents}/com.arcbrush.ArcBrush.desktop -t $out/share/applications
     install -m 444 ${contents}/arcbrush.png -t $out/share/icons/hicolor/256x256/apps
   '';
 
