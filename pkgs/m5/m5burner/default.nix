@@ -153,7 +153,7 @@ let
   };
 in
 buildFHSEnv {
-  name = pname;
+  inherit pname version;
 
   runScript = "${launcher}";
 

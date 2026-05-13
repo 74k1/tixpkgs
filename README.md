@@ -127,7 +127,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `idahelper` | `1.0.17` |
 | `lidarr` | `3.1.2.4928` |
 | `logria` | `0.4.2` |
-| `m5burner` | `N/A` |
+| `m5burner` | `3-beta` |
 | `mtkclient` | `031957d` |
 | `multi-scrobbler` | `0.12.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
