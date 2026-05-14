@@ -30,6 +30,7 @@
       imports = [
         ./modules/flake/packages.nix
         ./modules/flake/modules.nix
+        ./modules/flake/checks.nix
       ];
 
       debug = true;
