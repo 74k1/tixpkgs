@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
     description = "Usenet/BitTorrent music downloader";
     homepage = "https://lidarr.audio/";
     license = licenses.gpl3;
-    maintainers = [maintainers."74k1"];
+    maintainers = [ "74k1" ];
     mainProgram = "Lidarr";
     platforms = ["x86_64-linux"];
   };
