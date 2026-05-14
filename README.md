@@ -1,7 +1,5 @@
 <img align="left" src="/.github/assets/tixpkgs_colored.png" width="400px"/>
 
-<br>
-
 <div align="right">
     <h3><samp><a href="https://github.com/74k1/tix">tix</a>pkgs</samp> ❄️</h3>
     packages and modules for myself.
@@ -9,6 +7,18 @@
 
 <br>
 <br>
+<br>
+
+# About
+
+This repository is _my personal_ nixpkgs. Packages and NixOS / Home-Manager modules that aren't upstream.
+
+Nothing fancy, just the stuff I want / use (mostly).
+
+Kept up-to-date by a bot (and occasionally me).
+
+If something's broken or missing, PRs / Issues welcome. See [contributing](./CONTRIBUTING.md).
+
 
 # Usage
 
@@ -39,7 +49,9 @@ In your `flake.nix`:
 }
 ```
 
-## For Cachix
+## Cachix
+
+As long as I'm under 5gb.. I use Cachix. Feel free to use it:
 
 `cachix use tixpkgs`
 
