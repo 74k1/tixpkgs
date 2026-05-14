@@ -121,6 +121,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `arcbrush` | `1.2.0` |
 | `booklore` | `1.10.0` |
 | `brimcap` | `1.18.0` |
+| `fogpanther` | `0.7.4` |
 | `fourget` | `unstable-2026-03-05` |
 | `godap` | `2.10.4` |
 | `ida-ios-helper` | `1.0.19` |
