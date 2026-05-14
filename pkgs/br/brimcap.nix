@@ -101,7 +101,7 @@ buildGoModule rec {
     description = "Convert pcap files into richly-typed ZNG summary logs";
     homepage = "https://github.com/brimdata/brimcap";
     license = with lib.licenses; [bsd3];
-    maintainers = with lib.maintainers; ["74k1"];
+    maintainers = [ "74k1" ];
     platforms = platforms.unix;
   };
 }

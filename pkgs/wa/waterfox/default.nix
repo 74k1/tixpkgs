@@ -205,8 +205,6 @@ stdenv.mkDerivation (finalAttrs: {
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     license = lib.licenses.mpl20;
     platforms = [ "x86_64-linux" ];
-    maintainers = with lib.maintainers; [
-      joyfulcat
-    ];
+    maintainers = [ "74k1" ];
   };
 })

@@ -85,7 +85,7 @@ let
       mainProgram = "booklore";
       homepage = "https://github.com/adityachandelgit/BookLore";
       license = lib.licenses.gpl3Only;
-      maintainers = with lib.maintainers; [ jvanbruegge ];
+      maintainers = [ "74k1" ];
       platforms = [ "x86_64-linux" ];
     };
   });
