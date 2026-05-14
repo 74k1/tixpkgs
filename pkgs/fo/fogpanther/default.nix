@@ -1,6 +1,7 @@
 { lib
 , stdenv
 , curl
+, cacert
 , autoPatchelfHook
 , makeWrapper
 , gtk4
@@ -39,7 +40,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = stdenv.mkDerivation {
     name = "fogpanther-${finalAttrs.version}.tar.xz";
-    nativeBuildInputs = [ curl ];
+    nativeBuildInputs = [
+      curl
+      cacert
+    ];
 
     outputHash = "sha256-CeZUzHG4ukr3tHy+/8YUGzp+PN3jsUufZF1i7QCcp7k=";
     outputHashAlgo = "sha256";
