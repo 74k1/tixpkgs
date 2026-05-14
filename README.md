@@ -98,6 +98,7 @@ This flake exports modules in two ways:
 | Module | Docs |
 |---|---|
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
+| `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
 | `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
 | `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
@@ -119,11 +120,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | Package | Version |
 |---|---|
 | `arcbrush` | `1.2.0` |
-| `booklore` | `1.10.0` |
 | `brimcap` | `1.18.0` |
 | `fogpanther` | `0.7.4` |
 | `fourget` | `unstable-2026-03-05` |
 | `godap` | `2.10.4` |
+| `grimmory` | `3.0.3` |
 | `ida-ios-helper` | `1.0.19` |
 | `idahelper` | `1.0.17` |
 | `lidarr` | `3.1.2.4928` |
