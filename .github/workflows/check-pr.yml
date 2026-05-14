@@ -1,0 +1,285 @@
+name: check PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'pkgs/**'
+      - 'modules/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/pr-checks.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  changed-things:
+    name: Build changed packages and module checks
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Fetch base commit
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 https://github.com/${{ github.repository }}.git "$BASE_SHA"
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: tixpkgs
+
+      - name: Detect changed packages and module checks
+        id: detect
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # shellcheck disable=SC2016,SC2295
+          set -euo pipefail
+
+          git diff --name-only "$BASE_SHA" "$HEAD_SHA" | sort -u > changed-files.txt
+
+          echo "Changed files:"
+          sed 's/^/  /' changed-files.txt
+
+          mapfile -t all_packages < <(
+            nix eval .#packages.x86_64-linux \
+              --apply 'pkgs: builtins.attrNames pkgs' \
+              --json | jq -r '.[]' | sort -u
+          )
+
+          mapfile -t all_module_checks < <(
+            nix eval .#checks.x86_64-linux \
+              --apply 'checks: builtins.attrNames checks' \
+              --json | jq -r '.[]' | grep '^module-' | sort -u || true
+          )
+
+          package_exists() {
+            local needle="$1"
+            printf '%s\n' "${all_packages[@]}" | grep -Fxq -- "$needle"
+          }
+
+          add_unique() {
+            local file="$1"
+            local value="$2"
+            grep -Fxq -- "$value" "$file" 2>/dev/null || printf '%s\n' "$value" >> "$file"
+          }
+
+          module_check_exists() {
+            local needle="$1"
+            printf '%s\n' "${all_module_checks[@]}" | grep -Fxq -- "$needle"
+          }
+
+          add_checks_for_module() {
+            local kind="$1"
+            local module_path="$2"
+            local prefix="module-${kind}-${module_path//\//-}-"
+            local found=false
+
+            while IFS= read -r check; do
+              if [[ "$check" == "$prefix"* ]]; then
+                add_unique module-checks.txt "$check"
+                found=true
+              fi
+            done < <(printf '%s\n' "${all_module_checks[@]}")
+
+            if [ "$found" = false ]; then
+              printf "No module check found for %s module %s (looked for %s*).\n" \
+                "$kind" "$module_path" "$prefix"
+            fi
+          }
+
+          module_path_from_file() {
+            local kind="$1"
+            local file="$2"
+            local base="modules/${kind}/"
+            local rel="${file#"$base"}"
+            local name dir stem
+
+            name="$(basename "$rel")"
+            dir="$(dirname "$rel")"
+
+            if [ "$name" = "default.nix" ] || [ "$name" = "README.md" ]; then
+              [ "$dir" != "." ] && printf '%s\n' "$dir"
+              return 0
+            fi
+
+            # For helper files under a module directory, prefer the nearest
+            # directory with a default.nix. Otherwise mirror the module loader's
+            # non-default .nix naming.
+            local probe="$dir"
+            while [ "$probe" != "." ]; do
+              if [ -f "modules/${kind}/${probe}/default.nix" ]; then
+                printf '%s\n' "$probe"
+                return 0
+              fi
+              probe="$(dirname "$probe")"
+            done
+
+            if [[ "$name" == *.nix ]]; then
+              stem="${rel%.nix}"
+              printf '%s\n' "$stem"
+            fi
+          }
+
+          : > packages.txt
+          : > module-checks.txt
+
+          while IFS= read -r file; do
+            case "$file" in
+              pkgs/*)
+                IFS=/ read -r _top _bucket package _rest <<< "$file"
+                if [ -n "${package:-}" ]; then
+                  if [[ -z "${_rest:-}" && "$package" == *.nix ]]; then
+                    package="${package%.nix}"
+                  fi
+
+                  if package_exists "$package"; then
+                    add_unique packages.txt "$package"
+                  else
+                    printf "Changed package path %s maps to %s, but that package is not currently exported.\n" \
+                      "$file" "$package"
+                  fi
+                fi
+                ;;
+
+              modules/nixos/*)
+                module_path="$(module_path_from_file nixos "$file" || true)"
+                if [ -n "${module_path:-}" ]; then
+                  add_checks_for_module nixos "$module_path"
+                fi
+                ;;
+
+              modules/home-manager/*)
+                module_path="$(module_path_from_file home-manager "$file" || true)"
+                if [ -n "${module_path:-}" ]; then
+                  add_checks_for_module home-manager "$module_path"
+                fi
+                ;;
+
+              modules/tests/nixos/*.nix)
+                rel="${file#modules/tests/nixos/}"
+                check="module-nixos-${rel%.nix}"
+                check="${check//\//-}"
+                if module_check_exists "$check"; then
+                  add_unique module-checks.txt "$check"
+                else
+                  printf "Changed test %s did not map to an exported check (%s).\n" "$file" "$check"
+                fi
+                ;;
+
+              modules/tests/home-manager/*.nix)
+                rel="${file#modules/tests/home-manager/}"
+                check="module-home-manager-${rel%.nix}"
+                check="${check//\//-}"
+                if module_check_exists "$check"; then
+                  add_unique module-checks.txt "$check"
+                else
+                  printf "Changed test %s did not map to an exported check (%s).\n" "$file" "$check"
+                fi
+                ;;
+
+              modules/flake/checks.nix|modules/flake/modules.nix)
+                printf '%s\n' "${all_module_checks[@]}" >> module-checks.txt
+                sort -u -o module-checks.txt module-checks.txt
+                ;;
+
+              modules/flake/packages.nix)
+                printf '%s\n' "${all_packages[@]}" >> packages.txt
+                sort -u -o packages.txt packages.txt
+                ;;
+            esac
+          done < changed-files.txt
+
+          sort -u -o packages.txt packages.txt
+          sort -u -o module-checks.txt module-checks.txt
+
+          packages_json="$(jq -Rsc 'split("\n") | map(select(length > 0))' packages.txt)"
+          module_checks_json="$(jq -Rsc 'split("\n") | map(select(length > 0))' module-checks.txt)"
+
+          {
+            echo "packages=${packages_json}"
+            echo "module-checks=${module_checks_json}"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Detected PR checks"
+            echo
+            echo "### Packages"
+            if [ -s packages.txt ]; then while IFS= read -r package; do printf -- "- \`%s\`\n" "$package"; done < packages.txt; else echo "- none"; fi
+            echo
+            echo "### Module checks"
+            if [ -s module-checks.txt ]; then while IFS= read -r check; do printf -- "- \`%s\`\n" "$check"; done < module-checks.txt; else echo "- none"; fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build changed packages
+        env:
+          PACKAGES: ${{ steps.detect.outputs.packages }}
+        run: |
+          set -euo pipefail
+
+          mapfile -t packages < <(jq -r '.[]' <<< "$PACKAGES")
+          if [ "${#packages[@]}" -eq 0 ]; then
+            echo "No changed packages to build."
+            exit 0
+          fi
+
+          failed=()
+          for pkg in "${packages[@]}"; do
+            echo "::group::package ${pkg}"
+            if nix build --print-build-logs ".#${pkg}"; then
+              echo "Built package ${pkg}"
+            else
+              failed+=("${pkg}")
+            fi
+            echo "::endgroup::"
+          done
+
+          if [ "${#failed[@]}" -ne 0 ]; then
+            printf 'Failed packages: %s\n' "${failed[*]}" >&2
+            exit 1
+          fi
+
+      - name: Build module checks
+        env:
+          MODULE_CHECKS: ${{ steps.detect.outputs.module-checks }}
+        run: |
+          set -euo pipefail
+
+          mapfile -t checks < <(jq -r '.[]' <<< "$MODULE_CHECKS")
+          if [ "${#checks[@]}" -eq 0 ]; then
+            echo "No module checks to build."
+            exit 0
+          fi
+
+          failed=()
+          for check in "${checks[@]}"; do
+            echo "::group::module check ${check}"
+            if nix build --print-build-logs ".#checks.x86_64-linux.${check}"; then
+              echo "Built module check ${check}"
+            else
+              failed+=("${check}")
+            fi
+            echo "::endgroup::"
+          done
+
+          if [ "${#failed[@]}" -ne 0 ]; then
+            printf 'Failed module checks: %s\n' "${failed[*]}" >&2
+            exit 1
+          fi
