@@ -7,7 +7,7 @@
 python3.pkgs.buildPythonPackage rec {
   pyproject = true;
   pname = "mtkclient";
-  version = "031957d";
+  version = "5794aba";
 
   buildInputs = with pkgs; [
     pkgs.keystone
@@ -33,8 +33,8 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bkerler";
     repo = "mtkclient";
-    rev = "031957d948e1f6ac795c4d1572c37a15bcde192b";
-    hash = "sha256-Yx4/ZZDsXoAorysGpO2913+aq6OMwm7ITASGchOvD60=";
+    rev = "5794aba14a8753cd8186cd0ec2ce5ae73e3ea2f2";
+    hash = "sha256-M16posU6FGobiFbXvFBE5C0otACD2SPRLubwA+STKxs=";
   };
 
   postFixup = ''
@@ -44,8 +44,14 @@ python3.pkgs.buildPythonPackage rec {
     rm -rf $out/opt/mtkclient/mtkclient/Windows
 
     mkdir -p $out/lib/udev/rules.d
-    cp $out/opt/mtkclient/mtkclient/Setup/Linux/51-edl.rules $out/lib/udev/rules.d/52-edl.rules
+    if [ -e $out/opt/mtkclient/mtkclient/Setup/Linux/51-edl.rules ]; then
+      cp $out/opt/mtkclient/mtkclient/Setup/Linux/51-edl.rules $out/lib/udev/rules.d/52-edl.rules
+    else
+      cp $out/opt/mtkclient/Setup/Linux/51-edl.rules $out/lib/udev/rules.d/52-edl.rules
+    fi
   '';
+
+  passthru.updateScript = ./update.sh;
 
   meta = {
     description = "MTK reverse engineering and flash tool";

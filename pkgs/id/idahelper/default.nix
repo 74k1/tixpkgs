@@ -4,11 +4,11 @@
 
 python3Packages.buildPythonPackage rec {
   pname = "idahelper";
-  version = "1.0.17";
+  version = "1.0.18";
 
   src = python3Packages.fetchPypi {
     inherit pname version;
-    sha256 = "sha256-mzbzRVQZ6+7So3IHZdCCLhWfnesqAJrsj+48h1gdEE8=";
+    sha256 = "sha256-8bi7V6z75gAigQvt0ttHrCYLkmRPrRg/dNR3HshZ/+g=";
   };
 
   pyproject = true;
@@ -22,6 +22,8 @@ python3Packages.buildPythonPackage rec {
 
   pythonImportsCheck = [ "idahelper" ];
   doCheck = false;
+
+  passthru.updateScript = ./update.sh;
 
   meta = with lib; {
     description = "Standard library for IDA Pro plugins";

@@ -23,6 +23,8 @@ appimageTools.wrapType2 {
     install -m 444 ${contents}/arcbrush.png -t $out/share/icons/hicolor/256x256/apps
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = with lib; {
     description = "Node-based image editor for palette-variant asset generation";
     homepage = "https://arcbrush.com";

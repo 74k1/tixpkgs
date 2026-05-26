@@ -1,23 +1,22 @@
 { lib
 , python3Packages
-, fetchurl
+, fetchFromGitHub
 , idahelper
 }:
 python3Packages.buildPythonPackage rec {
   pname = "ida-ios-helper";
-  version = "1.0.19";  # Check PyPI for latest version
+  version = "1.0.20";
   # format = "setuptools";
   pyproject = true;
 
-  # src = fetchPypi {
-  #   inherit pname version;
-  #   sha256 = lib.fakeSha256;
-  # };
-
-  src = fetchurl {
-    url = "https://github.com/yoavst/ida-ios-helper/releases/download/${version}/ida_ios_helper-${version}.tar.gz";
-    hash = "sha256-SDH+KoOopd+bbPXQGfq6i4mRD3H2O2SMMoOcD8EE1eU=";
+  src = fetchFromGitHub {
+    owner = "yoavst";
+    repo = "ida-ios-helper";
+    rev = version;
+    hash = "sha256-eUeOl42MPWUgMa/WCSzKu4MhDLwQdn95U64pxcfKCRc=";
   };
+
+  env.SETUPTOOLS_SCM_PRETEND_VERSION = version;
 
   nativeBuildInputs = with python3Packages; [
     hatchling
@@ -33,6 +32,8 @@ python3Packages.buildPythonPackage rec {
 
   # pythonImportsCheck = [ "ida_ios_helper" ];
   pythonImportsCheck = [ ];
+
+  passthru.updateScript = ./update.sh;
 
   meta = with lib; {
     description = "IDA Plugin for ease the reversing of iOS usermode and kernelcache";
