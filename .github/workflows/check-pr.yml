@@ -8,7 +8,7 @@ on:
       - 'modules/**'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/pr-checks.yml'
+      - '.github/workflows/check-pr.yml'
 
 permissions:
   contents: read
@@ -21,6 +21,19 @@ jobs:
     steps:
       - name: Free disk space
         uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # Keep existing swap; large Nix builds benefit more from swap than
+          # the small amount of disk space reclaimed by removing it.
+          swap-storage: false
+
+      - name: Add build swap
+        run: |
+          set -euo pipefail
+          sudo fallocate -l 16G /mnt/nix-build-swapfile
+          sudo chmod 600 /mnt/nix-build-swapfile
+          sudo mkswap /mnt/nix-build-swapfile
+          sudo swapon /mnt/nix-build-swapfile
+          free -h
 
       - name: Checkout PR head
         uses: actions/checkout@v4

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/wa/waterfox/default.nix"
+package_file="$root/pkgs/wa/waterfox-unwrapped/default.nix"
 repo="https://github.com/BrowserWorks/Waterfox"
 
 old_version="$(perl -ne 'print $1 if /^\s*version = "([^"]+)";/' "$package_file")"
@@ -35,7 +35,7 @@ if [[ -z "$new_hash" ]]; then
 fi
 
 if [[ "$old_version" == "$new_version" && "$old_hash" == "$new_hash" ]]; then
-  echo "waterfox is already up to date ($new_version)." >&2
+  echo "waterfox-unwrapped is already up to date ($new_version)." >&2
   printf '[]\n'
   exit 0
 fi
@@ -47,5 +47,5 @@ perl -0pi -e '
   s/hash = "\Q$ENV{OLD_HASH}\E";/hash = "$ENV{NEW_HASH}";/ or die "failed to replace hash\n";
 ' "$package_file"
 
-printf '[{"attrPath":"waterfox","oldVersion":"%s","newVersion":"%s","files":["%s"]}]\n' \
+printf '[{"attrPath":"waterfox-unwrapped","oldVersion":"%s","newVersion":"%s","files":["%s"]}]\n' \
   "$old_version" "$new_version" "$package_file"
