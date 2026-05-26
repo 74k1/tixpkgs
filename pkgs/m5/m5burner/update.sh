@@ -1,5 +1,5 @@
-#!/usr/bin/env nix
-#! nix shell nixpkgs#bash nixpkgs#curl nixpkgs#git nixpkgs#libxml2 nixpkgs#perl nixpkgs#coreutils nixpkgs#nix --command bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p bash curl git libxml2 perl coreutils nix
 set -euo pipefail
 
 page="https://docs.m5stack.com/en/uiflow/m5burner/intro"
