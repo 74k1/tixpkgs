@@ -146,6 +146,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `outerbase-studio-desktop` | `0.1.29` |
 | `rybbit` | `1.6.1` |
 | `waterfox` | `6.6.13` |
+| `waterfox-unwrapped` | `6.6.13` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 

@@ -24,6 +24,19 @@ jobs:
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # Keep existing swap; large Nix builds benefit more from swap than
+          # the small amount of disk space reclaimed by removing it.
+          swap-storage: false
+
+      - name: Add build swap
+        run: |
+          set -euo pipefail
+          sudo fallocate -l 16G /mnt/nix-build-swapfile
+          sudo chmod 600 /mnt/nix-build-swapfile
+          sudo mkswap /mnt/nix-build-swapfile
+          sudo swapon /mnt/nix-build-swapfile
+          free -h
 
       - uses: actions/checkout@v4
         with:
@@ -37,8 +50,12 @@ jobs:
         with:
           name: ${{ env.CACHIX_CACHE_NAME }}
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          # Do not run Cachix's store watcher: it uploads every realised store
+          # path, including build-time dependencies and fetched sources. Below
+          # we only ask Cachix to push successfully built package outputs.
+          skipPush: true
 
-      - name: Build changed packages
+      - name: Build and push changed packages
         env:
           EVENT_NAME: ${{ github.event_name }}
           BEFORE_SHA: ${{ github.event.before }}
@@ -100,8 +117,19 @@ jobs:
           failed=()
           for pkg in "${packages[@]}"; do
             echo "::group::${pkg}"
-            if nix build --print-build-logs ".#${pkg}"; then
-              echo "Built ${pkg}"
+            if build_json="$(nix build --print-build-logs --no-link --json ".#${pkg}")"; then
+              mapfile -t output_paths < <(
+                jq -r '.[].outputs | to_entries[].value' <<< "$build_json" | sort -u
+              )
+
+              if [ "${#output_paths[@]}" -eq 0 ]; then
+                failed+=("${pkg}")
+                echo "Built ${pkg}, but nix did not report any output paths."
+              else
+                echo "Built ${pkg}; pushing package output path(s):"
+                printf '  %s\n' "${output_paths[@]}"
+                cachix push --omit-deriver "$CACHIX_CACHE_NAME" "${output_paths[@]}"
+              fi
             else
               failed+=("${pkg}")
               echo "Failed ${pkg}"

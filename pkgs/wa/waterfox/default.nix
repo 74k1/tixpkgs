@@ -1,59 +1,51 @@
 {
-  apple-sdk_15,
-  buildMozillaMach,
-  fetchFromGitHub,
+  config,
   lib,
   stdenv,
+  wrapFirefox,
+  waterfox-unwrapped,
+  applicationName ? waterfox-unwrapped.binaryName or (lib.getName waterfox-unwrapped),
+  pname ? applicationName,
+  version ? lib.getVersion waterfox-unwrapped,
+  nameSuffix ? "",
+  icon ? applicationName,
+  wmClass ? applicationName,
+  nativeMessagingHosts ? [ ],
+  pkcs11Modules ? [ ],
+  useGlvnd ? (!stdenv.hostPlatform.isDarwin),
+  cfg ? config.${applicationName} or { },
+  extraPrefs ? "",
+  extraPrefsFiles ? [ ],
+  extraPolicies ? { },
+  extraPoliciesFiles ? [ ],
+  libName ? waterfox-unwrapped.libName or applicationName,
+  nixExtensions ? null,
+  hasMozSystemDirPatch ? (lib.hasPrefix "firefox" pname && !lib.hasSuffix "-bin" pname),
+  ...
 }:
 
-buildMozillaMach rec {
-  pname = "waterfox";
-  version = "6.6.13";
-
-  applicationName = "Waterfox";
-  binaryName = "waterfox";
-  branding = "waterfox/browser/branding";
-
-  src = fetchFromGitHub {
-    owner = "BrowserWorks";
-    repo = "Waterfox";
-    tag = version;
-    hash = "sha256-fHbEF1C0nwRaEjTpKKDDO2FoyVaxQL0GaskHrCbBEcc=";
-    fetchSubmodules = true;
-    preFetch = ''
-      export GIT_CONFIG_COUNT=1
-      export GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf
-      export GIT_CONFIG_VALUE_0=git@github.com:
-    '';
+(wrapFirefox waterfox-unwrapped {
+  inherit
+    applicationName
+    pname
+    version
+    nameSuffix
+    icon
+    wmClass
+    nativeMessagingHosts
+    pkcs11Modules
+    useGlvnd
+    cfg
+    extraPrefs
+    extraPrefsFiles
+    extraPolicies
+    extraPoliciesFiles
+    libName
+    nixExtensions
+    hasMozSystemDirPatch
+    ;
+}).overrideAttrs (oldAttrs: {
+  passthru = (oldAttrs.passthru or { }) // {
+    updateScript = waterfox-unwrapped.updateScript;
   };
-
-  extraBuildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
-    apple-sdk_15
-  ];
-
-  extraConfigureFlags = [
-    "--with-app-basename=${applicationName}"
-  ];
-
-  extraPatches = [
-    ./remove-missing-icons.patch
-  ];
-
-  extraPostPatch = ''
-    rm .mozconfig .mozcinfig-*
-  '';
-
-  updateScript = ./update.sh;
-
-  meta = {
-    broken = stdenv.buildPlatform.is32bit;
-    changelog = "https://github.com/BrowserWorks/Waterfox/releases/tag/${version}";
-    description = "Privacy-focused, multi-platform web browser";
-    homepage = "https://www.waterfox.net/";
-    license = lib.licenses.mpl20;
-    mainProgram = "waterfox";
-    maintainers = [ "74k1" ];
-    maxSilent = 14400;
-    platforms = lib.platforms.unix;
-  };
-}
+})
