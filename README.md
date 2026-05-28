@@ -114,6 +114,7 @@ This flake exports modules in two ways:
 | `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
 | `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
+| `services.rybbit` | [README](modules/nixos/services/rybbit/README.md) |
 <!-- END NIXOS MODULES -->
 
 ## Home Manager Modules
@@ -144,7 +145,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `mtkclient` | `5794aba` |
 | `multi-scrobbler` | `0.12.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
-| `rybbit` | `1.6.1` |
+| `rybbit` | `2.6.1` |
 | `waterfox` | `6.6.13` |
 | `waterfox-unwrapped` | `6.6.13` |
 | `zui` | `1.18.0` |
