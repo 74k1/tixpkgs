@@ -1,0 +1,16 @@
+{
+  "calendar_view": "sha256-tGAMK89VsgqfKQy+t8x5zl6dbQEf5h4HxSUR8crB1oM=",
+  "desktop_webview_window": "sha256-EOh5QoOuAxiYn0IcdxY7taN2Twu8GshY9zAoGCztPnA=",
+  "dynamic_color": "sha256-4zSTiXplkBjtPtzssj3VaHTVo9YlYKNTMLgBIM5MMe4=",
+  "flutter_highlighter": "sha256-Y84Besir3gu1RnQt9YoE0GyIJLLZ6H0Kki/Wf6z6QMg=",
+  "flutter_html": "sha256-576KYoYB4sZeavcAS8V5rjDG9hezYlN2Q4zlyvBOouw=",
+  "flutter_local_notifications": "sha256-AgvvFoJgos/gsTwcLGX/CxbHauWiH3OHksqtF0Dauuw=",
+  "flutter_local_notifications_linux": "sha256-AgvvFoJgos/gsTwcLGX/CxbHauWiH3OHksqtF0Dauuw=",
+  "launcher_entry": "sha256-T/zQRvY6jOKroMrhVwBtsoSm2xCFjOd5jsJC0PA4cpc=",
+  "markdown": "sha256-2rEMNJM9Vy7LrFLt30/Z3pyqERTYJei9D3mgOAAvVPg=",
+  "matrix": "sha256-PB7xjulxmV2jE0WGVG116T50BrT3G5LsdLreR1cJTPI=",
+  "matrix_dart_sdk_drift_db": "sha256-2sSN2TcPAPVdEm3NXpZyWlPvArNn2CWnPph5Vz48KQ8=",
+  "receive_intent": "sha256-wGIOZRH4O3a44I8zG5Q1hCwn4SMuTWB7i9wtGSLZWeQ=",
+  "signal_sticker_api": "sha256-VdEE3Bt8gpfUpxxYSz5319YEL49Eh+loO+ZipI1DoyA=",
+  "starfield": "sha256-ebVRyVkyLfHCC6EBmx5evXL1U71S3tgCMo1yLWlIcw4="
+}
