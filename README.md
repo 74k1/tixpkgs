@@ -148,6 +148,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `mtkclient` | `5794aba` |
 | `multi-scrobbler` | `0.12.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
+| `parallels-ras-client` | `21.1.26543` |
 | `rybbit` | `2.6.1` |
 | `waterfox` | `6.6.13` |
 | `waterfox-unwrapped` | `6.6.13` |
