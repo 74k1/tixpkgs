@@ -143,6 +143,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.0.3` |
 | `ida-ios-helper` | `1.0.20` |
 | `idahelper` | `1.0.18` |
+| `lidarr` | `3.1.2.4938` |
 | `logria` | `0.4.2` |
 | `m5burner` | `3-beta` |
 | `mtkclient` | `5794aba` |
