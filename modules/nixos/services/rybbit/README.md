@@ -45,12 +45,10 @@ Rybbit is an open-source, privacy-friendly web analytics platform.
 }
 ```
 
-Example `environmentFile` contents:
+Required `environmentFile` contents:
 
 ```env
 BETTER_AUTH_SECRET=...
-POSTGRES_PASSWORD=...
-CLICKHOUSE_PASSWORD=...
 ```
 
 ## Notes
