@@ -37,6 +37,12 @@ Rybbit is an open-source, privacy-friendly web analytics platform.
       DISABLE_SIGNUP = true;
     };
 
+    # Set host to "0.0.0.0" when proxying from a different host (edge server).
+    host = "0.0.0.0";
+
+    # Pick a free port if 3001 is already in use.
+    backendPort = 3035;
+
     nginx = {
       forceSSL = true;
       enableACME = true;
@@ -55,8 +61,11 @@ BETTER_AUTH_SECRET=...
 
 The module runs one systemd unit, `rybbit.service`, which starts both upstream components:
 
-- backend/API on `127.0.0.1:3001`
+- backend/API on `127.0.0.1:3001` (configurable via `services.rybbit.backendPort`)
 - web UI on `127.0.0.1:${services.rybbit.clientPort}`, default `3002`
+
+Use `services.rybbit.host = "0.0.0.0"` when proxying from a separate host (e.g. an edge
+server).
 
 With `nginx` enabled, `/api/` is proxied to the backend and `/` to the web UI.
 
