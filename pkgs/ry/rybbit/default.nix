@@ -2,6 +2,7 @@
   lib,
   stdenvNoCC,
   nodejs,
+  typescript,
   bun,
   fetchFromGitHub,
   buildNpmPackage,
@@ -28,7 +29,7 @@ let
 
     nativeBuildInputs = [
       nodejs
-      nodejs.pkgs.typescript
+      typescript
     ];
 
     buildPhase = ''
