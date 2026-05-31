@@ -88,7 +88,25 @@ in
     clientPort = mkOption {
       type = port;
       default = 3002;
-      description = "TCP port the Rybbit web UI listens on.";
+      description = "TCP port the Next.js client listens on.";
+    };
+
+    backendPort = mkOption {
+      type = port;
+      default = 3001;
+      description = "TCP port the API backend (bun/Elysia) listens on.";
+    };
+
+    host = mkOption {
+      type = str;
+      default = "127.0.0.1";
+      example = "0.0.0.0";
+      description = ''
+        IP address the Next.js client binds to.
+
+        Leave as ``"127.0.0.1"`` if you use the built-in nginx on the same host.
+        Set to ``"0.0.0.0"`` if you proxy from another host (e.g. an edge server).
+      '';
     };
 
     environmentFile = mkOption {
@@ -388,9 +406,9 @@ in
           set -euo pipefail
 
           export PORT=${toString cfg.clientPort}
-          export HOSTNAME=127.0.0.1
+          export HOSTNAME=${cfg.host}
 
-          ${getExe' cfg.package "rybbit-server-cluster"} &
+          PORT=${toString cfg.backendPort} ${getExe' cfg.package "rybbit-server-cluster"} &
           backend_pid=$!
 
           ${getExe' cfg.package "rybbit-client"} &
@@ -436,7 +454,7 @@ in
         {
           locations = {
             "/api/" = {
-              proxyPass = "http://127.0.0.1:3001/api/";
+              proxyPass = "http://127.0.0.1:${toString cfg.backendPort}/api/";
               proxyWebsockets = true;
               extraConfig = ''
                 proxy_set_header Host $host;

@@ -145,6 +145,8 @@ buildNpmPackage {
     pushd node_modules/@mongodb-js/zstd
     node-gyp rebuild --nodedir=${nodejs}
     popd
+
+    sed -i "s/port: 3001/port: parseInt(process.env.PORT || '3001')/g" src/index.ts
   '';
 
   installPhase = ''
