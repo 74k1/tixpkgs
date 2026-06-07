@@ -1,5 +1,9 @@
 name: Update docs
 
+concurrency:
+  group: update-docs
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]

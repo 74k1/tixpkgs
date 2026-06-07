@@ -133,9 +133,6 @@ jobs:
               return 0
             fi
 
-            # For helper files under a module directory, prefer the nearest
-            # directory with a default.nix. Otherwise mirror the module loader's
-            # non-default .nix naming.
             local probe="$dir"
             while [ "$probe" != "." ]; do
               if [ -f "modules/${kind}/${probe}/default.nix" ]; then
@@ -296,3 +293,18 @@ jobs:
             printf 'Failed module checks: %s\n' "${failed[*]}" >&2
             exit 1
           fi
+
+  auto-merge:
+    name: Enable auto-merge
+    runs-on: ubuntu-latest
+    needs: changed-things
+    if: github.event.pull_request.user.login == '74k2'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: gh pr merge "$PR_NUMBER" --auto --squash --delete-branch
