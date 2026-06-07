@@ -77,6 +77,7 @@ let
     "tealfm"
     "rocksky"
     "sonos"
+    "ymbridge"
   ];
 
   clientTypes = [
@@ -97,8 +98,8 @@ let
     "CHROMECAST_"
     "DEEZER_"
     "DISCORD_"
-    "ENDPOINTLFM_"
-    "ENDPOINTLZ_"
+    "LFM_"
+    "LZE_"
     "ICECAST_"
     "JELLYFIN_"
     "JRIVER_"
