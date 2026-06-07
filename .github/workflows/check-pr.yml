@@ -56,6 +56,7 @@ jobs:
       - uses: cachix/cachix-action@v17
         with:
           name: tixpkgs
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Detect changed packages and module checks
         id: detect
