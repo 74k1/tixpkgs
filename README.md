@@ -148,7 +148,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `logria` | `0.4.2` |
 | `m5burner` | `3-beta` |
 | `mtkclient` | `5794aba` |
-| `multi-scrobbler` | `0.12.2` |
+| `multi-scrobbler` | `0.14.1` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.1.26543` |
 | `rybbit` | `2.6.1` |
