@@ -112,6 +112,7 @@ This flake exports modules in two ways:
 | `services.brscan-skey` | [README](modules/nixos/services/brscan-skey/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
+| `services.keeper-sh` | [README](modules/nixos/services/keeper-sh/README.md) |
 | `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
 | `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
@@ -144,6 +145,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.2.0` |
 | `ida-ios-helper` | `1.0.21` |
 | `idahelper` | `1.0.18` |
+| `keeper-sh` | `2.10.1` |
 | `lidarr` | `3.1.3.4968` |
 | `logria` | `0.5.0` |
 | `m5burner` | `3-beta` |
