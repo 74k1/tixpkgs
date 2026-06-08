@@ -144,7 +144,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.0.3` |
 | `ida-ios-helper` | `1.0.21` |
 | `idahelper` | `1.0.18` |
-| `lidarr` | `3.1.2.4938` |
+| `lidarr` | `3.1.3.4968` |
 | `logria` | `0.5.0` |
 | `m5burner` | `3-beta` |
 | `mtkclient` | `5794aba` |
