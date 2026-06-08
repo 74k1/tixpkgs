@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/Lidarr/Lidarr/releases/download/v${version}/Lidarr.develop.${version}.linux-core-x64.tar.gz";
-    hash = "sha256-jhTloumon3y3ooFDSnSE0bljL8UvLMBrsDpRAnFN3dE=";
+    hash = "sha256-TFpKRjXDiPwGwp6DddrbL4Jy6cNk0g1Yoo83Pz0kWGI=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
