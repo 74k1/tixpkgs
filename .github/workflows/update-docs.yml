@@ -98,6 +98,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.GH_PAT }}
           commit-message: "docs: update package and module listings"
           title: "docs: update package and module listings"
           body: |
@@ -110,7 +111,7 @@ jobs:
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-number != '' && steps.cpr.outputs.pull-request-operation != 'closed'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
           set -euo pipefail
