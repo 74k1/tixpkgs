@@ -95,7 +95,12 @@ let
       install -Dm644 "$jar" $out/share/grimmory/grimmory.jar
 
       makeWrapper ${lib.getExe' openjdk25 "java"} $out/bin/grimmory \
-        --prefix PATH : ${lib.makeBinPath [ ffmpeg kepubify ]} \
+        --prefix PATH : ${
+          lib.makeBinPath [
+            ffmpeg
+            kepubify
+          ]
+        } \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libarchive ]} \
         --set-default APP_VERSION "${version}" \
         --add-flags "--enable-native-access=ALL-UNNAMED" \
@@ -116,4 +121,4 @@ let
     };
   });
 in
-  grimmory
+grimmory

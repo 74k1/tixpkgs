@@ -1,43 +1,44 @@
-{ lib
-, stdenv
-, fetchurl
-, autoPatchelfHook
-, copyDesktopItems
-, makeDesktopItem
-, unzip
-, buildFHSEnv
-, writeShellScript
-, alsa-lib
-, atk
-, cairo
-, cups
-, dbus
-, expat
-, fontconfig
-, freetype
-, gdk-pixbuf
-, glib
-, gtk3
-, libdrm
-, libpulseaudio
-, libxcb
-, libxkbcommon
-, mesa
-, nspr
-, nss
-, pango
-, systemd
-, libx11
-, libxcomposite
-, libxdamage
-, libxext
-, libxfixes
-, libxrandr
-, libxshmfence
-, libGL
-, libusb1
-, python3
-, zlib
+{
+  lib,
+  stdenv,
+  fetchurl,
+  autoPatchelfHook,
+  copyDesktopItems,
+  makeDesktopItem,
+  unzip,
+  buildFHSEnv,
+  writeShellScript,
+  alsa-lib,
+  atk,
+  cairo,
+  cups,
+  dbus,
+  expat,
+  fontconfig,
+  freetype,
+  gdk-pixbuf,
+  glib,
+  gtk3,
+  libdrm,
+  libpulseaudio,
+  libxcb,
+  libxkbcommon,
+  mesa,
+  nspr,
+  nss,
+  pango,
+  systemd,
+  libx11,
+  libxcomposite,
+  libxdamage,
+  libxext,
+  libxfixes,
+  libxrandr,
+  libxshmfence,
+  libGL,
+  libusb1,
+  python3,
+  zlib,
 }:
 
 let
@@ -147,7 +148,10 @@ let
     icon = pname;
     desktopName = "M5Burner";
     comment = "M5Stack firmware burning tool";
-    categories = [ "Development" "Utility" ];
+    categories = [
+      "Development"
+      "Utility"
+    ];
     terminal = false;
     startupWMClass = "M5Burner";
   };

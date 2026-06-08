@@ -157,10 +157,10 @@ stdenv.mkDerivation (finalAttrs: {
   meta = {
     description = "Zui (formerly Brim) is a GUI for exploring data in Zed lakes.";
     homepage = "https://zui.brimdata.io/";
-    license = with lib.licenses; [bsd3];
+    license = with lib.licenses; [ bsd3 ];
     maintainers = [ "74k1" ];
-    platforms = ["x86_64-linux"];
+    platforms = [ "x86_64-linux" ];
     mainProgram = "zui";
-    sourceProvenance = with lib.sourceTypes; [binaryNativeCode];
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
   };
 })

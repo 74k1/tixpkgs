@@ -1,4 +1,7 @@
-{ tixpkgs, inputs ? null }:
+{
+  tixpkgs,
+  inputs ? null,
+}:
 {
   config,
   lib,
@@ -381,7 +384,8 @@ in
         restartTriggers = [
           cfg.package
           envFile
-        ] ++ optional (cfg.environmentFile != null) cfg.environmentFile;
+        ]
+        ++ optional (cfg.environmentFile != null) cfg.environmentFile;
 
         serviceConfig = {
           Type = "simple";

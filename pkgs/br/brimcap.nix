@@ -1,14 +1,15 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, fetchzip
-, buildGoModule
-, makeWrapper
-, zed
-, autoPatchelfHook
-, zlib
-, nss
-, nspr
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  fetchzip,
+  buildGoModule,
+  makeWrapper,
+  zed,
+  autoPatchelfHook,
+  zlib,
+  nss,
+  nspr,
 }:
 
 buildGoModule rec {
@@ -24,11 +25,11 @@ buildGoModule rec {
 
   vendorHash = "sha256-w47Glwgp18gDVdhaxmSz9sJIDKIJ7TOJSXzijfmNjeM=";
 
-  nativeBuildInputs = [ 
-    makeWrapper 
+  nativeBuildInputs = [
+    makeWrapper
     autoPatchelfHook
   ];
-  
+
   propagatedBuildInputs = [ zed ];
 
   buildInputs = [
@@ -72,18 +73,20 @@ buildGoModule rec {
 
     mkdir -p $out/bin $out/share/brimcap
     cp -r dist/* $out/share/brimcap/
-    
+
     ln -s $out/share/brimcap/brimcap $out/bin/brimcap
-    
+
     wrapProgram $out/bin/brimcap \
       --prefix PATH : $out/share/brimcap \
       --prefix PATH : ${lib.makeBinPath [ zed ]} \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [
-        stdenv.cc.cc.lib
-        zlib
-        nss
-        nspr
-      ]} \
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
+          stdenv.cc.cc.lib
+          zlib
+          nss
+          nspr
+        ]
+      } \
       --set BRIM_SURICATA_USER_DIR "."
       # --set BRIM_SURICATA_USER_DIR "\$HOME/.local/share/brimcap"
 
@@ -100,7 +103,7 @@ buildGoModule rec {
   meta = with lib; {
     description = "Convert pcap files into richly-typed ZNG summary logs";
     homepage = "https://github.com/brimdata/brimcap";
-    license = with lib.licenses; [bsd3];
+    license = with lib.licenses; [ bsd3 ];
     maintainers = [ "74k1" ];
     platforms = platforms.unix;
   };

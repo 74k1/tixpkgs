@@ -57,31 +57,31 @@ let
     npmFlags = [ "--legacy-peer-deps" ];
 
     postPatch = ''
-      sed -i \
-        -e '/import { Inter } from "next\/font\/google";/d' \
-        -e 's/const inter = Inter({ subsets: \["latin"\] });/const inter = { className: "" };/' \
-        src/app/layout.tsx
+            sed -i \
+              -e '/import { Inter } from "next\/font\/google";/d' \
+              -e 's/const inter = Inter({ subsets: \["latin"\] });/const inter = { className: "" };/' \
+              src/app/layout.tsx
 
-      sed -i '/^};$/i\
-  async rewrites() {\
-    return [\
-      {\
-        source: "/api/:path*",\
-        destination: "http://127.0.0.1:3001/api/:path*",\
-      },\
-    ];\
-  },
-' next.config.ts
+            sed -i '/^};$/i\
+        async rewrites() {\
+          return [\
+            {\
+              source: "/api/:path*",\
+              destination: "http://127.0.0.1:3001/api/:path*",\
+            },\
+          ];\
+        },
+      ' next.config.ts
 
-      sed -i \
-        -e '/import { Tilt_Warp } from "next\/font\/google";/d' \
-        -e '/const tilt_wrap = Tilt_Warp({/,/});/c\const tilt_wrap = { className: "" };' \
-        'src/app/[site]/main/components/MainSection/MainSection.tsx'
+            sed -i \
+              -e '/import { Tilt_Warp } from "next\/font\/google";/d' \
+              -e '/const tilt_wrap = Tilt_Warp({/,/});/c\const tilt_wrap = { className: "" };' \
+              'src/app/[site]/main/components/MainSection/MainSection.tsx'
 
-      sed -i \
-        -e '/import { Tilt_Warp } from "next\/font\/google";/d' \
-        -e '/const tilt_wrap = Tilt_Warp({/,/});/c\const tilt_wrap = { className: "" };' \
-        'src/app/[site]/performance/components/PerformanceChart.tsx'
+            sed -i \
+              -e '/import { Tilt_Warp } from "next\/font\/google";/d' \
+              -e '/const tilt_wrap = Tilt_Warp({/,/});/c\const tilt_wrap = { className: "" };' \
+              'src/app/[site]/performance/components/PerformanceChart.tsx'
     '';
 
     postConfigure = ''

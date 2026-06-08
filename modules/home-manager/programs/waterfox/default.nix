@@ -33,7 +33,6 @@ in
 
   config = lib.mkIf cfg.enable {
     mozilla.firefoxNativeMessagingHosts =
-      cfg.nativeMessagingHosts
-      ++ lib.optional (cfg.finalPackage != null) cfg.finalPackage;
+      cfg.nativeMessagingHosts ++ lib.optional (cfg.finalPackage != null) cfg.finalPackage;
   };
 }

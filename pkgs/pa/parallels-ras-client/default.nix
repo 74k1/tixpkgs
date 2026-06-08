@@ -53,7 +53,8 @@ stdenv.mkDerivation (finalAttrs: {
     libXpm
     libXtst
     stdenv.cc.cc.lib
-  ] ++ lib.optionals withQtWebEngine [
+  ]
+  ++ lib.optionals withQtWebEngine [
     qt5.qtwebengine
   ];
 
@@ -114,93 +115,93 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   postFixup = ''
-    wrapClientEnv() {
-      local source="$1"
-      local wrapper="$2"
-      shift 2
+        wrapClientEnv() {
+          local source="$1"
+          local wrapper="$2"
+          shift 2
 
-      makeWrapper "$source" "$wrapper" \
-        "''${qtWrapperArgs[@]}" \
-        --prefix LD_LIBRARY_PATH : "$out/opt/2X/Client/lib:${lib.makeLibraryPath finalAttrs.buildInputs}" \
-        --prefix PATH : "${lib.makeBinPath finalAttrs.runtimeDependencies}" \
-        --set-default SSL_CERT_FILE /etc/ssl/certs/ca-certificates.crt \
-        "$@"
-    }
+          makeWrapper "$source" "$wrapper" \
+            "''${qtWrapperArgs[@]}" \
+            --prefix LD_LIBRARY_PATH : "$out/opt/2X/Client/lib:${lib.makeLibraryPath finalAttrs.buildInputs}" \
+            --prefix PATH : "${lib.makeBinPath finalAttrs.runtimeDependencies}" \
+            --set-default SSL_CERT_FILE /etc/ssl/certs/ca-certificates.crt \
+            "$@"
+        }
 
-    wrapClientInPlace() {
-      local binary="$1"
-      local target="$out/opt/2X/Client/bin/$binary"
-      local unwrapped="$out/opt/2X/Client/bin/.$binary-unwrapped"
+        wrapClientInPlace() {
+          local binary="$1"
+          local target="$out/opt/2X/Client/bin/$binary"
+          local unwrapped="$out/opt/2X/Client/bin/.$binary-unwrapped"
 
-      mv "$target" "$unwrapped"
-      wrapClientEnv "$unwrapped" "$target"
-    }
+          mv "$target" "$unwrapped"
+          wrapClientEnv "$unwrapped" "$target"
+        }
 
-    wrapAppserverclient() {
-      local target="$out/opt/2X/Client/bin/appserverclient"
-      local unwrapped="$out/opt/2X/Client/bin/.appserverclient-unwrapped"
-      local envWrapper="$out/opt/2X/Client/bin/.appserverclient-env"
+        wrapAppserverclient() {
+          local target="$out/opt/2X/Client/bin/appserverclient"
+          local unwrapped="$out/opt/2X/Client/bin/.appserverclient-unwrapped"
+          local envWrapper="$out/opt/2X/Client/bin/.appserverclient-env"
 
-      mv "$target" "$unwrapped"
-      wrapClientEnv "$unwrapped" "$envWrapper" \
-        --set QT_QPA_PLATFORM xcb
+          mv "$target" "$unwrapped"
+          wrapClientEnv "$unwrapped" "$envWrapper" \
+            --set QT_QPA_PLATFORM xcb
 
-      cat > "$target" <<'EOF'
-#!@shell@
-xwayland_pid=""
-if [ -z "''${DISPLAY:-}" ] && [ -n "''${WAYLAND_DISPLAY:-}" ]; then
-  for display in {100..199}; do
-    if [ ! -e "/tmp/.X11-unix/X$display" ]; then
-      @xwaylandSatellite@ ":$display" >/dev/null 2>&1 &
-      xwayland_pid=$!
+          cat > "$target" <<'EOF'
+    #!@shell@
+    xwayland_pid=""
+    if [ -z "''${DISPLAY:-}" ] && [ -n "''${WAYLAND_DISPLAY:-}" ]; then
+      for display in {100..199}; do
+        if [ ! -e "/tmp/.X11-unix/X$display" ]; then
+          @xwaylandSatellite@ ":$display" >/dev/null 2>&1 &
+          xwayland_pid=$!
 
-      for attempt in {1..50}; do
-        if [ -S "/tmp/.X11-unix/X$display" ]; then
-          export DISPLAY=":$display"
-          break 2
+          for attempt in {1..50}; do
+            if [ -S "/tmp/.X11-unix/X$display" ]; then
+              export DISPLAY=":$display"
+              break 2
+            fi
+            if ! kill -0 "$xwayland_pid" 2>/dev/null; then
+              break
+            fi
+            @sleep@ 0.1
+          done
+
+          if [ -z "''${DISPLAY:-}" ]; then
+            kill "$xwayland_pid" 2>/dev/null || true
+            xwayland_pid=""
+          fi
         fi
-        if ! kill -0 "$xwayland_pid" 2>/dev/null; then
-          break
-        fi
-        @sleep@ 0.1
       done
-
-      if [ -z "''${DISPLAY:-}" ]; then
-        kill "$xwayland_pid" 2>/dev/null || true
-        xwayland_pid=""
-      fi
     fi
-  done
-fi
 
-if [ -n "$xwayland_pid" ]; then
-  "@envWrapper@" "$@"
-  status=$?
-  kill "$xwayland_pid" 2>/dev/null || true
-  exit "$status"
-fi
+    if [ -n "$xwayland_pid" ]; then
+      "@envWrapper@" "$@"
+      status=$?
+      kill "$xwayland_pid" 2>/dev/null || true
+      exit "$status"
+    fi
 
-exec "@envWrapper@" "$@"
-EOF
-      substituteInPlace "$target" \
-        --replace-fail '@shell@' '${stdenv.shell}' \
-        --replace-fail '@xwaylandSatellite@' '${lib.getExe xwayland-satellite}' \
-        --replace-fail '@sleep@' '${lib.getExe' coreutils "sleep"}' \
-        --replace-fail '@envWrapper@' "$envWrapper"
-      chmod +x "$target"
-    }
+    exec "@envWrapper@" "$@"
+    EOF
+          substituteInPlace "$target" \
+            --replace-fail '@shell@' '${stdenv.shell}' \
+            --replace-fail '@xwaylandSatellite@' '${lib.getExe xwayland-satellite}' \
+            --replace-fail '@sleep@' '${lib.getExe' coreutils "sleep"}' \
+            --replace-fail '@envWrapper@' "$envWrapper"
+          chmod +x "$target"
+        }
 
-    # 2XClient launches appserverclient via ../bin/appserverclient, bypassing
-    # $out/bin/appserverclient. Wrap the vendor binaries in-place so child
-    # sessions get the same library/plugin environment as the top-level entry.
-    wrapClientInPlace 2XClient
-    wrapAppserverclient
-    wrapClientInPlace downloader
+        # 2XClient launches appserverclient via ../bin/appserverclient, bypassing
+        # $out/bin/appserverclient. Wrap the vendor binaries in-place so child
+        # sessions get the same library/plugin environment as the top-level entry.
+        wrapClientInPlace 2XClient
+        wrapAppserverclient
+        wrapClientInPlace downloader
 
-    ln -s $out/opt/2X/Client/bin/2XClient $out/bin/2XClient
-    ln -s $out/opt/2X/Client/bin/appserverclient $out/bin/appserverclient
-    ln -s $out/opt/2X/Client/bin/downloader $out/bin/2XClient-downloader
-    ln -s 2XClient $out/bin/parallels-ras-client
+        ln -s $out/opt/2X/Client/bin/2XClient $out/bin/2XClient
+        ln -s $out/opt/2X/Client/bin/appserverclient $out/bin/appserverclient
+        ln -s $out/opt/2X/Client/bin/downloader $out/bin/2XClient-downloader
+        ln -s 2XClient $out/bin/parallels-ras-client
   '';
 
   passthru.updateScript = ./update.sh;

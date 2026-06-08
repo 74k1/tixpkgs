@@ -1,4 +1,7 @@
-{ tixpkgs, inputs ? null }:
+{
+  tixpkgs,
+  inputs ? null,
+}:
 {
   config,
   lib,
@@ -77,11 +80,9 @@ let
   startupScript = pkgs.writeShellScript "grimmory-start" ''
     set -euo pipefail
 
-    ${lib.concatMapAttrsStringSep "\n" (
-      key: path: ''
-        export ${key}="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg path})"
-      ''
-    ) cfg.secretFiles}
+    ${lib.concatMapAttrsStringSep "\n" (key: path: ''
+      export ${key}="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg path})"
+    '') cfg.secretFiles}
 
     if [ -z "''${DATABASE_PASSWORD-}" ] && [ -r ${lib.escapeShellArg generatedDatabasePasswordFile} ]; then
       export DATABASE_PASSWORD="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg generatedDatabasePasswordFile})"
@@ -285,7 +286,8 @@ in
           DATABASE_NAME = cfg.database.name;
           DATABASE_USERNAME = cfg.database.user;
           DATABASE_URL = databaseUrl;
-        } // cfg.environment;
+        }
+        // cfg.environment;
 
         serviceConfig = {
           Type = "simple";

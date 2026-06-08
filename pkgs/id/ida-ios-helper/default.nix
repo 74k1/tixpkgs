@@ -1,7 +1,8 @@
-{ lib
-, python3Packages
-, fetchFromGitHub
-, idahelper
+{
+  lib,
+  python3Packages,
+  fetchFromGitHub,
+  idahelper,
 }:
 python3Packages.buildPythonPackage rec {
   pname = "ida-ios-helper";
@@ -43,4 +44,3 @@ python3Packages.buildPythonPackage rec {
     platforms = platforms.all;
   };
 }
-

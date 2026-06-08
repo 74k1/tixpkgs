@@ -1,6 +1,7 @@
-{ lib
-, stdenvNoCC
-, fetchgit
+{
+  lib,
+  stdenvNoCC,
+  fetchgit,
 }:
 
 stdenvNoCC.mkDerivation {

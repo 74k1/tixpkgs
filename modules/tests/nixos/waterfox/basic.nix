@@ -1,4 +1,10 @@
-{ self, inputs, lib, pkgs, ... }:
+{
+  self,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [ (inputs.nixpkgs + "/nixos/tests/firefox.nix") ];
   _module.args.firefoxPackage = pkgs.waterfox;

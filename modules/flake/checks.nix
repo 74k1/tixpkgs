@@ -21,7 +21,8 @@
 
       testsRoot = "${inputs.self.outPath}/modules/tests";
 
-      testFiles = kind:
+      testFiles =
+        kind:
         let
           dir = "${testsRoot}/${kind}";
         in
@@ -30,7 +31,8 @@
         else
           [ ];
 
-      testInfo = kind: file:
+      testInfo =
+        kind: file:
         let
           safeFile = builtins.unsafeDiscardStringContext file;
           safeFilePath = /. + safeFile;
@@ -67,7 +69,8 @@
         "tixpkgs"
       ];
 
-      callTest = info:
+      callTest =
+        info:
         let
           imported = info.imported;
           functionArgs = if lib.isFunction imported then builtins.functionArgs imported else { };
@@ -94,7 +97,8 @@
         else
           imported;
 
-      mkNixosCheck = info:
+      mkNixosCheck =
+        info:
         let
           value = callTest info;
         in
@@ -103,20 +107,23 @@
         else
           pkgs.testers.runNixOSTest (value // { name = value.name or info.checkName; });
 
-      mkHomeManagerCheck = info:
+      mkHomeManagerCheck =
+        info:
         let
           value = callTest info;
           moduleImports = lib.optional (info.module != null) info.module;
-          baseModule = { lib, ... }: {
-            home = {
-              username = "hm-test";
-              homeDirectory = "/home/hm-test";
-              stateVersion = lib.mkDefault "25.05";
-            };
+          baseModule =
+            { lib, ... }:
+            {
+              home = {
+                username = "hm-test";
+                homeDirectory = "/home/hm-test";
+                stateVersion = lib.mkDefault "25.05";
+              };
 
-            manual.manpages.enable = lib.mkDefault false;
-            programs.home-manager.enable = lib.mkDefault false;
-          };
+              manual.manpages.enable = lib.mkDefault false;
+              programs.home-manager.enable = lib.mkDefault false;
+            };
           normalized =
             if builtins.isAttrs value && value ? modules then
               value
@@ -129,15 +136,18 @@
             extraSpecialArgs = {
               inherit inputs self;
               tixpkgs = self.packages.${system};
-            } // (normalized.extraSpecialArgs or { });
+            }
+            // (normalized.extraSpecialArgs or { });
             modules = moduleImports ++ [ baseModule ] ++ normalized.modules;
           };
         in
         if lib.isDerivation value then value else hm.activationPackage;
 
-      mkChecksFor = kind: mkCheck:
+      mkChecksFor =
+        kind: mkCheck:
         lib.listToAttrs (
-          map (file:
+          map (
+            file:
             let
               info = testInfo kind file;
             in

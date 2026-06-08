@@ -13,38 +13,45 @@
     };
   };
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} ({
-      withSystem,
-      flake-parts-lib,
-      ...
-    }: {
-      systems = [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-
-      imports = [
-        ./modules/flake/packages.nix
-        ./modules/flake/modules.nix
-        ./modules/flake/checks.nix
-      ];
-
-      debug = true;
-
-      perSystem = {
-        lib,
-        pkgs,
-        system,
-        inputs',
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      {
+        withSystem,
+        flake-parts-lib,
         ...
-      }: {
-      };
+      }:
+      {
+        systems = [
+          "aarch64-darwin"
+          "aarch64-linux"
+          "i686-linux"
+          "x86_64-darwin"
+          "x86_64-linux"
+        ];
 
-      flake = {
-      };
-    });
+        imports = [
+          ./modules/flake/packages.nix
+          ./modules/flake/modules.nix
+          ./modules/flake/checks.nix
+        ];
+
+        debug = true;
+
+        perSystem =
+          {
+            lib,
+            pkgs,
+            system,
+            inputs',
+            ...
+          }:
+          {
+            formatter = pkgs.nixfmt-rs;
+          };
+
+        flake = {
+        };
+      }
+    );
 }

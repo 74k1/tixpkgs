@@ -3,7 +3,8 @@
   stdenv,
   fetchurl,
   appimageTools,
-}: let
+}:
+let
   pname = "outerbase-studio-desktop";
   version = "0.1.29";
 
@@ -16,13 +17,11 @@ in
 appimageTools.wrapType2 rec {
   inherit pname version src;
 
-  extraInstallCommands = let
-    contents = appimageTools.extractType2 {inherit pname version src;};
-  in
-    /*
-    sh
-    */
-    ''
+  extraInstallCommands =
+    let
+      contents = appimageTools.extractType2 { inherit pname version src; };
+    in
+    /* sh */ ''
       mkdir -p "$out/share/applications"
       install -m 444 ${contents}/${meta.mainProgram}.desktop -t $out/share/applications
       substituteInPlace $out/share/applications/${pname}.desktop --replace-fail 'Exec=AppRun' 'Exec=${meta.mainProgram}'
@@ -35,6 +34,6 @@ appimageTools.wrapType2 rec {
     license = licenses.agpl3Plus;
     maintainers = [ "74k1" ];
     mainProgram = "outerbase-studio-desktop";
-    platforms = ["x86_64-linux"];
+    platforms = [ "x86_64-linux" ];
   };
 }

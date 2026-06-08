@@ -30,14 +30,16 @@ stdenv.mkDerivation rec {
     cp -r * $out/share/${pname}-${version}/.
     makeWrapper "${dotnet-runtime}/bin/dotnet" $out/bin/Lidarr \
       --add-flags "$out/share/${pname}-${version}/Lidarr.dll" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [
-        curl
-        sqlite
-        libmediainfo
-        icu
-        openssl
-        zlib
-      ]}
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
+          curl
+          sqlite
+          libmediainfo
+          icu
+          openssl
+          zlib
+        ]
+      }
 
     runHook postInstall
   '';

@@ -1,4 +1,7 @@
-{ tixpkgs, inputs ? null }:
+{
+  tixpkgs,
+  inputs ? null,
+}:
 {
   config,
   lib,
@@ -31,14 +34,14 @@ let
   redisSocket = "/run/redis-${redisName}/redis.sock";
 
   nixpkgsPath =
-    if inputs != null
-    then "${inputs.nixpkgs}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
-    else "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
+    if inputs != null then
+      "${inputs.nixpkgs}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
+    else
+      "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 
   mkStringFlag = name: value: "--${name}=${escapeShellArg (toString value)}";
   mkBoolFlag = name: value: optionalString value "--${name}";
-  mkRepeatFlag = name: values:
-    concatMapStringsSep " " (v: "--${name}=${escapeShellArg v}") values;
+  mkRepeatFlag = name: values: concatMapStringsSep " " (v: "--${name}=${escapeShellArg v}") values;
 
   cliFlags = concatStringsSep " " (
     [
@@ -59,10 +62,12 @@ let
       (mkBoolFlag "read-only" cfg.settings.readOnly)
       (mkStringFlag "max-file-size" cfg.settings.maxFileSize)
     ]
-    ++ optional (cfg.database.backend == "memcached")
-      (mkStringFlag "memcached" cfg.database.memcached)
-    ++ optional (cfg.database.backend == "redis")
-      (mkStringFlag "redis" (if cfg.database.createLocally then "unix://${redisSocket}" else cfg.database.redis))
+    ++ optional (cfg.database.backend == "memcached") (mkStringFlag "memcached" cfg.database.memcached)
+    ++ optional (cfg.database.backend == "redis") (
+      mkStringFlag "redis" (
+        if cfg.database.createLocally then "unix://${redisSocket}" else cfg.database.redis
+      )
+    )
     ++ optional (cfg.publicUrl != null) (mkStringFlag "public-url" cfg.publicUrl)
     ++ optional cfg.metrics.enable (mkStringFlag "metrics-port" cfg.metrics.port)
     ++ optional (cfg.fileStore.enable) (mkStringFlag "file-store" "disk")
@@ -70,8 +75,12 @@ let
     ++ optional (cfg.tls.certFile != null) (mkStringFlag "tls-cert" cfg.tls.certFile)
     ++ optional (cfg.tls.keyFile != null) (mkStringFlag "tls-key" cfg.tls.keyFile)
     ++ optional (cfg.settings.imprintUrl != null) (mkStringFlag "imprint-url" cfg.settings.imprintUrl)
-    ++ optional (cfg.settings.privacyNoticeUrl != null) (mkStringFlag "privacy-notice-url" cfg.settings.privacyNoticeUrl)
-    ++ optional (cfg.settings.trustedProxies != [ ]) (mkRepeatFlag "trusted-proxies" cfg.settings.trustedProxies)
+    ++ optional (cfg.settings.privacyNoticeUrl != null) (
+      mkStringFlag "privacy-notice-url" cfg.settings.privacyNoticeUrl
+    )
+    ++ optional (cfg.settings.trustedProxies != [ ]) (
+      mkRepeatFlag "trusted-proxies" cfg.settings.trustedProxies
+    )
     ++ cfg.extraFlags
   );
 in
@@ -86,7 +95,10 @@ in
     extraFlags = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = [ "--file-store=s3" "--file-store-s3-bucket=my-bucket" ];
+      example = [
+        "--file-store=s3"
+        "--file-store-s3-bucket=my-bucket"
+      ];
       description = ''
         Extra CLI flags appended to the yopass-server invocation.
         Use this for flags not exposed as module options (S3 file store,
@@ -146,7 +158,10 @@ in
 
     database = {
       backend = mkOption {
-        type = types.enum [ "memcached" "redis" ];
+        type = types.enum [
+          "memcached"
+          "redis"
+        ];
         default = "memcached";
         description = "Database backend for secret storage. memcached uses TCP only; redis supports unix sockets when running locally.";
       };
@@ -227,13 +242,22 @@ in
       };
 
       defaultExpiry = mkOption {
-        type = types.enum [ "1h" "1d" "1w" ];
+        type = types.enum [
+          "1h"
+          "1d"
+          "1w"
+        ];
         default = "1h";
         description = "Default expiry time for secrets.";
       };
 
       logLevel = mkOption {
-        type = types.enum [ "debug" "info" "warn" "error" ];
+        type = types.enum [
+          "debug"
+          "info"
+          "warn"
+          "error"
+        ];
         default = "info";
         description = "Log level.";
       };
@@ -289,7 +313,10 @@ in
       trustedProxies = mkOption {
         type = types.listOf types.str;
         default = [ ];
-        example = [ "10.0.0.0/8" "172.16.0.0/12" ];
+        example = [
+          "10.0.0.0/8"
+          "172.16.0.0/12"
+        ];
         description = "Trusted proxy IP addresses or CIDR blocks for X-Forwarded-For header validation.";
       };
 
@@ -359,12 +386,14 @@ in
         maxMemory = 64;
       };
 
-      services.redis.servers.yopass = mkIf (cfg.database.createLocally && cfg.database.backend == "redis") {
-        enable = true;
-        port = 0;
-        unixSocket = redisSocket;
-        unixSocketPerm = 660;
-      };
+      services.redis.servers.yopass =
+        mkIf (cfg.database.createLocally && cfg.database.backend == "redis")
+          {
+            enable = true;
+            port = 0;
+            unixSocket = redisSocket;
+            unixSocketPerm = 660;
+          };
 
       systemd.tmpfiles.rules = mkIf cfg.fileStore.enable [
         "d ${cfg.fileStore.path} 0750 ${cfg.user} ${cfg.group} -"
@@ -372,12 +401,16 @@ in
 
       systemd.services.yopass = {
         description = "Yopass secret sharing service";
-        after = [ "network.target" ]
-          ++ optional (cfg.database.createLocally && cfg.database.backend == "memcached") "memcached.service"
-          ++ optional (cfg.database.createLocally && cfg.database.backend == "redis") "redis-yopass.service";
-        wants = [ "network.target" ]
-          ++ optional (cfg.database.createLocally && cfg.database.backend == "memcached") "memcached.service"
-          ++ optional (cfg.database.createLocally && cfg.database.backend == "redis") "redis-yopass.service";
+        after = [
+          "network.target"
+        ]
+        ++ optional (cfg.database.createLocally && cfg.database.backend == "memcached") "memcached.service"
+        ++ optional (cfg.database.createLocally && cfg.database.backend == "redis") "redis-yopass.service";
+        wants = [
+          "network.target"
+        ]
+        ++ optional (cfg.database.createLocally && cfg.database.backend == "memcached") "memcached.service"
+        ++ optional (cfg.database.createLocally && cfg.database.backend == "redis") "redis-yopass.service";
         requiredBy = [ "multi-user.target" ];
         restartTriggers = [ cfg.package ];
 
@@ -413,9 +446,11 @@ in
           RestrictSUIDSGID = true;
           SystemCallArchitectures = "native";
           UMask = "0027";
-        } // optionalAttrs cfg.fileStore.enable {
+        }
+        // optionalAttrs cfg.fileStore.enable {
           ReadWritePaths = [ cfg.fileStore.path ];
-        } // optionalAttrs (cfg.tls.certFile != null || cfg.tls.keyFile != null) {
+        }
+        // optionalAttrs (cfg.tls.certFile != null || cfg.tls.keyFile != null) {
           ReadWritePaths = builtins.filter (p: p != null) [
             (if cfg.tls.certFile != null then dirOf cfg.tls.certFile else null)
             (if cfg.tls.keyFile != null then dirOf cfg.tls.keyFile else null)

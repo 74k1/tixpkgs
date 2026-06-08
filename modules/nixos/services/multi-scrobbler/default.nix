@@ -142,19 +142,15 @@ let
   invalidEnvironmentKeys = filter (key: hasAttr key cfg.environment) reservedEnvironmentKeys;
   invalidAioKeys = filter (key: cfg.config != null && hasAttr key cfg.config) reservedConfigKeys;
   reservedConfigFileKeys = filter (key: key == "config") (attrNames cfg.configFiles);
-  invalidConfigFileTypeKeys = filter (
-    key:
-    key != "config" && !(builtins.elem key configFileTypes)
-  ) (attrNames cfg.configFiles);
+  invalidConfigFileTypeKeys = filter (key: key != "config" && !(builtins.elem key configFileTypes)) (
+    attrNames cfg.configFiles
+  );
 
   upstreamAutoConfigEnvironmentKeys = filter (
-    key:
-    lib.any (prefix: lib.hasPrefix prefix key) upstreamAutoConfigEnvPrefixes
+    key: lib.any (prefix: lib.hasPrefix prefix key) upstreamAutoConfigEnvPrefixes
   ) (attrNames cfg.environment);
 
-  normalizeConfigEntries =
-    _: value:
-    if builtins.isList value then value else [ value ];
+  normalizeConfigEntries = _: value: if builtins.isList value then value else [ value ];
 
   normalizedConfigFiles = lib.mapAttrs normalizeConfigEntries cfg.configFiles;
 
@@ -168,10 +164,7 @@ let
     };
 
   managedProjectFiles = builtins.listToAttrs (
-    map (
-      resource:
-      lib.nameValuePair resource "${packageShare}/${resource}"
-    ) projectResources
+    map (resource: lib.nameValuePair resource "${packageShare}/${resource}") projectResources
   );
 
   managedRuntimeFiles = managedProjectFiles // managedConfigFiles;
@@ -288,10 +281,12 @@ in
     };
 
     configFiles = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.oneOf [
-        configEntryType
-        (lib.types.listOf configEntryType)
-      ]);
+      type = lib.types.attrsOf (
+        lib.types.oneOf [
+          configEntryType
+          (lib.types.listOf configEntryType)
+        ]
+      );
       default = { };
       example = lib.literalExpression ''
         {
@@ -424,20 +419,23 @@ in
     ];
 
     warnings =
-      lib.optional (
-        (attrNames cfg.configFiles != [ ] || cfg.config != null) && cfg.environmentFile != "/dev/null"
-      ) ''
-        services.multi-scrobbler is using `environmentFile` together with `configFiles` or `config`.
-        Upstream single-user ENV keys like `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, `LZ_*`, and similar will auto-create extra `unnamed` / `unnamed-lfm` configs.
-        Prefer neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON with `[[TIX_SPOTIFY_CLIENT_ID]]`.
-      ''
-      ++ lib.optional (
-        (attrNames cfg.configFiles != [ ] || cfg.config != null) && upstreamAutoConfigEnvironmentKeys != [ ]
-      ) ''
-        services.multi-scrobbler.environment contains upstream single-user ENV keys: ${lib.concatStringsSep ", " upstreamAutoConfigEnvironmentKeys}.
-        These will cause multi-scrobbler to auto-create additional single-user configs.
-        Use neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` instead.
-      '';
+      lib.optional
+        ((attrNames cfg.configFiles != [ ] || cfg.config != null) && cfg.environmentFile != "/dev/null")
+        ''
+          services.multi-scrobbler is using `environmentFile` together with `configFiles` or `config`.
+          Upstream single-user ENV keys like `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, `LZ_*`, and similar will auto-create extra `unnamed` / `unnamed-lfm` configs.
+          Prefer neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON with `[[TIX_SPOTIFY_CLIENT_ID]]`.
+        ''
+      ++
+        lib.optional
+          (
+            (attrNames cfg.configFiles != [ ] || cfg.config != null) && upstreamAutoConfigEnvironmentKeys != [ ]
+          )
+          ''
+            services.multi-scrobbler.environment contains upstream single-user ENV keys: ${lib.concatStringsSep ", " upstreamAutoConfigEnvironmentKeys}.
+            These will cause multi-scrobbler to auto-create additional single-user configs.
+            Use neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` instead.
+          '';
 
     systemd.tmpfiles.rules = lib.optionals (cfg.stateDir != defaultStateDir) [
       "d ${builtins.dirOf cfg.stateDir} 0755 root root -"
@@ -453,7 +451,8 @@ in
         cfg.package
         cfg.environmentFile
         generatedEnvironmentFile
-      ] ++ attrValues managedRuntimeFiles;
+      ]
+      ++ attrValues managedRuntimeFiles;
 
       preStart = managedConfigSetup;
 
