@@ -152,8 +152,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.1.26543` |
 | `rybbit` | `2.6.1` |
-| `waterfox` | `6.6.13` |
-| `waterfox-unwrapped` | `6.6.13` |
+| `waterfox` | `6.6.14` |
+| `waterfox-unwrapped` | `6.6.14` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
