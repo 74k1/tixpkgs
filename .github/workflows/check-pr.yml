@@ -308,4 +308,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: gh pr merge "$PR_NUMBER" --auto --squash --delete-branch
+        run: gh pr merge "$PR_NUMBER" --auto --squash --delete-branch --repo "$GITHUB_REPOSITORY"
