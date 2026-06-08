@@ -12,13 +12,13 @@
   libarchive,
 }:
 let
-  version = "3.0.3";
+  version = "3.2.0";
 
   src = fetchFromGitHub {
     owner = "grimmory-tools";
     repo = "grimmory";
     rev = "v${version}";
-    hash = "sha256-dWZcCX0Tp+yPp+4vBERYEwu+rysCzJ9QfMQhD65t1vQ=";
+    hash = "sha256-5eBzvU6BcEJXUzyZSt5ZgWFzEz0uctYcZ97eOj91WK0=";
   };
 
   buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs_24; };
@@ -35,7 +35,7 @@ let
 
     npmBuildScript = "build:prod";
     npmFlags = [ "--legacy-peer-deps" ];
-    npmDepsHash = "sha256-DBa/2q7pUZuKJB48JVDnlxK+q4eXBmOfrxIJ3WuzTY0=";
+    npmDepsHash = "sha256-bCd2L3cs6Io5ZLjqu4dVtru+tcdKVqJdk6Irt36URYE=";
 
     env = {
       CI = "1";
@@ -63,9 +63,11 @@ let
 
     postPatch = ''
       substituteInPlace src/main/resources/application.yaml \
-        --replace-fail "path-config: '/app/data'" "path-config: \''${GRIMMORY_DATA_DIR:/var/lib/grimmory/data}" \
-        --replace-fail "bookdrop-folder: '/bookdrop'" "bookdrop-folder: \''${GRIMMORY_BOOKDROP_DIR:/var/lib/grimmory/bookdrop}"
+        --replace-fail "/app/data" "/var/lib/grimmory/data" \
+        --replace-fail "/bookdrop" "/var/lib/grimmory/bookdrop"
     '';
+
+    passthru.updateScript = ./update.sh;
 
     nativeBuildInputs = [
       gradle
