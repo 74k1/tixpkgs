@@ -23,7 +23,7 @@ fi
 
 url="https://github.com/Lidarr/Lidarr/releases/download/v${new_version}/Lidarr.develop.${new_version}.linux-core-x64.tar.gz"
 
-new_hash="$(nix-prefetch-url --type sha256 --unpack "$url" 2>/dev/null \
+new_hash="$(nix-prefetch-url --type sha256 "$url" 2>/dev/null \
   | xargs nix hash to-sri --type sha256)"
 
 if [[ -z "$new_hash" ]]; then
