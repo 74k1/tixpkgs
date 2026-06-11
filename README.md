@@ -135,7 +135,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 <!-- BEGIN PACKAGES -->
 | Package | Version |
 |---|---|
-| `arcbrush` | `1.3.0` |
+| `arcbrush` | `1.3.1` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.4.2+hotfix.2` |
