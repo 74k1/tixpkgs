@@ -2,9 +2,9 @@
  "!comment": "This is a nixpkgs Gradle dependency lockfile. For more details, refer to the Gradle section in the nixpkgs manual.",
  "!version": 1,
  "https://jitpack.io": {
-  "com/github/RouHim#jaudiotagger/2.0.22": {
-   "jar": "sha256-CSvfml/rBuDmeq4t8KYTZQgNvdekqu6uZW+56Yi3T9g=",
-   "pom": "sha256-8jsNPAnAreec1SIu2t22Vw2J+vx/+uzdArN8WYu+iOQ="
+  "com/github/RouHim#jaudiotagger/2.0.23": {
+   "jar": "sha256-01MqkH3K1CeB1eOjbZ+C8GFN3SYqfBbmg+p7WujelBw=",
+   "pom": "sha256-9HEJkIE0G7lOa38WeiwcNl6t2eofgnKUedxmU8o3VM4="
   }
  },
  "https://plugins.gradle.org/m2": {
@@ -611,9 +611,9 @@
    "jar": "sha256-5/rSpRaE3kEO08IQI9XYnWSdulyhz1Att/r9L5u7rsI=",
    "pom": "sha256-CsMqFPa4yqqjtm3wkMhPN+/tvoenXIynnP7sciJeDxs="
   },
-  "com/nimbusds#nimbus-jose-jwt/10.9": {
-   "jar": "sha256-ZNYT2RFAutDauPDEGWD5GeyHBanO2UGBRlmLSzrnE0k=",
-   "pom": "sha256-WToeRUh4cAyTSuaUnuy/Mr+9W3TjO3mqSJe9OeGaTHI="
+  "com/nimbusds#nimbus-jose-jwt/10.9.1": {
+   "jar": "sha256-MxUuqD7FDSJwb9rzsHrLzXFvmmjtyr3XxNAoQ8vc3PY=",
+   "pom": "sha256-1ym21dnvy2v1TnepUTxU3rLxotnpqrX/Pd/7wcv3Fqo="
   },
   "com/querydsl#querydsl-bom/5.1.0": {
    "pom": "sha256-iFPc4TLJ7OTClcf01PPCgy7uDX1EkwhwwGZvpyBDylY="
@@ -1059,15 +1059,15 @@
   "org/flywaydb#flyway-mysql/11.14.1": {
    "pom": "sha256-0flMMsWdu8BPUGwx4GYyGCp9tFjRCHnSmCHpYbnzzFE="
   },
-  "org/flywaydb#flyway-mysql/12.6.2": {
-   "jar": "sha256-+XNelh6svA6YmjKmY7nhPF56CW5seW0ivQx0h79UVTM=",
-   "pom": "sha256-wESuwO2NzI+CAyyrSqqiGEhPSZgPkFJ6QGLzpfclZAA="
+  "org/flywaydb#flyway-mysql/12.8.0": {
+   "jar": "sha256-6JvK5zi33nkgtg8oCyl0PCaHSN9DPvrlQ+kn9AmxSPg=",
+   "pom": "sha256-ndfDcWumBkxpqoXg5HnPAvguwH46yVRIPVy26t33CjY="
   },
   "org/flywaydb#flyway-parent/11.14.1": {
    "pom": "sha256-und7SgR8fK8QRKIqgaCxkeZsEtuxK3x8MXJK/EsKHSc="
   },
-  "org/flywaydb#flyway-parent/12.6.2": {
-   "pom": "sha256-t9y2zMm7wlF+8JyAbqO3CsWrlSzbjpG7tq1yH5GsAg4="
+  "org/flywaydb#flyway-parent/12.8.0": {
+   "pom": "sha256-8d+titE9nPViAbhqIzCTePC98HYXr436WtJxi5mjWqc="
   },
   "org/freemarker#freemarker/2.3.34": {
    "jar": "sha256-mp+5HNZBmSMuscqXZhSKXTDviUS+X6wFEBj5bHDI9qM=",
@@ -1921,8 +1921,8 @@
   "tools/jackson#jackson-bom/3.1.2": {
    "pom": "sha256-vg5eRYB/TeVRTR55M/rPc4gSGz3ZvzGjqz+HogBlCqI="
   },
-  "tools/jackson#jackson-bom/3.1.3": {
-   "pom": "sha256-9aDcUnRCPNLH+McXoAG6ttstsNhAFT42JevJ3pWM804="
+  "tools/jackson#jackson-bom/3.1.4": {
+   "pom": "sha256-LDuEZyWVFPJJQewb1DhjxhKQRfZTrQamcAJaqEgekE4="
   },
   "tools/jackson/core#jackson-core/3.1.2": {
    "jar": "sha256-u7AHY/WZjwOibyHkftUA8lPH/FwVj6PopB2/l6p0Fv0=",
@@ -1933,14 +1933,6 @@
    "jar": "sha256-CjZrHC9jIeRmwpcIR7ElGl3HIBtoDzIFlCMLd7/I3bI=",
    "module": "sha256-6JInXdaRVAn7PJRIAyB5rZZfTtQtVb9wqCLcV9UtcpY=",
    "pom": "sha256-GxCSzDO5UFxRbaSGyP93X283q/tpiqIec7QWocqA8lQ="
-  },
-  "tools/jackson/module#jackson-module-blackbird/3.1.2": {
-   "jar": "sha256-74X4uezu6Rb5mP52tZtx+H0/qK99BmS3pS6o29od90Q=",
-   "module": "sha256-DM/ASvNChcRgsui6kfMaNNxZQlniycOwXwykp7yosLI=",
-   "pom": "sha256-uEUknKP5i+/vOH/YgMUb6Eq5cLEk7bQvtiFOCZGnC3c="
-  },
-  "tools/jackson/module#jackson-modules-base/3.1.2": {
-   "pom": "sha256-44Cdu4YIb9NTlyCG+LcJ9m0HkFhN8OkDTG5lc4aw0k8="
   },
   "xmlpull#xmlpull/1.1.3.4d_b4_min": {
    "jar": "sha256-sJwRCKVhtPqSr7EFxJ9mVUt0Sw+CHBrJuS+ft8OssX0=",
