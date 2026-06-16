@@ -1,0 +1,34 @@
+diff --git a/app/gui/NavigableMenu.qml b/app/gui/NavigableMenu.qml
+--- a/app/gui/NavigableMenu.qml
++++ b/app/gui/NavigableMenu.qml
+@@ -7,7 +7,7 @@ Menu {
+     onOpened: {
+         // If the initiating object currently has keyboard focus,
+         // give focus to the first visible and enabled menu item
+-        if (initiator.focus) {
++        if (initiator && initiator.focus) {
+             for (var i = 0; i < count; i++) {
+                 var item = itemAt(i)
+                 if (item.visible && item.enabled) {
+diff --git a/app/gui/PcView.qml b/app/gui/PcView.qml
+--- a/app/gui/PcView.qml
++++ b/app/gui/PcView.qml
+@@ -232,7 +232,6 @@ CenteredGridView {
+             asynchronous: true
+             sourceComponent: NavigableMenu {
+                 id: pcContextMenu
+-                initiator: pcContextMenuLoader.parent
+                 MenuItem {
+                     text: qsTr("PC Status: %1").arg(model.online ? qsTr("Online") : qsTr("Offline"))
+                     font.bold: true
+diff --git a/app/gui/AppView.qml b/app/gui/AppView.qml
+--- a/app/gui/AppView.qml
++++ b/app/gui/AppView.qml
+@@ -526,7 +526,6 @@ Item {
+             asynchronous: true
+             sourceComponent: NavigableMenu {
+                 id: appContextMenu
+-                initiator: appContextMenuLoader.parent
+                 NavigableMenuItem {
+                     text: model.running ? qsTr("Resume Game") : qsTr("Launch Game")
+                     onTriggered: launchOrResumeSelectedApp(true)
