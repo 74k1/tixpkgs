@@ -149,6 +149,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `lidarr` | `3.1.3.4968` |
 | `logria` | `0.5.0` |
 | `m5burner` | `3-beta` |
+| `moonlight-qt-fork` | `6.21.46` |
 | `mtkclient` | `5794aba` |
 | `multi-scrobbler` | `0.14.1` |
 | `outerbase-studio-desktop` | `0.1.29` |
