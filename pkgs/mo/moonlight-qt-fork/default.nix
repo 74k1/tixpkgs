@@ -18,6 +18,7 @@
   libxkbcommon,
   wayland,
   libdrm,
+  pipewire,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -61,6 +62,7 @@ stdenv.mkDerivation (finalAttrs: {
     libva
     libvdpau
     libxkbcommon
+    pipewire
     qt6.qtwayland
     wayland
     libdrm
