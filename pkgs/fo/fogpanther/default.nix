@@ -46,7 +46,7 @@ stdenv.mkDerivation (finalAttrs: {
       cacert
     ];
 
-    outputHash = "sha256-CeZUzHG4ukr3tHy+/8YUGzp+PN3jsUufZF1i7QCcp7k=";
+    outputHash = "sha256-WXjRDBxL4O0esgW3QB5x9Hb/d95qo/QcH/Lrb9yNtjo=";
     outputHashAlgo = "sha256";
     outputHashMode = "flat";
 
