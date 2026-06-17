@@ -321,6 +321,7 @@ in
           inherit (cfg) group;
           home = cfg.dataDir;
           isSystemUser = true;
+          extraGroups = optional redisActuallyCreateLocally "redis-${serviceName}";
         };
       };
 

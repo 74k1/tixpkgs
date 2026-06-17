@@ -102,57 +102,62 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   installPhase = ''
-    runHook preInstall
-    mkdir -p $out/libexec/keeper-sh $out/bin
+        runHook preInstall
+        mkdir -p $out/libexec/keeper-sh $out/bin
 
-    # Copy the full monorepo tree (source + built dist/ dirs + node_modules).
-    # node_modules contains relative workspace symlinks that resolve correctly
-    # because packages/ is installed at the same level.
-    cp -r services applications packages node_modules $out/libexec/keeper-sh/
-    cp package.json bun.lock turbo.json $out/libexec/keeper-sh/
-    [ -f bunfig.toml ] && cp bunfig.toml $out/libexec/keeper-sh/ || true
+        # Copy the full monorepo tree (source + built dist/ dirs + node_modules).
+        # node_modules contains relative workspace symlinks that resolve correctly
+        # because packages/ is installed at the same level.
+        cp -r services applications packages node_modules $out/libexec/keeper-sh/
+        cp package.json bun.lock turbo.json $out/libexec/keeper-sh/
+        [ -f bunfig.toml ] && cp bunfig.toml $out/libexec/keeper-sh/ || true
 
-    # --- service wrappers ---
-    # All services cd to the monorepo root so bun can find node_modules.
+        # The web server resolves client assets via process.cwd()/dist/client, but
+        # Vite builds them to applications/web/dist/client. Symlink the web dist
+        # at the monorepo root so both paths resolve to the same tree.
+        ln -s $out/libexec/keeper-sh/applications/web/dist $out/libexec/keeper-sh/dist
 
-    for service in api cron worker; do
-      cat > $out/bin/keeper-sh-$service <<EOF
-#!${stdenvNoCC.shell}
-set -eo pipefail
-cd $out/libexec/keeper-sh
-exec ${bun}/bin/bun services/$service/dist/index.js
-EOF
-      chmod +x $out/bin/keeper-sh-$service
-    done
+        # --- service wrappers ---
+        # All services cd to the monorepo root so bun can find node_modules.
 
-    cat > $out/bin/keeper-sh-mcp <<EOF
-#!${stdenvNoCC.shell}
-set -eo pipefail
-cd $out/libexec/keeper-sh
-exec ${bun}/bin/bun services/mcp/dist/index.js
-EOF
-    chmod +x $out/bin/keeper-sh-mcp
+        for service in api cron worker; do
+          cat > $out/bin/keeper-sh-$service <<EOF
+    #!${stdenvNoCC.shell}
+    set -eo pipefail
+    cd $out/libexec/keeper-sh
+    exec ${bun}/bin/bun services/$service/dist/index.js
+    EOF
+          chmod +x $out/bin/keeper-sh-$service
+        done
 
-    cat > $out/bin/keeper-sh-web <<EOF
-#!${stdenvNoCC.shell}
-set -eo pipefail
-cd $out/libexec/keeper-sh
-if [ -z "\$PORT" ]; then export PORT=3000; fi
-exec ${bun}/bin/bun applications/web/dist/server-entry/index.js
-EOF
-    chmod +x $out/bin/keeper-sh-web
+        cat > $out/bin/keeper-sh-mcp <<EOF
+    #!${stdenvNoCC.shell}
+    set -eo pipefail
+    cd $out/libexec/keeper-sh
+    exec ${bun}/bin/bun services/mcp/dist/index.js
+    EOF
+        chmod +x $out/bin/keeper-sh-mcp
 
-    # Migration runner — bun handles TypeScript natively; drizzle migration
-    # files live under packages/database/drizzle/ which is included in $out.
-    cat > $out/bin/keeper-sh-migrate <<EOF
-#!${stdenvNoCC.shell}
-set -eo pipefail
-cd $out/libexec/keeper-sh
-exec ${bun}/bin/bun packages/database/scripts/migrate.ts
-EOF
-    chmod +x $out/bin/keeper-sh-migrate
+        cat > $out/bin/keeper-sh-web <<EOF
+    #!${stdenvNoCC.shell}
+    set -eo pipefail
+    cd $out/libexec/keeper-sh
+    if [ -z "\$PORT" ]; then export PORT=3000; fi
+    exec ${bun}/bin/bun applications/web/dist/server-entry/index.js
+    EOF
+        chmod +x $out/bin/keeper-sh-web
 
-    runHook postInstall
+        # Migration runner — bun handles TypeScript natively; drizzle migration
+        # files live under packages/database/drizzle/ which is included in $out.
+        cat > $out/bin/keeper-sh-migrate <<EOF
+    #!${stdenvNoCC.shell}
+    set -eo pipefail
+    cd $out/libexec/keeper-sh
+    exec ${bun}/bin/bun packages/database/scripts/migrate.ts
+    EOF
+        chmod +x $out/bin/keeper-sh-migrate
+
+        runHook postInstall
   '';
 
   doInstallCheck = true;
