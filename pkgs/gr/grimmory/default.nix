@@ -116,7 +116,7 @@ let
       homepage = "https://github.com/grimmory-tools/grimmory";
       changelog = "https://github.com/grimmory-tools/grimmory/releases/tag/v${version}";
       license = lib.licenses.agpl3Only;
-      maintainers = [ "74k1" ];
+      maintainers = with lib.maintainers; [ _74k1 ];
       platforms = [ "x86_64-linux" ];
     };
   });

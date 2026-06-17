@@ -35,8 +35,6 @@ let
   );
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.rsshub = {
     enable = mkEnableOption "RSSHub service";
 
@@ -187,4 +185,6 @@ in
       rsshub = { };
     };
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

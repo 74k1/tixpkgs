@@ -187,6 +187,6 @@ stdenv.mkDerivation (finalAttrs: {
     mainProgram = "fogpanther";
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
   };
 })

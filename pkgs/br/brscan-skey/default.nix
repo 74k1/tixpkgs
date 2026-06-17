@@ -113,7 +113,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "Brother scan-key-tool";
     homepage = "http://support.brother.com/";
     license = lib.licenses.unfree;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "brscan-skey";
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];

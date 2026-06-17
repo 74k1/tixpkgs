@@ -56,8 +56,6 @@ let
   envFile = pkgs.writeText "rybbit-env" (envToKeyValue cfg.environment);
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.rybbit = {
     enable = mkEnableOption "Rybbit web analytics service";
 
@@ -481,4 +479,6 @@ in
       ];
     };
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

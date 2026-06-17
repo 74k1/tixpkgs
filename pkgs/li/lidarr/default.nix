@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
     description = "Usenet and torrent music downloader";
     homepage = "https://lidarr.audio/";
     license = licenses.gpl3Only;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "Lidarr";
     platforms = [ "x86_64-linux" ];
   };

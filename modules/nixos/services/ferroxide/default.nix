@@ -402,4 +402,6 @@ in
       };
     };
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

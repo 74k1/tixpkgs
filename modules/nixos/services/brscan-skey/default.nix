@@ -29,8 +29,6 @@ let
   '';
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.brscan-skey = {
     enable = mkEnableOption "Brother scan-key-tool daemon";
 
@@ -120,4 +118,6 @@ in
       brscan-skey = { };
     };
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }
