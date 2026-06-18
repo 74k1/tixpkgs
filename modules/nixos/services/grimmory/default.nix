@@ -98,6 +98,8 @@ let
   '';
 in
 {
+  meta.maintainers = [ "74k1" ];
+
   options.services.grimmory = {
     enable = mkEnableOption "Grimmory, a self-hosted digital library";
 

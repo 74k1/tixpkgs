@@ -31,5 +31,6 @@ stdenvNoCC.mkDerivation {
     license = licenses.agpl3Plus;
     mainProgram = "index.php";
     platforms = platforms.unix;
+    maintainers = [ "74k1" ];
   };
 }

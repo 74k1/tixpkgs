@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/pl/keeper-sh/default.nix"
+package_file="$root/pkgs/ke/keeper-sh/default.nix"
 api="https://api.github.com/repos/ridafkih/keeper.sh/releases/latest"
 
 release="$(curl -fsSL "$api")"

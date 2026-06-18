@@ -160,12 +160,7 @@
     in
     {
       checks = lib.optionalAttrs enabled (
-        nixosChecks
-        // homeManagerChecks
-        // lib.optionalAttrs (nixosChecks ? module-nixos-services-grimmory-setup) {
-          # Backwards-compatible name from the old ad-hoc Grimmory VM check.
-          grimmory-nixos = nixosChecks.module-nixos-services-grimmory-setup;
-        }
+        nixosChecks // homeManagerChecks
       );
     };
 }

@@ -223,6 +223,8 @@ let
   '';
 in
 {
+  meta.maintainers = [ "74k1" ];
+
   options.services.multi-scrobbler = {
     enable = lib.mkEnableOption "multi-scrobbler service";
 

@@ -181,6 +181,8 @@ let
       "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 in
 {
+  meta.maintainers = [ "74k1" ];
+
   options.services.fourget = {
     enable = mkEnableOption "4get";
 

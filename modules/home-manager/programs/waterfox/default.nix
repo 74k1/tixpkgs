@@ -15,6 +15,8 @@ let
   mkFirefoxModule = import "${inputs.home-manager}/modules/programs/firefox/mkFirefoxModule.nix";
 in
 {
+  meta.maintainers = [ "74k1" ];
+
   imports = [
     (mkFirefoxModule {
       inherit modulePath;

@@ -36,7 +36,7 @@
           ./modules/flake/checks.nix
         ];
 
-        debug = true;
+        debug = false;
 
         perSystem =
           {

@@ -2,17 +2,19 @@
 
 Tests are discovered recursively from:
 
-- `modules/tests/nixos/<module-path>/<test>.nix`
+- `modules/tests/nixos/<category>/<module-path>/<test>.nix`
 - `modules/tests/home-manager/<module-path>/<test>.nix`
 
-The `<module-path>` mirrors the exported module key, for example
-`modules/tests/nixos/services/grimmory/setup.nix` tests
+For NixOS, `<category>` is either `services` (for `services.*` module tests)
+or `pkgs` (for package-level integration tests that don't correspond to a
+module). The `<module-path>` mirrors the exported module key, for example
+`modules/tests/nixos/services/grimmory/basic.nix` tests
 `nixosModules."services/grimmory"`.
 
 Generated check names use the path:
 
 ```sh
-nix build .#checks.x86_64-linux.module-nixos-services-grimmory-setup
+nix build .#checks.x86_64-linux.module-nixos-services-grimmory-basic
 nix build .#checks.x86_64-linux.module-home-manager-programs-waterfox-basic
 ```
 

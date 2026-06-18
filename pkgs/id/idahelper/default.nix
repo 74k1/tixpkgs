@@ -30,5 +30,6 @@ python3Packages.buildPythonPackage rec {
     description = "Standard library for IDA Pro plugins";
     homepage = "https://github.com/yoavst/idahelper";
     license = licenses.mit;
+    maintainers = [ "74k1" ];
   };
 }

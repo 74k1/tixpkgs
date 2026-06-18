@@ -14,4 +14,11 @@ buildGoModule rec {
     hash = "sha256-mvzVOuFZABGE7DH3AkhOXvsvSZzgpW0aJUdXW6N6hf0=";
   };
   vendorHash = "sha256-NiNhKbf5bU1SQXFTZCp8/yNPc89ss8go6M2867ziqq4=";
+
+  meta = with lib; {
+    description = "A lightweight LDAP directory server";
+    homepage = "https://github.com/Macmod/godap";
+    license = licenses.mit;
+    maintainers = [ "74k1" ];
+  };
 }
