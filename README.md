@@ -135,14 +135,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 <!-- BEGIN PACKAGES -->
 | Package | Version |
 |---|---|
-| `arcbrush` | `1.3.1` |
+| `arcbrush` | `1.4.0` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.4.2+hotfix.2` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.0` |
-| `fourget` | `unstable-2026-05-24` |
-| `godap` | `2.10.4` |
+| `fourget` | `unstable-2026-06-14` |
+| `godap` | `2.11.0` |
 | `grimmory` | `3.2.1` |
 | `ida-ios-helper` | `1.0.22` |
 | `idahelper` | `1.0.18` |
