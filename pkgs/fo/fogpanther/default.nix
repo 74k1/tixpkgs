@@ -37,7 +37,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "fogpanther";
-  version = "0.7.4";
+  version = "0.8.0";
 
   src = stdenv.mkDerivation {
     name = "fogpanther-${finalAttrs.version}.tar.xz";
