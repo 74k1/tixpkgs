@@ -143,7 +143,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `fogpanther` | `0.8.0` |
 | `fourget` | `unstable-2026-06-14` |
 | `godap` | `2.11.0` |
-| `grimmory` | `3.2.1` |
+| `grimmory` | `3.2.2` |
 | `ida-ios-helper` | `1.0.22` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
@@ -151,13 +151,13 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `logria` | `0.5.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
-| `mtkclient` | `5794aba` |
+| `mtkclient` | `2c9f4d7` |
 | `multi-scrobbler` | `0.14.1` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.1.26543` |
 | `rybbit` | `2.6.1` |
-| `waterfox` | `6.6.14` |
-| `waterfox-unwrapped` | `6.6.14` |
+| `waterfox` | `6.6.15` |
+| `waterfox-unwrapped` | `6.6.15` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
