@@ -7,19 +7,20 @@
 python3.pkgs.buildPythonPackage rec {
   pyproject = true;
   pname = "mtkclient";
-  version = "5794aba";
+  version = "2c9f4d7";
 
   buildInputs = with pkgs; [
     pkgs.keystone
   ];
 
   propagatedBuildInputs = with python3.pkgs; [
-    hatchling
     capstone
     colorama
     flake8
     fusepy
+    hatchling
     keystone-engine
+    mfusepy
     pycryptodome
     pycryptodomex
     pyserial
@@ -33,8 +34,8 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bkerler";
     repo = "mtkclient";
-    rev = "5794aba14a8753cd8186cd0ec2ce5ae73e3ea2f2";
-    hash = "sha256-M16posU6FGobiFbXvFBE5C0otACD2SPRLubwA+STKxs=";
+    rev = "2c9f4d78601e2b223cacfed773a5c4cbb1808189";
+    hash = "sha256-isQKurmKQavxGH/LnD2pXn+zbXUK+5KwMXwkT9TprPM=";
   };
 
   postFixup = ''
