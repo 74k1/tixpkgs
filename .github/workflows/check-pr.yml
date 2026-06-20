@@ -63,6 +63,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          CACHIX_SKIP: ${{ vars.CACHIX_SKIP || '' }}
         run: |
           # shellcheck disable=SC2016,SC2295
           set -euo pipefail
@@ -220,6 +221,19 @@ jobs:
 
           sort -u -o packages.txt packages.txt
           sort -u -o module-checks.txt module-checks.txt
+
+          # Filter out skipped packages
+          skip_list="$(echo "${CACHIX_SKIP:-}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -v '^$' | sort -u)"
+          if [ -n "$skip_list" ] && [ -s packages.txt ]; then
+            while IFS= read -r pkg; do
+              if echo "$skip_list" | grep -Fxq "$pkg"; then
+                echo "Skipping $pkg (CACHIX_SKIP)"
+              else
+                echo "$pkg"
+              fi
+            done < packages.txt > packages-filtered.txt
+            mv packages-filtered.txt packages.txt
+          fi
 
           packages_json="$(jq -Rsc 'split("\n") | map(select(length > 0))' packages.txt)"
           module_checks_json="$(jq -Rsc 'split("\n") | map(select(length > 0))' module-checks.txt)"
