@@ -110,6 +110,7 @@ This flake exports modules in two ways:
 | Module | Docs |
 |---|---|
 | `services.brscan-skey` | [README](modules/nixos/services/brscan-skey/README.md) |
+| `services.ferroxide` | [README](modules/nixos/services/ferroxide/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
 | `services.keeper-sh` | [README](modules/nixos/services/keeper-sh/README.md) |
