@@ -1,0 +1,142 @@
+name: Build Package (nixbuild.net)
+
+on:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Package names to build, space or comma-separated (e.g. waterfox firefox arcbrush)'
+        required: true
+        type: string
+      flake:
+        description: 'Override flake to build from (e.g. github:NixOS/nixpkgs?ref=refs/pull/475318/head or paste a PR URL). Default: this repo'
+        required: false
+        default: ''
+        type: string
+      system:
+        description: 'Target system'
+        required: false
+        default: 'x86_64-linux'
+        type: choice
+        options:
+          - x86_64-linux
+          - aarch64-linux
+          - i686-linux
+      push-to-cachix:
+        description: 'Push build result to Cachix?'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  CACHIX_CACHE_NAME: tixpkgs
+
+jobs:
+  build:
+    name: Build Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          swap-storage: false
+
+      - name: Add build swap
+        run: |
+          set -euo pipefail
+          sudo fallocate -l 16G /mnt/nix-build-swapfile
+          sudo chmod 600 /mnt/nix-build-swapfile
+          sudo mkswap /mnt/nix-build-swapfile
+          sudo swapon /mnt/nix-build-swapfile
+          free -h
+
+      - uses: actions/checkout@v4
+
+      - uses: nixbuild/nix-quick-install-action@v35
+        with:
+          nix_conf: |
+            experimental-features = nix-command flakes
+
+      - uses: nixbuild/nixbuild-action@v25
+        with:
+          nixbuild_token: ${{ secrets.NIXBUILD_TOKEN }}
+          generate_summary_for: 'job'
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: ${{ env.CACHIX_CACHE_NAME }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: true
+
+      - name: Build packages
+        env:
+          PACKAGES_INPUT: ${{ inputs.packages }}
+          FLAKE_INPUT: ${{ inputs.flake }}
+          SYSTEM: ${{ inputs.system }}
+          CACHIX_CACHE_NAME: ${{ env.CACHIX_CACHE_NAME }}
+        run: |
+          set -euo pipefail
+
+          # Parse space/comma-separated packages
+          IFS=', ' read -ra pkgs <<< "${PACKAGES_INPUT}"
+          cleaned=()
+          for p in "${pkgs[@]}"; do
+            p="$(echo "$p" | xargs)"
+            [[ -n "$p" ]] && cleaned+=("$p")
+          done
+
+          if [ "${#cleaned[@]}" -eq 0 ]; then
+            echo "No packages specified"
+            exit 1
+          fi
+
+          # Resolve flake reference
+          flake_ref="."
+          if [[ -n "${FLAKE_INPUT:-}" ]]; then
+            if [[ "${FLAKE_INPUT}" =~ ^https?://github\.com/([^/]+/[^/]+)/pull/([0-9]+) ]]; then
+              # PR URL -> github:owner/repo?ref=refs/pull/N/head
+              flake_ref="github:${BASH_REMATCH[1]}?ref=refs/pull/${BASH_REMATCH[2]}/head"
+              echo "Resolved PR URL  -> ${flake_ref}"
+            elif [[ "${FLAKE_INPUT}" =~ ^https?://github\.com/([^/]+/[^/]+)/tree/(.+) ]]; then
+              # Tree/branch URL -> github:owner/repo?ref=branch
+              flake_ref="github:${BASH_REMATCH[1]}?ref=${BASH_REMATCH[2]}"
+              echo "Resolved tree URL -> ${flake_ref}"
+            else
+              flake_ref="${FLAKE_INPUT}"
+            fi
+          fi
+
+          # Build flake refs for nix build
+          args=()
+          for pkg in "${cleaned[@]}"; do
+            args+=("${flake_ref}#${pkg}")
+          done
+
+          echo "Building ${#cleaned[@]} package(s): ${cleaned[*]}"
+          echo "Flake: ${flake_ref}"
+
+          if build_json="$(nix build \
+            --print-build-logs \
+            --no-link \
+            --json \
+            --system "${SYSTEM}" \
+            "${args[@]}")"; then
+
+            mapfile -t output_paths < <(
+              jq -r '.[].outputs | to_entries[].value' <<< "$build_json" | sort -u
+            )
+
+            echo "Built successfully; output paths:"
+            printf '  %s\n' "${output_paths[@]}"
+
+            if [[ "${{ inputs.push-to-cachix }}" == "true" ]]; then
+              echo "::group::Pushing to Cachix"
+              cachix push --omit-deriver "$CACHIX_CACHE_NAME" "${output_paths[@]}"
+              echo "::endgroup::"
+            fi
+          else
+            echo "Build failed"
+            exit 1
+          fi
