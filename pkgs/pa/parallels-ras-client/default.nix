@@ -24,11 +24,18 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "parallels-ras-client";
-  version = "21.1.26543";
+  version = "21.2.27178";
 
   src = fetchurl {
-    url = "https://download.parallels.com/ras/v21/21.1.0.26543/RASClient-${finalAttrs.version}_x86_64.tar.bz2";
-    hash = "sha256-JEg4CeYTJhhD/r+r77rW4agzM5NRJkcVYGzovGuEsDA=";
+    url =
+      let
+        v = lib.versions.splitVersion finalAttrs.version;
+        major = builtins.elemAt v 0;
+        minor = builtins.elemAt v 1;
+        build = builtins.elemAt v 2;
+      in
+      "https://download.parallels.com/ras/v${major}/${major}.${minor}.0.${build}/RASClient-${finalAttrs.version}_x86_64.tar.bz2";
+    hash = "sha256-Qc06RNgZPsDdgeKsOjijM1Ytgyh9enh8BiilrVQKHos=";
   };
 
   nativeBuildInputs = [
