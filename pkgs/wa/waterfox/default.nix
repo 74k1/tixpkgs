@@ -47,6 +47,5 @@
 }).overrideAttrs
   (oldAttrs: {
     passthru = (oldAttrs.passthru or { }) // {
-      updateScript = waterfox-unwrapped.updateScript;
     };
   })

@@ -42,16 +42,22 @@ in
 {
   perSystem =
     { system, ... }:
+    let
+      pkgs' = import inputs.nixpkgs {
+        inherit system;
+        overlays = [ self.overlays.default ];
+        config.allowUnfree = true;
+      };
+    in
     {
-      packages = mkImportedPackages (
-        import inputs.nixpkgs {
-          inherit system;
-          overlays = [
-            self.overlays.default
-          ];
-          config.allowUnfree = true;
-        }
-      );
+      packages = mkImportedPackages pkgs' // {
+        waterfox-unwrapped = pkgs'.waterfox-unwrapped;
+      };
     };
-  flake.overlays.default = final: prev: mkImportedPackages final;
+  flake.overlays.default = final: prev:
+    mkImportedPackages final
+    // {
+      waterfox-unwrapped =
+        inputs.hythera-nixpkgs.legacyPackages.${final.stdenv.hostPlatform.system}.waterfox-unwrapped;
+    };
 }

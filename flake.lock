@@ -40,6 +40,22 @@
         "type": "github"
       }
     },
+    "hythera-nixpkgs": {
+      "locked": {
+        "lastModified": 1781720401,
+        "narHash": "sha256-9ifBjC+shxAZW49V/J/iR9V1qElyc80rbKEnHzNY9kQ=",
+        "owner": "Hythera",
+        "repo": "nixpkgs",
+        "rev": "84401d23c8b8fce7f1331bd5b57cad791a1c73e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Hythera",
+        "ref": "pkgs/waterfox/init",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1779560665,
@@ -60,6 +76,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
+        "hythera-nixpkgs": "hythera-nixpkgs",
         "nixpkgs": "nixpkgs"
       }
     }
