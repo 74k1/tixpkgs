@@ -50,14 +50,12 @@ in
       };
     in
     {
-      packages = mkImportedPackages pkgs' // {
-        waterfox-unwrapped = pkgs'.waterfox-unwrapped;
-      };
+      packages = mkImportedPackages pkgs';
     };
   flake.overlays.default = final: prev:
     mkImportedPackages final
     // {
-      waterfox-unwrapped =
-        inputs.hythera-nixpkgs.legacyPackages.${final.stdenv.hostPlatform.system}.waterfox-unwrapped;
+      waterfox = null;
+      waterfox-unwrapped = null;
     };
 }

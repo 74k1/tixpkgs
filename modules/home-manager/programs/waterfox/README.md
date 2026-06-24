@@ -1,6 +1,6 @@
 > [!IMPORTANT]
 > This Module _might_ not have all the capabilities you'd want / expect. Please raise an [issue](https://github.com/74k1/tixpkgs/issues) or figure out a fix for a PR. :)
-> 
+>
 > Contributions are always welcome!
 
 # `homeManagerModules'.programs.waterfox`
@@ -14,13 +14,21 @@ Home Manager module for configuring Waterfox via Home Manager's Firefox module m
 
 ## Requirements
 
-- Use a `pkgs.waterfox` package compatible with Firefox wrapping, such as the nixpkgs Waterfox package from the upstream PR that provides both `waterfox` and `waterfox-unwrapped`. (like https://github.com/NixOS/nixpkgs/pull/475318)
+tixpkgs does not ship a waterfox package. You need to bring your own.
+The recommended source is Hythera's nixpkgs fork:
+
+```
+inputs.hythera-waterfox.url = "github:Hythera/nixpkgs/pkgs/waterfox/init";
+```
+
+See the example below for wiring it up.
 
 ## Basic Usage
 
 ```nix
 {
   inputs,
+  pkgs,
   ...
 }: {
   imports = [
@@ -31,6 +39,7 @@ Home Manager module for configuring Waterfox via Home Manager's Firefox module m
 
   programs.waterfox = {
     enable = true;
+    package = inputs.hythera-waterfox.legacyPackages.${pkgs.stdenv.hostPlatform.system}.waterfox;
 
     profiles.default = {
       id = 0;
@@ -44,7 +53,7 @@ Home Manager module for configuring Waterfox via Home Manager's Firefox module m
 }
 ```
 
-## Example with custom package and policies
+## Example with policies and more options
 
 ```nix
 {
@@ -58,7 +67,7 @@ Home Manager module for configuring Waterfox via Home Manager's Firefox module m
 
   programs.waterfox = {
     enable = true;
-    package = inputs.hythera-waterfox.outputs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.waterfox;
+    package = inputs.hythera-waterfox.legacyPackages.${pkgs.stdenv.hostPlatform.system}.waterfox;
 
     policies.ExtensionSettings = {
       "uBlock0@raymondhill.net" = {
