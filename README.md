@@ -155,7 +155,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `mtkclient` | `2c9f4d7` |
 | `multi-scrobbler` | `0.14.1` |
 | `outerbase-studio-desktop` | `0.1.29` |
-| `parallels-ras-client` | `21.1.26543` |
+| `parallels-ras-client` | `21.2.27178` |
 | `rybbit` | `2.6.1` |
 | `waterfox` | `6.6.15` |
 | `waterfox-unwrapped` | `6.6.15` |
