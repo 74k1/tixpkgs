@@ -101,9 +101,14 @@ in
       ];
       description = ''
         Extra CLI flags appended to the yopass-server invocation.
-        Use this for flags not exposed as module options (S3 file store,
-        OIDC, license key, branding, audit logging, etc.).
-        For secret-based flags, use {option}`services.yopass.environmentFile` instead.
+
+        Most flags can also be set as environment variables instead (see
+        {option}`services.yopass.environmentFile`). yopass maps every flag to
+        an env var automatically (e.g. `--oidc-client-secret` becomes
+        `OIDC_CLIENT_SECRET`). Use whichever you find clearer.
+
+        Prefer the environment file for anything secret-related so it doesn't
+        end up in the Nix store.
       '';
     };
 
@@ -142,7 +147,23 @@ in
       type = types.nullOr types.str;
       default = null;
       example = "https://secrets.example.com";
-      description = "Public base URL used in generated secret links.";
+      description = ''
+        Base URL used when generating share links (the links people copy to share a secret).
+
+        Leave this on `null` for most setups. yopass will figure out the right URL
+        from wherever the visitor is connecting. You only need to set this when the
+        domain your users see is different from where yopass is actually running.
+
+        Common cases where you'd set this:
+
+        - You run a read-only mirror on a separate domain.
+        - Your CDN or reverse proxy doesn't pass the `Host` header correctly.
+        - You want share links to always use a specific domain even when accessed
+          through others.
+
+        If you're just putting yopass behind nginx on a single domain, you don't
+        need this at all.
+      '';
     };
 
     environmentFile = mkOption {
@@ -150,9 +171,21 @@ in
       default = null;
       example = "/run/secrets/yopass.env";
       description = ''
-        Optional systemd environment file for yopass secrets.
-        Environment variables are prefixed with `YOPASS_` and dashes become underscores
-        (e.g. `YOPASS_OIDC_CLIENT_SECRET` maps to `--oidc-client-secret`).
+        systemd environment file passed to yopass-server.
+
+        You can set any yopass flag here. Take the flag name, uppercase it,
+        and turn dashes into underscores. For example:
+
+        ```
+        OIDC_CLIENT_SECRET=...
+        OIDC_ISSUER=https://accounts.google.com
+        LICENSE_KEY=eyJ...
+        ```
+
+        This is the right place for secrets, passwords, and license keys since they
+        stay out of the Nix store. Non-secret flags work here too, but you might
+        prefer {option}`services.yopass.extraFlags` for those since they're easier
+        to read alongside the rest of your config.
       '';
     };
 
@@ -345,7 +378,11 @@ in
       type = types.str;
       default = "localhost";
       example = "secrets.example.com";
-      description = "Hostname for the optional nginx reverse proxy.";
+      description = ''
+        Hostname for the nginx virtual host.
+
+        Only used when {option}`services.yopass.nginx` is set.
+      '';
     };
 
     nginx = mkOption {
