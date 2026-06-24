@@ -1,6 +1,11 @@
 {
   description = "packages & modules for myself";
 
+  nixConfig = {
+    extra-substituters = [ "https://tixpkgs.cachix.org" ];
+    extra-trusted-public-keys = [ "tixpkgs.cachix.org-1:Q52x6PMD7ZuTC7oRihwp5lP9YaEaYtrfxYkwzEpjSRI=" ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     home-manager = {
