@@ -6,7 +6,7 @@
 }:
 python3Packages.buildPythonPackage rec {
   pname = "ida-ios-helper";
-  version = "1.0.22";
+  version = "1.0.23";
   # format = "setuptools";
   pyproject = true;
 
@@ -14,7 +14,7 @@ python3Packages.buildPythonPackage rec {
     owner = "yoavst";
     repo = "ida-ios-helper";
     rev = version;
-    hash = "sha256-HEUQcpt6f5x0RFp4sVK+K5g++vMdI1QcIQWFyij6/uQ=";
+    hash = "sha256-bMoBxQvZGA9MGwE2ET/T3MR6X9mzPGlYCri2BV4fKbs=";
   };
 
   env.SETUPTOOLS_SCM_PRETEND_VERSION = version;
