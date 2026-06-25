@@ -76,6 +76,13 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/Applications/Moonlight.app/Contents/MacOS/Moonlight $out/bin/moonlight
   '';
 
+  # Qt Multimedia dlopens libpipewire at runtime for audio capture.
+  # Since nothing links against it directly, Nix doesn't add its lib
+  # path to RPATH. Add it manually so the PipeWire backend can load.
+  postFixup = lib.optionalString stdenv.hostPlatform.isLinux ''
+    patchelf --add-rpath ${pipewire}/lib $out/bin/.moonlight-wrapped
+  '';
+
   meta = {
     description = "GameStream client for PCs (qiin2333 fork with enhanced streaming features)";
     homepage = "https://github.com/qiin2333/moonlight-qt";
