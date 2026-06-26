@@ -142,7 +142,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `commet` | `0.4.2+hotfix.2` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.0` |
-| `fourget` | `unstable-2026-06-21` |
+| `fourget` | `unstable-2026-06-25` |
 | `godap` | `2.11.0` |
 | `grimmory` | `3.2.2` |
 | `ida-ios-helper` | `1.0.23` |
