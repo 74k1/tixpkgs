@@ -7,7 +7,7 @@
 python3.pkgs.buildPythonPackage rec {
   pyproject = true;
   pname = "mtkclient";
-  version = "2c9f4d7";
+  version = "a6a7147";
 
   buildInputs = with pkgs; [
     pkgs.keystone
@@ -34,8 +34,8 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bkerler";
     repo = "mtkclient";
-    rev = "2c9f4d78601e2b223cacfed773a5c4cbb1808189";
-    hash = "sha256-isQKurmKQavxGH/LnD2pXn+zbXUK+5KwMXwkT9TprPM=";
+    rev = "a6a7147e92907b2017027ae404b84101444ee502";
+    hash = "sha256-879YVJZ6jAoKfeLI/hX2BYEaCuRGVPWdBtA5edHvkS8=";
   };
 
   postFixup = ''
