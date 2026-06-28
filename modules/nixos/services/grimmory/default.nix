@@ -36,11 +36,7 @@ let
 
   envVarNameType = types.strMatching "[A-Za-z_][A-Za-z0-9_]*";
 
-  nixpkgsPath =
-    if inputs != null then
-      "${inputs.nixpkgs}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
-    else
-      "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
+  nixpkgsPath = "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 
   databaseUrl =
     if cfg.database.url != null then
@@ -246,7 +242,7 @@ in
 
     nginx = mkOption {
       type = types.nullOr (
-        types.submodule (lib.recursiveUpdate (import nixpkgsPath { inherit config lib; }).options { })
+        types.submodule (import nixpkgsPath { inherit config lib; })
       );
       default = null;
       example = literalExpression ''

@@ -174,11 +174,7 @@ let
       ]);
   };
 
-  niksPath =
-    if inputs != null then
-      "${inputs.nixpkgs}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
-    else
-      "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
+  niksPath = "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 in
 {
   meta.maintainers = [ "74k1" ];
@@ -204,7 +200,7 @@ in
 
     nginx = mkOption {
       type = types.nullOr (
-        types.submodule (lib.recursiveUpdate (import niksPath { inherit config lib; }).options { })
+        types.submodule (import niksPath { inherit config lib; })
       );
       default = null;
       example = literalExpression ''

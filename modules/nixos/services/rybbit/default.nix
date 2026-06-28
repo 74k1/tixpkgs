@@ -26,7 +26,7 @@ let
 
   cfg = config.services.rybbit;
 
-  nixpkgsPath = if inputs != null then inputs.nixpkgs else pkgs.path;
+  nixpkgsPath = pkgs.path;
 
   inherit (lib.types)
     bool
@@ -295,11 +295,9 @@ in
     nginx = mkOption {
       type = nullOr (
         submodule (
-          lib.recursiveUpdate
-            (import "${nixpkgsPath}/nixos/modules/services/web-servers/nginx/vhost-options.nix" {
-              inherit config lib;
-            }).options
-            { }
+          import "${nixpkgsPath}/nixos/modules/services/web-servers/nginx/vhost-options.nix" {
+            inherit config lib;
+          }
         )
       );
       default = null;
