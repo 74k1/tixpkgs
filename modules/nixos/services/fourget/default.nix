@@ -351,7 +351,7 @@ in
         virtualHosts.${cfg.hostname} = mkMerge [
           nginxCfg
           {
-            root = cfg.webRoot;
+            root = lib.mkForce cfg.webRoot;
             locations = {
               "/" = {
                 index = "index.php";
