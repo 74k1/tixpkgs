@@ -79,7 +79,7 @@ buildGoModule (finalAttrs: {
     homepage = "https://github.com/jhaals/yopass";
     changelog = "https://github.com/jhaals/yopass/releases/tag/${finalAttrs.src.rev}";
     license = lib.licenses.asl20;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "yopass";
     platforms = lib.platforms.unix;
   };

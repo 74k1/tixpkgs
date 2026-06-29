@@ -94,8 +94,6 @@ let
   '';
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.grimmory = {
     enable = mkEnableOption "Grimmory, a self-hosted digital library";
 
@@ -241,9 +239,7 @@ in
     };
 
     nginx = mkOption {
-      type = types.nullOr (
-        types.submodule (import nixpkgsPath { inherit config lib; })
-      );
+      type = types.nullOr (types.submodule (import nixpkgsPath { inherit config lib; }));
       default = null;
       example = literalExpression ''
         {
@@ -399,4 +395,6 @@ in
       };
     })
   ]);
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

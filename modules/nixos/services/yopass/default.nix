@@ -85,8 +85,6 @@ let
   );
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.yopass = {
     enable = mkEnableOption "Yopass, a secure sharing service for secrets, passwords and files";
 
@@ -519,4 +517,6 @@ in
       };
     })
   ]);
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

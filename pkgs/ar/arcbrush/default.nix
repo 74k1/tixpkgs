@@ -34,7 +34,7 @@ appimageTools.wrapType2 {
     downloadPage = "https://arcbrush.com/downloads";
     license = licenses.unfree;
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "arcbrush";
     platforms = [ "x86_64-linux" ];
   };

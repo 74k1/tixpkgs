@@ -19,6 +19,6 @@ buildGoModule rec {
     description = "A lightweight LDAP directory server";
     homepage = "https://github.com/Macmod/godap";
     license = licenses.mit;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
   };
 }

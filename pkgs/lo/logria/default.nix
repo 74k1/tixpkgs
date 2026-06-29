@@ -22,7 +22,7 @@ rustPlatform.buildRustPackage rec {
     description = "A powerful CLI tool that puts log aggregation at your fingertips.";
     homepage = "https://github.com/ReagentX/Logria";
     license = lib.licenses.gpl3Plus;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.all;
   };
 }

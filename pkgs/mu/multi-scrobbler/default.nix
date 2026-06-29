@@ -58,7 +58,7 @@ buildNpmPackage rec {
     description = "Scrobble plays from multiple sources to multiple clients";
     homepage = "https://multi-scrobbler.app";
     license = lib.licenses.mit;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "multi-scrobbler";
   };
 }

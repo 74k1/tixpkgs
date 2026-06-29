@@ -58,6 +58,6 @@ python3.pkgs.buildPythonPackage rec {
     description = "MTK reverse engineering and flash tool";
     homepage = "https://github.com/bkerler/mtkclient";
     license = lib.licenses.gpl3Only;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
   };
 }

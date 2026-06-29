@@ -100,11 +100,11 @@ buildGoModule rec {
     autoPatchelf $out/share/brimcap/suricata/bin/*
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Convert pcap files into richly-typed ZNG summary logs";
     homepage = "https://github.com/brimdata/brimcap";
     license = with lib.licenses; [ bsd3 ];
-    maintainers = [ "74k1" ];
-    platforms = platforms.unix;
+    maintainers = with lib.maintainers; [ _74k1 ];
+    platforms = lib.platforms.unix;
   };
 }

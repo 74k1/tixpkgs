@@ -32,7 +32,7 @@ appimageTools.wrapType2 rec {
     description = "A lightweight Electron wrapper for the Outerbase Studio web version.";
     homepage = "https://www.outerbase.com/";
     license = licenses.agpl3Plus;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "outerbase-studio-desktop";
     platforms = [ "x86_64-linux" ];
   };

@@ -253,7 +253,7 @@ flutter341.buildFlutterApplication (finalAttrs: {
     homepage = "https://github.com/commetchat/commet";
     changelog = "https://github.com/commetchat/commet/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.agpl3Only;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "commet";
     platforms = [ "x86_64-linux" ];
     broken = true;

@@ -186,7 +186,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     homepage = "https://keeper.sh";
     changelog = "https://github.com/ridafkih/keeper.sh/releases/tag/v${version}";
     license = lib.licenses.agpl3Only;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.linux;
   };
 })

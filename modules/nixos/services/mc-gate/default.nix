@@ -17,8 +17,6 @@ let
   '';
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.mc-gate = {
     enable = lib.mkEnableOption "Gate Service";
     config = lib.mkOption {
@@ -40,4 +38,6 @@ in
       };
     };
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

@@ -25,9 +25,11 @@ let
 
   serviceName = "keeper-sh";
 
-  nginxVhostOptions = import "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix" {
-    inherit config lib;
-  };
+  nginxVhostOptions =
+    import "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
+      {
+        inherit config lib;
+      };
 
   databaseActuallyCreateLocally =
     cfg.database.createLocally && cfg.database.host == "/run/postgresql";
@@ -66,7 +68,9 @@ let
   };
 
   envFile = pkgs.writeText "keeper-env" (
-    lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "${name}=${lib.escapeShellArg value}") appEnv)
+    lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (name: value: "${name}=${lib.escapeShellArg value}") appEnv
+    )
   );
 
   withSecrets = text: ''
@@ -74,10 +78,18 @@ let
     source ${envFile}
     ${optionalString (cfg.environmentFile != null) "source ${lib.escapeShellArg cfg.environmentFile}"}
     set +a
-    ${optionalString (cfg.secretKeyFile != null) ''export BETTER_AUTH_SECRET="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.secretKeyFile})"''}
-    ${optionalString (cfg.encryptionKeyFile != null) ''export ENCRYPTION_KEY="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.encryptionKeyFile})"''}
-    ${optionalString (cfg.database.passwordFile != null) ''db_pass="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.database.passwordFile})"''}
-    ${optionalString (cfg.redis.passwordFile != null) ''redis_pass="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.redis.passwordFile})"''}
+    ${optionalString (cfg.secretKeyFile != null)
+      ''export BETTER_AUTH_SECRET="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.secretKeyFile})"''
+    }
+    ${optionalString (cfg.encryptionKeyFile != null)
+      ''export ENCRYPTION_KEY="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.encryptionKeyFile})"''
+    }
+    ${optionalString (
+      cfg.database.passwordFile != null
+    ) ''db_pass="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.database.passwordFile})"''}
+    ${optionalString (
+      cfg.redis.passwordFile != null
+    ) ''redis_pass="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.redis.passwordFile})"''}
     export DATABASE_URL="${databaseUrl}"
     export REDIS_URL="${redisUrl}"
     ${text}
@@ -96,7 +108,11 @@ let
     PrivateTmp = true;
     NoNewPrivileges = true;
     PrivateDevices = true;
-    RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
+    RestrictAddressFamilies = [
+      "AF_UNIX"
+      "AF_INET"
+      "AF_INET6"
+    ];
     SystemCallArchitectures = "native";
     RestrictRealtime = true;
     MemoryDenyWriteExecute = true;
@@ -108,8 +124,6 @@ let
     ++ optional databaseActuallyCreateLocally "postgresql.target";
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.keeper-sh = {
     enable = mkEnableOption "Keeper calendar synchronization platform";
     package = mkPackageOption tixpkgs "keeper-sh" { };
@@ -295,7 +309,9 @@ in
           message = "services.keeper-sh.database.user must match services.keeper-sh.user when using local PostgreSQL peer authentication.";
         }
         {
-          assertion = !databaseActuallyCreateLocally -> (cfg.database.host != "/run/postgresql" && cfg.database.port != null);
+          assertion =
+            !databaseActuallyCreateLocally
+            -> (cfg.database.host != "/run/postgresql" && cfg.database.port != null);
           message = "services.keeper-sh.database.host must not be /run/postgresql and .port must be set for external databases.";
         }
         {
@@ -309,7 +325,11 @@ in
         {
           assertion =
             let
-              ports = [ cfg.web.port cfg.api.port ] ++ optional mcpEnabled cfg.mcp.port;
+              ports = [
+                cfg.web.port
+                cfg.api.port
+              ]
+              ++ optional mcpEnabled cfg.mcp.port;
             in
             lib.length (lib.unique ports) == lib.length ports;
           message = "services.keeper-sh web, api, and mcp ports must be distinct.";
@@ -392,7 +412,11 @@ in
         keeper-sh-cron = {
           description = "Keeper cron scheduler";
           wantedBy = [ "multi-user.target" ];
-          after = [ "keeper-sh-migrate.service" "keeper-sh-worker.service" ] ++ localDependencyUnits;
+          after = [
+            "keeper-sh-migrate.service"
+            "keeper-sh-worker.service"
+          ]
+          ++ localDependencyUnits;
           requires = [ "keeper-sh-migrate.service" ] ++ localDependencyUnits;
           serviceConfig = serviceConfig;
           script = withSecrets ''
@@ -404,7 +428,10 @@ in
         keeper-sh-web = {
           description = "Keeper web frontend";
           wantedBy = [ "multi-user.target" ];
-          after = [ "keeper-sh-api.service" "network.target" ];
+          after = [
+            "keeper-sh-api.service"
+            "network.target"
+          ];
           requires = [ "keeper-sh-api.service" ];
           serviceConfig = serviceConfig;
           script = withSecrets ''
@@ -463,4 +490,6 @@ in
       };
     })
   ]);
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

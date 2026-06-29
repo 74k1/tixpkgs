@@ -177,8 +177,6 @@ let
   niksPath = "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.fourget = {
     enable = mkEnableOption "4get";
 
@@ -199,9 +197,7 @@ in
     };
 
     nginx = mkOption {
-      type = types.nullOr (
-        types.submodule (import niksPath { inherit config lib; })
-      );
+      type = types.nullOr (types.submodule (import niksPath { inherit config lib; }));
       default = null;
       example = literalExpression ''
         {
@@ -375,4 +371,6 @@ in
       };
     })
   ]);
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

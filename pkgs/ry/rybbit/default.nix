@@ -202,7 +202,7 @@ buildNpmPackage {
     description = "Open-source and privacy-friendly alternative to Google Analytics that is 10x more intuitive";
     homepage = "https://rybbit.com/";
     license = licenses.agpl3Only;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "rybbit-server";
     platforms = platforms.linux;
   };

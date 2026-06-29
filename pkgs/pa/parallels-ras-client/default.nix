@@ -219,7 +219,7 @@ stdenv.mkDerivation (finalAttrs: {
     downloadPage = "https://www.parallels.com/products/ras/download/client/";
     changelog = "https://kb.parallels.com/en/131037";
     license = lib.licenses.unfree;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "2XClient";
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];

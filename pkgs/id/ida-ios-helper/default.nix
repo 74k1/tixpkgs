@@ -40,7 +40,7 @@ python3Packages.buildPythonPackage rec {
     description = "IDA Plugin for ease the reversing of iOS usermode and kernelcache";
     homepage = "https://github.com/yoavst/ida-ios-helper";
     license = licenses.mit;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = platforms.all;
   };
 }

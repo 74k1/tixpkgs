@@ -15,8 +15,6 @@ let
   mkFirefoxModule = import "${inputs.home-manager}/modules/programs/firefox/mkFirefoxModule.nix";
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   imports = [
     (mkFirefoxModule {
       inherit modulePath;
@@ -55,4 +53,6 @@ in
     mozilla.firefoxNativeMessagingHosts =
       cfg.nativeMessagingHosts ++ lib.optional (cfg.finalPackage != null) cfg.finalPackage;
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

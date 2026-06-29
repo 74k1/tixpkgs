@@ -87,7 +87,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "GameStream client for PCs (qiin2333 fork with enhanced streaming features)";
     homepage = "https://github.com/qiin2333/moonlight-qt";
     license = lib.licenses.gpl3Plus;
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.all;
     mainProgram = "moonlight";
   };

@@ -223,8 +223,6 @@ let
   '';
 in
 {
-  meta.maintainers = [ "74k1" ];
-
   options.services.multi-scrobbler = {
     enable = lib.mkEnableOption "multi-scrobbler service";
 
@@ -487,4 +485,6 @@ in
 
     networking.firewall.allowedTCPPorts = lib.optional cfg.openFirewall cfg.port;
   };
+
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

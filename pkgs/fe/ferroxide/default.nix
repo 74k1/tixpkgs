@@ -4,14 +4,14 @@
   fetchFromGitHub,
 }:
 
-buildGoModule {
+buildGoModule rec {
   pname = "ferroxide";
   version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "acheong08";
     repo = "ferroxide";
-    rev = "v0.5.0";
+    rev = "v${version}";
     hash = "sha256-GShbqcsfM2Wx4Ge4pmdgAUhXIsQSxlG+WE3VKda8ZoU=";
   };
 
@@ -26,6 +26,6 @@ buildGoModule {
     homepage = "https://github.com/acheong08/ferroxide";
     license = lib.licenses.mit;
     mainProgram = "ferroxide";
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
   };
 }
