@@ -110,6 +110,7 @@ This flake exports modules in two ways:
 | Module | Docs |
 |---|---|
 | `services.brscan-skey` | [README](modules/nixos/services/brscan-skey/README.md) |
+| `services.degoog` | [README](modules/nixos/services/degoog/README.md) |
 | `services.ferroxide` | [README](modules/nixos/services/ferroxide/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
@@ -140,6 +141,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.4.2+hotfix.2` |
+| `degoog` | `0.22.0` |
+| `degoog-mcp` | `0.1.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.0` |
 | `fourget` | `unstable-2026-06-27` |
