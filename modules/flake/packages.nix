@@ -52,7 +52,8 @@ in
     {
       packages = mkImportedPackages pkgs';
     };
-  flake.overlays.default = final: prev:
+  flake.overlays.default =
+    final: prev:
     mkImportedPackages final
     // {
       waterfox = null;

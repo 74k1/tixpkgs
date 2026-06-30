@@ -159,8 +159,6 @@
       homeManagerChecks = mkChecksFor "home-manager" mkHomeManagerCheck;
     in
     {
-      checks = lib.optionalAttrs enabled (
-        nixosChecks // homeManagerChecks
-      );
+      checks = lib.optionalAttrs enabled (nixosChecks // homeManagerChecks);
     };
 }

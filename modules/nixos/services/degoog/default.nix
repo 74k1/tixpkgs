@@ -89,7 +89,7 @@ in
         }
       '';
       description = ''
-        Environment variables passed to Degoog.
+        Environment variables passed to Degoog. See more at in their [docs](https://degoog-org.github.io/docs/env.html)
 
         Secrets should go in {option}`services.degoog.environmentFile` instead.
       '';
@@ -222,9 +222,7 @@ in
     };
 
     nginx = mkOption {
-      type = types.nullOr (
-        types.submodule (import nixpkgsPath { inherit config lib; })
-      );
+      type = types.nullOr (types.submodule (import nixpkgsPath { inherit config lib; }));
       default = null;
       example = literalExpression ''
         {
@@ -253,7 +251,8 @@ in
           DEGOOG_PORT = toString cfg.port;
           DEGOOG_DATA_DIR = stateDir;
           HOST = cfg.host;
-        } // cfg.environment;
+        }
+        // cfg.environment;
 
         serviceConfig = {
           Type = "simple";
@@ -379,7 +378,8 @@ in
           DEGOOG_MCP_BIND_HOST = cfg.mcp.host;
           DEGOOG_MCP_PORT = toString cfg.mcp.port;
           DEGOOG_MCP_DEGOOG_URL = "http://${cfg.host}:${toString cfg.port}";
-        } // cfg.mcp.environment;
+        }
+        // cfg.mcp.environment;
 
         serviceConfig = {
           Type = "simple";

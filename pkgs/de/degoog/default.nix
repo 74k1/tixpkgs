@@ -32,7 +32,12 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --add-flags "run" \
       --add-flags "src/server/index.ts" \
       --chdir "$out/share/degoog" \
-      --prefix PATH : ${lib.makeBinPath [ curl git ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          curl
+          git
+        ]
+      } \
       --set-default SSL_CERT_FILE "${cacert}/etc/ssl/certs/ca-bundle.crt"
 
     runHook postInstall

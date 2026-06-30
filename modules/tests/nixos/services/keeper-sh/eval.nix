@@ -8,7 +8,8 @@
   ...
 }:
 let
-  evalKeeper = keeperConfig:
+  evalKeeper =
+    keeperConfig:
     import (inputs.nixpkgs + "/nixos") {
       inherit system;
       configuration = {
@@ -69,7 +70,8 @@ let
       message = "Keeper module should default dataDir to /var/lib/keeper-sh.";
     }
     {
-      assertion = cfg.services.postgresql.enable && lib.elem "keeper-sh" cfg.services.postgresql.ensureDatabases;
+      assertion =
+        cfg.services.postgresql.enable && lib.elem "keeper-sh" cfg.services.postgresql.ensureDatabases;
       message = "Keeper minimal config should create a local PostgreSQL database.";
     }
     {
@@ -135,7 +137,9 @@ let
       message = "Keeper external database config should not enable local PostgreSQL.";
     }
     {
-      assertion = !(extCfg.services.redis.servers ? keeper-sh) || extCfg.services.redis.servers.keeper.enable == false;
+      assertion =
+        !(extCfg.services.redis.servers ? keeper-sh)
+        || extCfg.services.redis.servers.keeper.enable == false;
       message = "Keeper external Redis config should not enable local Redis.";
     }
   ];

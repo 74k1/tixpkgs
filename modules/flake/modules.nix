@@ -16,11 +16,23 @@
 
           instantiateModule =
             importedModule:
-            { config, lib, pkgs, options, ... }:
+            {
+              config,
+              lib,
+              pkgs,
+              options,
+              ...
+            }:
             let
               functionArgs = builtins.functionArgs importedModule;
               allArgs = {
-                inherit config lib pkgs options inputs;
+                inherit
+                  config
+                  lib
+                  pkgs
+                  options
+                  inputs
+                  ;
                 tixpkgs = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
               };
               neededArgs = lib.filterAttrs (name: _: builtins.hasAttr name functionArgs) allArgs;
