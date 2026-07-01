@@ -1072,15 +1072,15 @@
   "org/flywaydb#flyway-mysql/12.4.0": {
    "pom": "sha256-WUXgBppvDsHVSgCEIXfgc7Trxf2XesaKmfzoMm8nF2U="
   },
-  "org/flywaydb#flyway-mysql/12.8.1": {
-   "jar": "sha256-+IbNccDSGORh5iL7brDcdrjkIi4DuUBzefK0BdK0zo8=",
-   "pom": "sha256-tfUcOfLQtjOyM5QiX0r0YVzaAjDFFaU87Fr3+e8TSNY="
+  "org/flywaydb#flyway-mysql/12.9.0": {
+   "jar": "sha256-l1LtPx8gxbOuDIx4iTF6co+pcQwrgjrb/p9d2AJ49WU=",
+   "pom": "sha256-PBeWTSwvbjGAWMNyUPKfi2kimeFU9+0on8ptLk/zQn8="
   },
   "org/flywaydb#flyway-parent/12.4.0": {
    "pom": "sha256-cHZ9gng+4U4KwLe+eKaOvZIwjJvr5cP4kl0k20rFQIg="
   },
-  "org/flywaydb#flyway-parent/12.8.1": {
-   "pom": "sha256-ZKilhjVVwI+9iXkFh3YrWuYnAtBj/sLziFjeTz4l2EM="
+  "org/flywaydb#flyway-parent/12.9.0": {
+   "pom": "sha256-yTluMIVVO434k8w/kqAcyyXX5JJe5lOThC+Cpu1lUHw="
   },
   "org/freemarker#freemarker/2.3.34": {
    "jar": "sha256-mp+5HNZBmSMuscqXZhSKXTDviUS+X6wFEBj5bHDI9qM=",
