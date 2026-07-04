@@ -141,11 +141,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.4.2+hotfix.2` |
-| `degoog` | `0.22.0` |
+| `degoog` | `0.23.0` |
 | `degoog-mcp` | `0.1.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.0` |
-| `fourget` | `unstable-2026-06-27` |
+| `fourget` | `unstable-2026-07-04` |
 | `godap` | `2.11.0` |
 | `grimmory` | `3.2.4` |
 | `ida-ios-helper` | `1.0.23` |
