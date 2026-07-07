@@ -159,7 +159,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `multi-scrobbler` | `0.14.1` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27178` |
-| `rybbit` | `2.6.1` |
+| `rybbit` | `2.7.0` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
