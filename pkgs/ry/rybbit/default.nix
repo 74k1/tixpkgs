@@ -12,13 +12,13 @@
 }:
 
 let
-  version = "2.6.1";
+  version = "2.7.0";
 
   src = fetchFromGitHub {
     owner = "rybbit-io";
     repo = "rybbit";
     rev = "v${version}";
-    hash = "sha256-Bafs7ua7mFjpa/14tWV709nmv1do5WIFrfFAO16XwDM=";
+    hash = "sha256-JRCkJhNDtfLBCKkFhVg5pFvfod12J7QRYO3Gv6JCGjg=";
   };
 
   rybbit-shared = stdenvNoCC.mkDerivation {
@@ -53,7 +53,7 @@ let
 
     sourceRoot = "source/client";
 
-    npmDepsHash = "sha256-U7Gh5yp23kk6Cos0+wcpHwRque1CzbkOKMuDYT1Lfrk=";
+    npmDepsHash = "sha256-e3hHfTq77XNi5J90H2IhQtyC2Kl822Opyf2l438rB4E=";
     npmFlags = [ "--legacy-peer-deps" ];
 
     postPatch = ''
@@ -116,7 +116,7 @@ buildNpmPackage {
 
   sourceRoot = "source/server";
 
-  npmDepsHash = "sha256-rs9V1NaRNKtSAlIUjQBImAvIH0hXnM+gU2bloYwUANw=";
+  npmDepsHash = "sha256-0hRXtmNmUGPwnlqUDBxlkv8kzIzN0Lof6/n9pSA27XA=";
 
   npmRebuildFlags = [ "--ignore-scripts" ];
 
