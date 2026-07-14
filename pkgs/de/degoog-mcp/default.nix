@@ -6,13 +6,13 @@
 
 buildGoModule {
   pname = "degoog-mcp";
-  version = "0.1.0";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "degoog-org";
     repo = "mcp";
-    rev = "0.1.0";
-    hash = "sha256-aPPyjvno3Ayfnu9cMaE9C/Fi4p+9HzNqGmh/+hm07P8=";
+    rev = "0.2.0";
+    hash = "sha256-t/GVtJErujltgYLiuz+M8KvbqI9D0Cp6Vn5zsmTDYWs=";
   };
 
   vendorHash = "sha256-7BseL5WTC+S0X0gE2mQYdWNG804uqDFqjGoYFi+da4E=";
