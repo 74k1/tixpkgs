@@ -33,6 +33,7 @@
   libdeflate,
   glib-networking,
   hicolor-icon-theme,
+  libarchive,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -46,7 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
       cacert
     ];
 
-    outputHash = "sha256-WXjRDBxL4O0esgW3QB5x9Hb/d95qo/QcH/Lrb9yNtjo=";
+    outputHash = "sha256-B3CVGhol9bOcdvWyH/wr/pjKiTnmMKnBZuoKIv/q3h4=";
     outputHashAlgo = "sha256";
     outputHashMode = "flat";
 
@@ -92,6 +93,7 @@ stdenv.mkDerivation (finalAttrs: {
     libdeflate
     glib-networking
     hicolor-icon-theme
+    libarchive
     stdenv.cc.cc.lib
   ];
 
