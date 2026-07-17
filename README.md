@@ -11,11 +11,11 @@
 
 # About
 
-This repository is _my personal_ nixpkgs. Packages and NixOS / Home-Manager modules that aren't upstream.
+This repository is _my personal_ nixpkgs. It follows quite a lot of the conventional nixpkgs "standards". It's just Nix Packages and NixOS / Home-Manager Modules that aren't upstream because it's just stuff I wanted to quickly try out / use.
 
-Nothing fancy, just the stuff I want / use (mostly).
+Feel free to fork / use this Repository as a template for _your own_ nixpkgs! Do contact me, because I'd like to find & hear from you if you do!
 
-Kept up-to-date by a bot (and occasionally me).
+Kept up-to-date by [my bot](https://github.com/74k1/bumpkin) (and occasionally me).
 
 If something's broken or missing, PRs / Issues welcome. See [contributing](./CONTRIBUTING.md).
 
