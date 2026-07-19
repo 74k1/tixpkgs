@@ -34,6 +34,16 @@
   glib-networking,
   hicolor-icon-theme,
   libarchive,
+  jasper,
+  libvmaf,
+  libaom,
+  libavif,
+  dav1d,
+  giflib,
+  libsodium,
+  libxml2,
+  libraw,
+  openexr,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -94,6 +104,16 @@ stdenv.mkDerivation (finalAttrs: {
     glib-networking
     hicolor-icon-theme
     libarchive
+    jasper
+    libvmaf
+    libaom
+    libavif
+    dav1d
+    giflib
+    libsodium
+    libxml2
+    libraw
+    openexr
     stdenv.cc.cc.lib
   ];
 
@@ -146,6 +166,24 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/{bin,opt/fogpanther/bin,share}
     cp -r . $out/opt/fogpanther
 
+    # The upstream tarball ships Fedora-built shared libraries. Most of
+    # them segfault in their _init constructors under NixOS glibc 2.42.
+    # Replace all of them with nixpkgs builds. For the three with
+    # mismatched SONAMEs, create symlinks from the old SONAME to the
+    # nixpkgs version (ABI is compatible enough in practice).
+    for lib in libaom libavif libdav1d libdeflate libgif libjasper \
+               librav1e libsharpyuv libsodium libSvtAv1Enc libvmaf libyuv \
+               libxml2 libraw_r libOpenEXRCore-3_2; do
+      rm -f $out/opt/fogpanther/lib/$lib.so*
+    done
+
+    ln -s ${lib.getLib libxml2}/lib/libxml2.so.16 \
+      $out/opt/fogpanther/lib/libxml2.so.2
+    ln -s ${lib.getLib libraw}/lib/libraw_r.so.25 \
+      $out/opt/fogpanther/lib/libraw_r.so.23
+    ln -s ${lib.getLib openexr}/lib/libOpenEXRCore-3_4.so.33 \
+      $out/opt/fogpanther/lib/libOpenEXRCore-3_2.so.31
+
     rm -f $out/opt/fogpanther/lib/libgav1.so.1 $out/opt/fogpanther/libgav1.so.1
     cp libgav1.so.1 $out/opt/fogpanther/lib/libgav1.so.1
 
@@ -173,10 +211,13 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   postFixup = ''
+    # The Fedora-built gdk-pixbuf loaders crash gdk-pixbuf-query-loaders
+    # under glibc 2.42 (bogus _init symbol). Exclude them from the cache
+    # — FogPanther loads its own format plugins directly. Cache only the
+    # standard nixpkgs loaders so stock formats (PNG, JPEG, etc.) work.
     LD_LIBRARY_PATH=${lib.makeLibraryPath finalAttrs.buildInputs}:$out/opt/fogpanther/lib \
     ${gdk-pixbuf.dev}/bin/gdk-pixbuf-query-loaders \
       ${gdk-pixbuf}/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so \
-      $out/opt/fogpanther/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so \
       > $out/opt/fogpanther/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
   '';
 
