@@ -26,6 +26,16 @@ on:
         required: false
         default: true
         type: boolean
+      allow-unfree:
+        description: 'Allow unfree packages (e.g. libsciter, steam)'
+        required: false
+        default: true
+        type: boolean
+      allow-insecure:
+        description: 'Allow packages with known security vulnerabilities'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -75,6 +85,8 @@ jobs:
           PACKAGES_INPUT: ${{ inputs.packages }}
           FLAKE_INPUT: ${{ inputs.flake }}
           SYSTEM: ${{ inputs.system }}
+          ALLOW_UNFREE: ${{ inputs.allow-unfree }}
+          ALLOW_INSECURE: ${{ inputs.allow-insecure }}
           CACHIX_CACHE_NAME: ${{ env.CACHIX_CACHE_NAME }}
         run: |
           set -euo pipefail
@@ -117,7 +129,22 @@ jobs:
           echo "Building ${#cleaned[@]} package(s): ${cleaned[*]}"
           echo "Flake: ${flake_ref}"
 
-          if build_json="$(nix build \
+          # Build nix env and flags based on toggles
+          nix_env=()
+          nix_flags=()
+          if [[ "${ALLOW_UNFREE}" == "true" ]]; then
+            nix_env+=("NIXPKGS_ALLOW_UNFREE=1")
+          fi
+          if [[ "${ALLOW_INSECURE}" == "true" ]]; then
+            nix_env+=("NIXPKGS_ALLOW_INSECURE=1")
+          fi
+          if [[ ${#nix_env[@]} -gt 0 ]]; then
+            nix_flags+=("--impure")
+            echo "Allowing: ${nix_env[*]}"
+          fi
+
+          if build_json="$(env "${nix_env[@]}" nix build \
+            "${nix_flags[@]}" \
             --print-build-logs \
             --no-link \
             --json \
