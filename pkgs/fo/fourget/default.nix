@@ -10,8 +10,8 @@ stdenvNoCC.mkDerivation {
 
   src = fetchgit {
     url = "https://git.lolcat.ca/lolcat/4get.git";
-    rev = "5fc80a36727b460b45baaf70e1af25f8521ed44e";
-    hash = "sha256-YXjf61eCSTFG8w/0erMIwVbzDlVhtyJlabsQpDULSq0=";
+    rev = "e57538a296201e73981f80f83887224996d2224d";
+    hash = "sha256-8tUy6MAHWQkyoZf6qd2CV+E+EZvvsZn1LRH73R0UYSA=";
   };
 
   installPhase = ''
