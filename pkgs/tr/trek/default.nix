@@ -11,7 +11,7 @@ buildNpmPackage (finalAttrs: {
   version = "3.4.1";
 
   src = fetchFromGitHub {
-    owner = "mauriceboe";
+    owner = "liketrek";
     repo = "TREK";
     tag = "v${finalAttrs.version}";
     hash = "sha256-r7Y6vxksX+V4bKCz4MF7K8Ar5UgKIzHoJmjukgR+9Cw=";
