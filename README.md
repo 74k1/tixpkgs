@@ -158,7 +158,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
 | `mtkclient` | `382fb30` |
-| `multi-scrobbler` | `0.14.1` |
+| `multi-scrobbler` | `0.14.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27178` |
 | `rybbit` | `2.7.0` |
