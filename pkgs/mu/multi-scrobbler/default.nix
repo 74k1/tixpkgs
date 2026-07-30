@@ -8,18 +8,18 @@
 
 buildNpmPackage rec {
   pname = "multi-scrobbler";
-  version = "0.14.2";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "FoxxMD";
     repo = "multi-scrobbler";
     rev = version;
-    hash = "sha256-FHpHVQ3M/n8/LcMvl2LGakTjS6u2IebhGZRrO4GAZf8=";
+    hash = "sha256-vhda31xPLxGmnaU/3AnsrcafPvSE1IIbuRmj6xlttjc=";
   };
 
-  npmDepsHash = "sha256-b8BYqJVOSOInW1H2DpxBN9ETcVHA8/f/yHJ8b72zvsk=";
+  npmDepsHash = "sha256-M0F0YnQ35YEioMzt4lJiUM/Iqfrb7/zwUG/vFGl+JSY=";
 
-  npmBuildScript = "schema:app";
+  npmBuildScript = "build:frontend";
 
   npmRebuildFlags = [ "--ignore-scripts" ];
 
@@ -87,10 +87,6 @@ buildNpmPackage rec {
     MIGEOF
   '';
 
-  postBuild = ''
-    npm run build:frontend
-  '';
-
   installPhase = ''
     runHook preInstall
 
@@ -103,12 +99,10 @@ buildNpmPackage rec {
     makeWrapper ${lib.getExe nodejs_24} $out/bin/${pname} \
       --chdir $out/share/${pname} \
       --set NODE_ENV production \
-      --add-flags ./node_modules/.bin/tsx \
       --add-flags ./src/backend/index.ts
 
     makeWrapper ${lib.getExe nodejs_24} $out/bin/${pname}-service \
       --set NODE_ENV production \
-      --add-flags $out/share/${pname}/node_modules/.bin/tsx \
       --add-flags $out/share/${pname}/src/backend/index.ts
 
     runHook postInstall
