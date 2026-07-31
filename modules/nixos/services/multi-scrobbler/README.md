@@ -105,7 +105,9 @@ CUSTOM_SPOTIFY_CLIENT_SECRET=...
 
 ## Notes
 
-`configFiles` writes typed JSON config files like `spotify.json` and `lastfm.json`.
+`stateDir` is used for both upstream `CONFIG_DIR` and `DATA_DIR`, so configuration, databases, logs, and credentials remain in one persistent location.
+
+`configFiles` writes typed JSON config files like `spotify.json`, `applemusic.json`, and `lastfm.json`.
 
 - The attribute name becomes the upstream file type.
 - A single attrset is wrapped into the upstream array format automatically.

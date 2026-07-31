@@ -78,6 +78,7 @@ let
     "rocksky"
     "sonos"
     "ymbridge"
+    "applemusic"
   ];
 
   clientTypes = [
@@ -94,6 +95,7 @@ let
   configFileTypes = lib.unique (sourceTypes ++ clientTypes);
 
   upstreamAutoConfigEnvPrefixes = [
+    "APPLEMUSIC_"
     "AZURACAST_"
     "CHROMECAST_"
     "DEEZER_"
@@ -131,6 +133,7 @@ let
   reservedEnvironmentKeys = [
     "BASE_URL"
     "CONFIG_DIR"
+    "DATA_DIR"
     "PORT"
   ];
 
@@ -173,6 +176,7 @@ let
     cfg.environment
     // {
       CONFIG_DIR = cfg.stateDir;
+      DATA_DIR = cfg.stateDir;
       PORT = cfg.port;
     }
     // lib.optionalAttrs (cfg.baseUrl != null) {
@@ -275,8 +279,8 @@ in
         neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON
         as `[[CUSTOM_SPOTIFY_CLIENT_ID]]`.
 
-        `PORT`, `BASE_URL`, and `CONFIG_DIR` are managed by dedicated module
-        options and must not be set here.
+        `PORT`, `BASE_URL`, `CONFIG_DIR`, and `DATA_DIR` are managed by
+        dedicated module options and must not be set here.
       '';
     };
 
@@ -360,7 +364,9 @@ in
       default = defaultStateDir;
       example = "/opt/multi-scrobbler";
       description = ''
-        Directory used as multi-scrobbler's `CONFIG_DIR` and working directory.
+        Directory used as multi-scrobbler's `CONFIG_DIR`, `DATA_DIR`, and
+        working directory. Keeping both upstream directories together preserves
+        databases, logs, and credentials across the 0.15.0 upgrade.
 
         With `DynamicUser = true`, the service's mutable state is still managed by
         systemd. When this path differs from the default, the module exposes it as
