@@ -1,11 +1,65 @@
 {
   lib,
-  python314Packages,
+  buildDotnetModule,
+  copyDesktopItems,
+  dotnetCorePackages,
   fetchFromGitHub,
+  ffmpeg,
+  fontconfig,
+  icoutils,
+  makeDesktopItem,
+  makeFontsConf,
+  python314Packages,
   unrar,
+  xdelta,
+  xdg-utils,
 }:
 
 let
+  g3mtool = buildDotnetModule {
+    pname = "g3mtool";
+    version = "1.2.1";
+
+    src = fetchFromGitHub {
+      owner = "y114git";
+      repo = "G3MTool";
+      tag = "1.2.1";
+      hash = "sha256-V3okV2RJDyKiztulSUB0/qgdHXyGhXd6nWm9cUhXan4=";
+    };
+
+    projectFile = "G3MToolCLI/G3MToolCLI.csproj";
+    nugetDeps = ./g3mtool-deps.json;
+    dotnet-sdk = dotnetCorePackages.sdk_10_0;
+    dotnet-runtime = dotnetCorePackages.runtime_10_0;
+    selfContainedBuild = true;
+    executables = [ "G3MTool" ];
+
+    meta = {
+      description = "Command-line tool for GameMaker data files";
+      homepage = "https://github.com/y114git/G3MTool";
+      license = lib.licenses.gpl3Only;
+      maintainers = with lib.maintainers; [ _74k1 ];
+      mainProgram = "G3MTool";
+      platforms = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+    };
+  };
+
+  fontsConf = makeFontsConf {
+    inherit fontconfig;
+    fontDirectories = [ ];
+    impureFontDirectories = [
+      "~/.fonts"
+      "~/.local/share/fonts"
+      "~/.nix-profile/share/fonts"
+      "/run/current-system/sw/share/X11/fonts"
+      "/run/current-system/sw/share/fonts"
+    ];
+    includes = [ "${fontconfig}/etc/fonts/conf.d" ];
+  };
+
   playsound3 = python314Packages.buildPythonPackage {
     pname = "playsound3";
     version = "3.3.1";
@@ -32,9 +86,11 @@ python314Packages.buildPythonApplication (finalAttrs: {
   src = fetchFromGitHub {
     owner = "y114git";
     repo = "G3M";
-    rev = "3.2.1";
-    hash = "sha256-szwBzm/Tg7xZkYiaC3CIAgYg4OIs+7oaXGrRMeNXCvw=";
+    rev = "e98e0c0214910dc0b8f30ba239c33c9c9c323614";
+    hash = "sha256-KL3i3/N+yJurhZVmonIKYQsIzx5ol9mUNJ1aAET9nSs=";
   };
+
+  patches = [ ./runtime-paths.patch ];
 
   build-system = [ python314Packages.setuptools ];
 
@@ -51,13 +107,42 @@ python314Packages.buildPythonApplication (finalAttrs: {
   ];
 
   nativeBuildInputs = [
+    copyDesktopItems
+    icoutils
     python314Packages.pythonRelaxDepsHook
   ];
 
   pythonRelaxDeps = true;
 
   makeWrapperArgs = [
-    "--prefix" "PATH" ":" "${unrar}/bin"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [
+      ffmpeg
+      g3mtool
+      unrar
+      xdelta
+      xdg-utils
+    ])
+    "--set"
+    "FONTCONFIG_FILE"
+    "${fontsConf}"
+  ];
+
+  desktopItems = [
+    (makeDesktopItem {
+      name = "g3m";
+      desktopName = "G3M";
+      comment = "Mod Manager for GameMaker games";
+      exec = "g3m %u";
+      icon = "g3m";
+      categories = [ "Game" ];
+      mimeTypes = [
+        "x-scheme-handler/g3m"
+        "x-scheme-handler/deltahub"
+      ];
+    })
   ];
 
   # Setuptools with package-dir = { "" = "src" } uses find_packages which
@@ -74,6 +159,10 @@ python314Packages.buildPythonApplication (finalAttrs: {
     cp -r src/assets $site_packages/
     cp -r src/config/qss $site_packages/config/
 
+    icotool -x src/assets/icons/icon.ico
+    install -Dm644 icon_1_256x256x32.png \
+      $out/share/icons/hicolor/256x256/apps/g3m.png
+
     mkdir -p $out/bin
     cat > $out/bin/g3m <<'PYEOF'
     #!${python314Packages.python}/bin/python
@@ -89,7 +178,10 @@ python314Packages.buildPythonApplication (finalAttrs: {
   # single import that proves the package is functional.
   pythonImportsCheck = [ ];
 
-  passthru.updateScript = ./update.sh;
+  passthru = {
+    inherit g3mtool;
+    updateScript = ./update.sh;
+  };
 
   meta = with lib; {
     description = "Mod Manager for GameMaker games";
