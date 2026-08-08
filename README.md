@@ -149,7 +149,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `fourget` | `unstable-2026-08-06` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.11.1` |
-| `grimmory` | `3.3.0` |
+| `grimmory` | `3.3.1` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
@@ -158,7 +158,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
 | `mtkclient` | `0542a87` |
-| `multi-scrobbler` | `0.16.0` |
+| `multi-scrobbler` | `0.16.1` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
 | `rybbit` | `2.8.0` |
