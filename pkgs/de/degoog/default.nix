@@ -11,11 +11,11 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "degoog";
-  version = "0.23.0";
+  version = "0.24.0";
 
   src = fetchurl {
     url = "https://github.com/degoog-org/degoog/releases/download/${finalAttrs.version}/degoog_${finalAttrs.version}_prebuild.tar.gz";
-    hash = "sha256-s7HqpLlyiiTjIhGbTDm8DNu6PKrBlkpioFjv0Q/517Q=";
+    hash = "sha256-XqPpdS7s9kd2G9GEghQjIL0T93ZpDicfYtCY7QImBAM=";
   };
 
   sourceRoot = "degoog";
