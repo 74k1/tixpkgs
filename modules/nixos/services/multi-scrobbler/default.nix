@@ -157,10 +157,15 @@ let
 
   normalizedConfigFiles = lib.mapAttrs normalizeConfigEntries cfg.configFiles;
 
+  injectDefaultIds =
+    entries: map (entry: if hasAttr "id" entry then entry else entry // { id = entry.name; }) entries;
+
   managedConfigFiles =
     lib.mapAttrs' (
       fileType: entries:
-      lib.nameValuePair "${fileType}.json" (jsonFormat.generate "${serviceName}-${fileType}.json" entries)
+      lib.nameValuePair "${fileType}.json" (
+        jsonFormat.generate "${serviceName}-${fileType}.json" (injectDefaultIds entries)
+      )
     ) normalizedConfigFiles
     // lib.optionalAttrs (cfg.config != null) {
       "config.json" = jsonFormat.generate "${serviceName}-config.json" cfg.config;
@@ -326,6 +331,11 @@ in
 
         For single objects and list entries alike, `name` is required and
         `enable` defaults to `true`.
+
+        Upstream 0.16.0 requires an explicit `id` on every source/client and
+        errors on configs that omit it. This module injects `id = name` when
+        no `id` is given, matching the pre-0.16 default and preserving
+        database associations. Set `id` explicitly to override it.
 
         The attribute name `config` is reserved for
         `services.multi-scrobbler.config`.

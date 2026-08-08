@@ -113,6 +113,7 @@ CUSTOM_SPOTIFY_CLIENT_SECRET=...
 - A single attrset is wrapped into the upstream array format automatically.
 - `name` is required.
 - `enable` defaults to `true` when omitted.
+- `id` defaults to the entry's `name` when omitted (upstream 0.16.0 requires an explicit `id` and errors without one; this module injects `id = name` to preserve pre-0.16 behavior and database associations).
 - The attribute name `config` is reserved for `services.multi-scrobbler.config`.
 
 Use a list when you need multiple entries of the same type:
