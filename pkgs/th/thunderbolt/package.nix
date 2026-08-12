@@ -11,6 +11,10 @@
   showAppDownloads ? false,
   bypassWaitlist ? false,
   skipOnboarding ? false,
+  # Database/sync mode baked into the web frontend. Defaults to local-only
+  # "wa-sqlite" (no PowerSync server / Postgres needed). Set to "powersync" to
+  # get the upstream sync architecture back (requires a PowerSync service).
+  syncMode ? "wa-sqlite",
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs:
@@ -128,6 +132,25 @@ in
     chmod -R u+rwX node_modules
 
     runHook postConfigure
+  '';
+
+  patchPhase = lib.optionalString (syncMode == "wa-sqlite") ''
+    runHook prePatch
+
+    # Local-only web DB: wa-sqlite instead of a PowerSync sync client, and apply
+    # the app schema (CREATE TABLEs) at init since there's no PowerSync to do it.
+    substituteInPlace src/lib/platform.ts \
+      --replace-fail "return 'powersync'" "return 'wa-sqlite'"
+    substituteInPlace src/db/wa-sqlite-database.ts \
+      --replace-fail "import { WaSQLiteWorkerClient } from './wa-sqlite-worker-client'" \
+                     "import { WaSQLiteWorkerClient } from './wa-sqlite-worker-client'
+import { applySchema } from './apply-schema'"
+    substituteInPlace src/db/wa-sqlite-database.ts \
+      --replace-fail "    this._db = drizzle(driver, { schema })" \
+                     "    this._db = drizzle(driver, { schema })
+    await applySchema(this._db)"
+
+    runHook postPatch
   '';
 
   buildPhase = ''
