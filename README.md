@@ -119,6 +119,7 @@ This flake exports modules in two ways:
 | `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
 | `services.rybbit` | [README](modules/nixos/services/rybbit/README.md) |
+| `services.thunderbolt` | [README](modules/nixos/services/thunderbolt/README.md) |
 | `services.trek` | [README](modules/nixos/services/trek/README.md) |
 | `services.yopass` | [README](modules/nixos/services/yopass/README.md) |
 <!-- END NIXOS MODULES -->
@@ -162,6 +163,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
 | `rybbit` | `2.8.0` |
+| `thunderbolt` | `0.1.107` |
+| `thunderbolt-cli` | `0.1.107` |
 | `trek` | `3.4.1` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
