@@ -17,6 +17,10 @@ stdenvNoCC.mkDerivation (finalAttrs:
 let
   pname = "thunderbolt";
   version = "0.1.107";
+
+  # The frontend recognizes SSO UI mode only as VITE_AUTH_MODE=sso; the backend
+  # uses AUTH_MODE=oidc. Map oidc -> sso for the web UI build.
+  frontendAuthMode = if authMode == "oidc" then "sso" else authMode;
 in
 {
   inherit pname version;
@@ -129,7 +133,7 @@ in
     runHook preBuild
 
     export VITE_THUNDERBOLT_CLOUD_URL=${lib.escapeShellArg cloudUrl}
-    export VITE_AUTH_MODE=${lib.escapeShellArg authMode}
+    export VITE_AUTH_MODE=${lib.escapeShellArg frontendAuthMode}
     export VITE_SHOW_APP_DOWNLOADS=${lib.boolToString showAppDownloads}
     export VITE_BYPASS_WAITLIST=${lib.boolToString bypassWaitlist}
     export VITE_SKIP_ONBOARDING=${lib.boolToString skipOnboarding}
