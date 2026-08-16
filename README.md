@@ -149,7 +149,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `fogpanther` | `0.8.1` |
 | `fourget` | `unstable-2026-08-14` |
 | `g3m` | `3.2.1` |
-| `godap` | `2.11.1` |
+| `godap` | `2.12.0` |
 | `grimmory` | `3.3.1` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
