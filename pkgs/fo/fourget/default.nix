@@ -6,12 +6,12 @@
 
 stdenvNoCC.mkDerivation {
   pname = "4get";
-  version = "unstable-2026-08-14";
+  version = "unstable-2026-08-18";
 
   src = fetchgit {
     url = "https://git.lolcat.ca/lolcat/4get.git";
-    rev = "51b45ba53bb4bfee7b3d5583362d358d3862a4f5";
-    hash = "sha256-fkyrpKRrvEhDAF070SVlgkrihpHPOGAjQz6o2j9kIGs=";
+    rev = "89b8be514727b37bda3c7b2acb527335b9bdbfbf";
+    hash = "sha256-kIrBThW42PwZK+8AqOqy5xmVQRAwCZHx7EIiOsgFE5M=";
   };
 
   installPhase = ''
