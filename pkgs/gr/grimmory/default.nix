@@ -12,13 +12,13 @@
   libarchive,
 }:
 let
-  version = "3.3.1";
+  version = "3.3.2";
 
   src = fetchFromGitHub {
     owner = "grimmory-tools";
     repo = "grimmory";
     rev = "v${version}";
-    hash = "sha256-LnJtHeL8ixLtzabwEWwH7HbGJavFy3YPyDkvOpSnShI=";
+    hash = "sha256-2mc8R9PXgTRKApFobREvnSbGoZFfCuS2WLXxD/FPQ8k=";
   };
 
   buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs_24; };
@@ -35,7 +35,7 @@ let
 
     npmBuildScript = "build:prod";
     npmFlags = [ "--legacy-peer-deps" ];
-    npmDepsHash = "sha256-dEMbwIWxFFj+mJskhPoGkmEnzqOlCG4PT56bdK3JVZA=";
+    npmDepsHash = "sha256-hrpwzWtZaXbU1+ovOMNQcYs6nbETO4+kS3+Gjd2x1Ko=";
 
     env = {
       CI = "1";
