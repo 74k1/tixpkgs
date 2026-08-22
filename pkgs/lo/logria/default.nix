@@ -5,16 +5,16 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "logria";
-  version = "0.5.0";
+  version = "0.6.0";
 
   src = fetchFromGitHub {
     owner = "ReagentX";
     repo = "logria";
     rev = "${version}";
-    hash = "sha256-hzsUm6J2gxTw2n18vshEXzwAwrLHEjxR4ZYFidAvePM=";
+    hash = "sha256-mkrzhBAzIwcIafJkmqX6WSlSi/8YB3SenLWMLfk6pPQ=";
   };
 
-  cargoHash = "sha256-Mwv+5e01xzCJvkhsabBdJIj7OQCIBiceFsAH3+PF+fk=";
+  cargoHash = "sha256-RTgU+R7wopij8FxfwwtjJP5OdSUgAHvx9X3NhBEjdII=";
 
   doCheck = false;
 
