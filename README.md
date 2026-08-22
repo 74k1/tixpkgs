@@ -150,12 +150,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `fourget` | `unstable-2026-08-22` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
-| `grimmory` | `3.3.2` |
+| `grimmory` | `3.3.3` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
 | `lidarr` | `3.1.3.4987` |
-| `logria` | `0.5.0` |
+| `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
 | `mtkclient` | `0542a87` |
