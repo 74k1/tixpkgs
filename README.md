@@ -154,7 +154,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
-| `lidarr` | `3.1.3.4987` |
+| `lidarr` | `3.1.4.5029` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
