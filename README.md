@@ -165,7 +165,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `rybbit` | `2.8.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
-| `trek` | `4.0.0` |
+| `trek` | `4.1.1` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
