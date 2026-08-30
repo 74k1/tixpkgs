@@ -139,15 +139,15 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 <!-- BEGIN PACKAGES -->
 | Package | Version |
 |---|---|
-| `arcbrush` | `1.6.1` |
+| `arcbrush` | `1.6.2` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.4.2+hotfix.2` |
-| `degoog` | `0.24.0` |
+| `degoog` | `0.25.0` |
 | `degoog-mcp` | `0.2.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.1` |
-| `fourget` | `unstable-2026-08-28` |
+| `fourget` | `unstable-2026-08-30` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
 | `grimmory` | `3.3.3` |
