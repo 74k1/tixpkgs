@@ -39,16 +39,6 @@ buildNpmPackage (finalAttrs: {
   # vendored in the package tarball, so the addon compiles fully offline
   # after prebuild-install fails fast in the no-network sandbox.
 
-  # The server writes to __dirname-relative `../uploads` and `../data` from
-  # several source files (config.ts, index.ts, scheduler.ts,
-  # nest/platform/platform.routes.ts). The Nix store is read-only, so rewrite
-  # every `path.{join,resolve}(__dirname, '<N>/data|uploads')` to read
-  # TREK_DATA_DIR / TREK_UPLOADS_DIR from the environment. `../public` (the
-  # built client) is left untouched — that stays a read-only store path.
-  # Applied before `npm run build` compiles the TypeScript, so the compiled
-  # dist inherits the redirects. Uses sed (not perl) so the same postPatch
-  # also runs inside the fetchNpmDeps fixed-output derivation, which has a
-  # minimal stdenv.
   postPatch = ''
     cat > path-redirect.sed << 'SEDEOF'
     s#path\.join\(__dirname, '(\.\./)+uploads/([^']+)', ([^)]*)\)#path.join(process.env.TREK_UPLOADS_DIR, '\2', \3)#g
@@ -57,6 +47,8 @@ buildNpmPackage (finalAttrs: {
     s#path\.(join|resolve)\(__dirname, '(\.\./)+uploads'\)#process.env.TREK_UPLOADS_DIR#g
     s#path\.(join|resolve)\(__dirname, '(\.\./)+data/([^']+)'\)#path.join(process.env.TREK_DATA_DIR, '\3')#g
     s#path\.(join|resolve)\(__dirname, '(\.\./)+data'\)#process.env.TREK_DATA_DIR#g
+    s#path\.resolve\(__dirname, ('\.\.', )+'data'\)#process.env.TREK_DATA_DIR#g
+    s#path\.resolve\(__dirname, ('\.\.', )+'uploads'\)#process.env.TREK_UPLOADS_DIR#g
     SEDEOF
     find server/src -name '*.ts' -print0 | xargs -0 sed -E -i -f path-redirect.sed
   '';

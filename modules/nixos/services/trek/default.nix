@@ -51,6 +51,19 @@ in
       example = "trek.example.com";
     };
 
+    appUrl = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = ''
+        Public URL of the TREK instance as APP_URL (scheme + host, no
+        trailing slash). Set this when the vhost is managed outside of
+        `services.trek.nginx` (hand-written vhost or proxy on another host)
+        so TREK sees https. Defaults to an https or http URL derived from
+        the `nginx` option.
+      '';
+      example = "https://trek.example.com";
+    };
+
     user = mkOption {
       type = types.str;
       default = serviceName;
@@ -165,7 +178,7 @@ in
         NODE_ENV = "production";
         PORT = toString cfg.port;
         HOST = cfg.host;
-        APP_URL = publicUrl;
+        APP_URL = if cfg.appUrl != null then cfg.appUrl else publicUrl;
         # Redirect __dirname-relative paths to the writable state directory.
         TREK_DATA_DIR = "${cfg.dataDir}/data";
         TREK_UPLOADS_DIR = "${cfg.dataDir}/uploads";
