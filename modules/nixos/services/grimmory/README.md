@@ -28,13 +28,32 @@ Grimmory is a self-hosted, multi-user digital library.
 
   services.grimmory = {
     enable = true;
+    hostname = "books.example.com";
     nginx = {
       forceSSL = true;
       enableACME = true;
     };
-    hostname = "books.example.com";
+
+    # Libraries on a separate mount: the service runs with
+    # `ProtectSystem = "strict"`, so list any library folder outside the
+    # default data/bookdrop directories here to make it writable.
+    libraryDirs = [ "/mnt/pool/books" ];
   };
 }
 ```
 
-By default the module creates a local MariaDB database and stores a generated database password under `/var/lib/grimmory/database-password`.
+## Notes
+
+- `nginx` is a full nixpkgs nginx vhost submodule (the same type as an entry in
+  `services.nginx.virtualHosts`), not an attribute set with `enable` or
+  `virtualHost` keys. Name the vhost with `hostname`; enable the reverse proxy by
+  setting `nginx` to a non-null value. The proxy forwards `/` and `/ws`
+  (websockets) and applies `settings.maxBodySize` as `client_max_body_size`.
+- The service binds to `127.0.0.1` (`host`) by default, so point the reverse
+  proxy at the loopback address, or set `host = "0.0.0.0"` to expose the port
+  directly.
+- Environment variables `APP_PATH_CONFIG`, `APP_BOOKDROP_FOLDER`, `SERVER_PORT`,
+  `SERVER_ADDRESS`, `DATABASE_*` are managed by the module. Put secrets
+  (`DATABASE_PASSWORD`, etc.) in `environmentFile` or `secretFiles`.
+- By default the module creates a local MariaDB database (over TCP) and stores a
+  generated database password under `/var/lib/grimmory/database-password`.

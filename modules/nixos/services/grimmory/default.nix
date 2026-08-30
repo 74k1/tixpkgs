@@ -38,9 +38,18 @@ let
 
   nixpkgsPath = "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 
+  # Grimmory connects to MariaDB over TCP. Connector/J's `unixSocket` URL
+  # parameter requires the native libmariadb library via JNA, which the
+  # upstream JAR does not ship, so a unix-socket URL would fail to boot.
+  # `createDatabaseIfNotExist=true` is only useful for the external case,
+  # where the operator's user may need to create the database; the local
+  # path relies on `services.mysql.ensureDatabases` instead, and the
+  # restricted `grimmory` user lacks the CREATE privilege anyway.
   databaseUrl =
     if cfg.database.url != null then
       cfg.database.url
+    else if cfg.database.createLocally then
+      "jdbc:mariadb://${cfg.database.host}:${toString cfg.database.port}/${cfg.database.name}?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true"
     else
       "jdbc:mariadb://${cfg.database.host}:${toString cfg.database.port}/${cfg.database.name}?createDatabaseIfNotExist=true&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true";
 
@@ -133,13 +142,40 @@ in
     dataDir = mkOption {
       type = types.str;
       default = "${stateDir}/data";
-      description = "Directory for Grimmory application data and libraries.";
+      description = ''
+        Directory for Grimmory application data (settings, metadata cache).
+        Mapped to the app's `APP_PATH_CONFIG` environment variable.
+
+        Book libraries may live elsewhere; see `services.grimmory.libraryDirs`
+        to grant the service write access to library folders outside this
+        directory.
+      '';
     };
 
     bookdropDir = mkOption {
       type = types.str;
       default = "${stateDir}/bookdrop";
-      description = "Directory Grimmory watches for automatically imported books.";
+      description = ''
+        Directory Grimmory watches for automatically imported books.
+        Mapped to the app's `APP_BOOKDROP_FOLDER` environment variable.
+      '';
+    };
+
+    libraryDirs = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      example = literalExpression ''
+        [ "/mnt/pool/grimmory/books" ]
+      '';
+      description = ''
+        Extra directories holding Grimmory book libraries.
+
+        The service runs with `ProtectSystem = "strict"`, so any library
+        folder outside `dataDir`/`bookdropDir` must be listed here to be
+        writable by Grimmory (file organization, sidecar metadata, bookdrop
+        import moves). The directories are created with the service user and
+        group if missing.
+      '';
     };
 
     environment = mkOption {
@@ -211,13 +247,13 @@ in
       host = mkOption {
         type = types.str;
         default = "127.0.0.1";
-        description = "Hostname or address of the MariaDB server when not using a local socket.";
+        description = "Hostname or address of the MariaDB server.";
       };
 
       port = mkOption {
         type = types.port;
         default = 3306;
-        description = "Port of the MariaDB server when not using a local socket.";
+        description = "Port of the MariaDB server.";
       };
 
       url = mkOption {
@@ -226,7 +262,8 @@ in
         example = "jdbc:mariadb://db.example.com:3306/grimmory?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true";
         description = ''
           Full JDBC database URL. When unset, the module builds one from the
-          other database options. Local databases use MariaDB's unix socket.
+          other database options. The local database connects over TCP to
+          `database.host`:`database.port`.
         '';
       };
     };
@@ -248,8 +285,16 @@ in
         }
       '';
       description = ''
-        nginx virtual host configuration for Grimmory.
-        Set to a non-null value to enable the nginx reverse proxy.
+        nginx virtual host configuration for Grimmory, merged into
+        `services.nginx.virtualHosts.''${config.services.grimmory.hostname}`.
+
+        This is a full nixpkgs nginx vhost submodule (see
+        `services.nginx.virtualHosts`), not an attribute set with `enable`/
+        `virtualHost` keys. Set it to a non-null value to enable the reverse
+        proxy, and set `services.grimmory.hostname` to name the vhost.
+
+        The proxy already forwards `/` and `/ws` (websockets) to the service,
+        and applies `settings.maxBodySize` as `client_max_body_size`.
       '';
     };
   };
@@ -273,8 +318,12 @@ in
 
         environment = {
           APP_VERSION = cfg.package.version or "";
-          BOOKLORE_DATA_DIR = cfg.dataDir;
-          BOOKLORE_BOOKDROP_DIR = cfg.bookdropDir;
+          # Grimmory (forked from Booklore) reads APP_PATH_CONFIG and
+          # APP_BOOKDROP_FOLDER in v3+; SERVER_PORT is primary with
+          # BOOKLORE_PORT kept as a fallback for older packaged versions.
+          APP_PATH_CONFIG = cfg.dataDir;
+          APP_BOOKDROP_FOLDER = cfg.bookdropDir;
+          SERVER_PORT = toString cfg.port;
           BOOKLORE_PORT = toString cfg.port;
           SERVER_ADDRESS = cfg.host;
           DATABASE_NAME = cfg.database.name;
@@ -299,7 +348,8 @@ in
             stateDir
             cfg.dataDir
             cfg.bookdropDir
-          ];
+          ]
+          ++ cfg.libraryDirs;
 
           CapabilityBoundingSet = "";
           LockPersonality = true;
@@ -327,11 +377,13 @@ in
         };
       };
 
-      systemd.tmpfiles.rules = [
-        "d ${stateDir} 0750 ${cfg.user} ${cfg.group} -"
-        "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
-        "d ${cfg.bookdropDir} 0750 ${cfg.user} ${cfg.group} -"
-      ];
+      systemd.tmpfiles.rules =
+        [
+          "d ${stateDir} 0750 ${cfg.user} ${cfg.group} -"
+          "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
+          "d ${cfg.bookdropDir} 0750 ${cfg.user} ${cfg.group} -"
+        ]
+        ++ (map (dir: "d ${dir} 0750 ${cfg.user} ${cfg.group} -") cfg.libraryDirs);
 
       services.mysql = mkIf cfg.database.createLocally {
         enable = true;
