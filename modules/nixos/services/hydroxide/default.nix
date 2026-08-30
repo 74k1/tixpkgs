@@ -54,6 +54,14 @@ let
 
   svc = builtins.mapAttrs normaliseService cfg.serve;
 
+  # Binding privileged ports (<1024) needs CAP_NET_BIND_SERVICE; only grant it
+  # when one of the configured service ports actually requires it.
+  needsBindCap = lib.any (p: p < 1024) [
+    svc.smtp.port
+    svc.imap.port
+    svc.carddav.port
+  ];
+
   # CLI flag helpers
   flag =
     name: value: default:
@@ -95,13 +103,15 @@ let
     ]
   );
 
+  # Runs as the service's DynamicUser (no privileged "+" prefix): systemd makes
+  # credentials readable by the unit user, and hydroxide rewrites auth.json on
+  # re-auth, so both the directory and the file must be owned by the service
+  # user rather than root.
   copyAuthScript = pkgs.writeShellScript "hydroxide-copy-auth" ''
     set -euo pipefail
     ${pkgs.coreutils}/bin/mkdir -p ${lib.escapeShellArg hydroxideConfigDir}
     ${pkgs.coreutils}/bin/install \
       -m 600 \
-      -o "$STATE_DIRECTORY_OWNER" \
-      -g "$STATE_DIRECTORY_GROUP" \
       "$CREDENTIALS_DIRECTORY/auth.json" \
       ${lib.escapeShellArg authJsonPath}
   '';
@@ -302,7 +312,7 @@ in
 
         LoadCredential = [ "auth.json:${cfg.authFile}" ];
 
-        ExecStartPre = [ "+${copyAuthScript}" ];
+        ExecStartPre = [ "${copyAuthScript}" ];
 
         # hydroxide parses flags with Go's `flag` package, which stops at the
         # first non-flag argument: they must all precede `serve`.
@@ -311,7 +321,8 @@ in
         Restart = "on-failure";
         RestartSec = "10s";
 
-        CapabilityBoundingSet = "";
+        CapabilityBoundingSet = if needsBindCap then [ "CAP_NET_BIND_SERVICE" ] else "";
+        AmbientCapabilities = lib.optionals needsBindCap [ "CAP_NET_BIND_SERVICE" ];
         LockPersonality = true;
         NoNewPrivileges = true;
         PrivateDevices = true;

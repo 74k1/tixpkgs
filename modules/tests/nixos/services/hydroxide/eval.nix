@@ -105,6 +105,27 @@ let
       message = "Custom host/port and TLS options must appear in serve args.";
     }
 
+    # Privileged ports require CAP_NET_BIND_SERVICE via ambient capabilities.
+    {
+      assertion =
+        let
+          u = getUnit customAddrs;
+        in
+        u.serviceConfig.AmbientCapabilities == [ "CAP_NET_BIND_SERVICE" ]
+        && u.serviceConfig.CapabilityBoundingSet == [ "CAP_NET_BIND_SERVICE" ];
+      message = "Binding privileged ports must grant CAP_NET_BIND_SERVICE.";
+    }
+
+    # Default ports (1025/1143/8080) are unprivileged → no capability granted.
+    {
+      assertion =
+        let
+          u = getUnit allEnabled;
+        in
+        u.serviceConfig.AmbientCapabilities == [ ] && u.serviceConfig.CapabilityBoundingSet == "";
+      message = "Unprivileged ports must not receive CAP_NET_BIND_SERVICE.";
+    }
+
     # Systemd unit: DynamicUser, hardening, XDG_CONFIG_HOME, auth wiring.
     {
       assertion =
@@ -120,6 +141,13 @@ let
         && u.serviceConfig.NoNewPrivileges == true
         && u.serviceConfig.Restart == "on-failure"
         && builtins.length u.serviceConfig.ExecStartPre == 1
+        # The copy must run as the DynamicUser itself (no "+"), so the copied
+        # auth.json stays writable by the service (hydroxide rewrites it on
+        # re-auth). It also must not reference nonexistent env vars.
+        && !lib.hasPrefix "+" preStart
+        && !lib.hasInfix "STATE_DIRECTORY_OWNER" scriptBody
+        && !lib.hasInfix "STATE_DIRECTORY_GROUP" scriptBody
+        && lib.hasInfix "-m 600" scriptBody
         && lib.hasInfix "CREDENTIALS_DIRECTORY/auth.json" scriptBody
         && lib.hasInfix "/var/lib/hydroxide/hydroxide/auth.json" scriptBody
         && builtins.length u.serviceConfig.LoadCredential >= 1
