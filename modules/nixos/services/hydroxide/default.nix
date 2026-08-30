@@ -1,8 +1,4 @@
 {
-  tixpkgs,
-  inputs ? null,
-}:
-{
   config,
   lib,
   pkgs,
@@ -18,25 +14,23 @@ let
     types
     ;
 
-  cfg = config.services.ferroxide;
+  cfg = config.services.hydroxide;
 
-  serviceName = "ferroxide";
+  serviceName = "hydroxide";
   stateDir = "/var/lib/${serviceName}";
-  ferroxideConfigDir = "${stateDir}/ferroxide";
-  authJsonPath = "${ferroxideConfigDir}/auth.json";
+  hydroxideConfigDir = "${stateDir}/${serviceName}";
+  authJsonPath = "${hydroxideConfigDir}/auth.json";
 
   defaultServiceHosts = {
     smtp = "127.0.0.1";
     imap = "127.0.0.1";
     carddav = "127.0.0.1";
-    caldav = "127.0.0.1";
   };
 
   defaultServicePorts = {
     smtp = 1025;
     imap = 1143;
     carddav = 8080;
-    caldav = 8081;
   };
 
   normaliseService =
@@ -76,13 +70,13 @@ let
 
   flagDisable = name: enable: if enable then "" else "--disable-${name}";
 
+  # hydroxide uses Go's `flag` package: all flags must be passed before the
+  # `serve` subcommand, otherwise they are silently ignored.
   serveArgs = lib.concatStringsSep " " (
     lib.filter (s: s != "") [
       (flagBool "debug" cfg.debug false)
       (flag "api-endpoint" cfg.apiEndpoint "https://mail.proton.me/api")
       (flag "app-version" cfg.appVersion "Other")
-      (flag "proxy-url" cfg.proxyUrl null)
-      (flagBool "tor" cfg.tor false)
       (flag "tls-cert" cfg.tls.certFile null)
       (flag "tls-key" cfg.tls.keyFile null)
       (flag "tls-client-ca" cfg.tls.clientCAFile null)
@@ -98,16 +92,12 @@ let
       (flagDisable "carddav" svc.carddav.enable)
       (flag "carddav-host" svc.carddav.host defaultServiceHosts.carddav)
       (flag "carddav-port" svc.carddav.port defaultServicePorts.carddav)
-
-      (flagDisable "caldav" svc.caldav.enable)
-      (flag "caldav-host" svc.caldav.host defaultServiceHosts.caldav)
-      (flag "caldav-port" svc.caldav.port defaultServicePorts.caldav)
     ]
   );
 
-  copyAuthScript = pkgs.writeShellScript "ferroxide-copy-auth" ''
+  copyAuthScript = pkgs.writeShellScript "hydroxide-copy-auth" ''
     set -euo pipefail
-    ${pkgs.coreutils}/bin/mkdir -p ${lib.escapeShellArg ferroxideConfigDir}
+    ${pkgs.coreutils}/bin/mkdir -p ${lib.escapeShellArg hydroxideConfigDir}
     ${pkgs.coreutils}/bin/install \
       -m 600 \
       -o "$STATE_DIRECTORY_OWNER" \
@@ -117,16 +107,16 @@ let
   '';
 in
 {
-  options.services.ferroxide = {
+  options.services.hydroxide = {
     enable = mkEnableOption ''
-      Ferroxide, a third-party, open-source ProtonMail bridge.
+      hydroxide, a third-party, open-source ProtonMail bridge.
 
-      Before enabling, run `ferroxide auth <username>` to generate an
-      auth.json file.  Point {option}`services.ferroxide.authFile` to that
+      Before enabling, run `hydroxide auth <username>` to generate an
+      auth.json file.  Point {option}`services.hydroxide.authFile` to that
       file.
     '';
 
-    package = mkPackageOption tixpkgs "ferroxide" { };
+    package = mkPackageOption pkgs "hydroxide" { };
 
     debug = mkOption {
       type = types.bool;
@@ -136,10 +126,10 @@ in
 
     authFile = mkOption {
       type = types.path;
-      example = "/run/secrets/ferroxide-auth.json";
+      example = "/run/secrets/hydroxide-auth.json";
       description = ''
         Path to the auth.json file obtained by running
-        `ferroxide auth `⟨username⟩``.
+        `hydroxide auth `⟨username⟩``.
 
         This file contains your ProtonMail credentials encrypted with
         the bridge password.  It is copied into the service's state
@@ -159,29 +149,6 @@ in
       description = "ProtonMail app version string sent to the API.";
     };
 
-    proxyUrl = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "socks5://127.0.0.1:1080";
-      description = ''
-        HTTP proxy URL for ProtonMail API requests.
-
-        Valid schemes: ``http://``, ``socks5://``.
-        If no scheme is given, socks5:// is assumed.
-      '';
-    };
-
-    tor = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Connect to ProtonMail over Tor.
-
-        Requires {option}`services.ferroxide.proxyUrl` to be set to a
-        SOCKS5 proxy (typically the Tor daemon on 127.0.0.1:9050).
-      '';
-    };
-
     tls = {
       certFile = mkOption {
         type = types.nullOr types.path;
@@ -198,8 +165,8 @@ in
         default = null;
         description = ''
           Path to CA certificate for client verification (mTLS).
-          Requires both {option}`services.ferroxide.tls.certFile`
-          and {option}`services.ferroxide.tls.keyFile`.
+          Requires both {option}`services.hydroxide.tls.certFile`
+          and {option}`services.hydroxide.tls.keyFile`.
         '';
       };
     };
@@ -291,71 +258,37 @@ in
           pass an attrset for finer control.
         '';
       };
-
-      caldav = mkOption {
-        type = types.either types.bool (
-          types.submodule {
-            options = {
-              enable = mkOption {
-                type = types.bool;
-                default = true;
-                description = "Whether to serve CalDAV.";
-              };
-              host = mkOption {
-                type = types.str;
-                default = defaultServiceHosts.caldav;
-                description = "Address the CalDAV server binds to.";
-              };
-              port = mkOption {
-                type = types.port;
-                default = defaultServicePorts.caldav;
-                description = "Port the CalDAV server listens on.";
-              };
-            };
-          }
-        );
-        default = false;
-        description = ''
-          CalDAV server.  Set to `true` to enable with defaults, or
-          pass an attrset for finer control.
-        '';
-      };
     };
   };
 
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = svc.smtp.enable || svc.imap.enable || svc.carddav.enable || svc.caldav.enable;
+        assertion = svc.smtp.enable || svc.imap.enable || svc.carddav.enable;
         message = ''
-          services.ferroxide: at least one of serve.smtp, serve.imap,
-          serve.carddav, or serve.caldav must be enabled.
-        '';
-      }
-      {
-        assertion = !cfg.tor || cfg.proxyUrl != null;
-        message = ''
-          services.ferroxide.proxyUrl must be set when
-          services.ferroxide.tor is enabled.
+          services.hydroxide: at least one of serve.smtp, serve.imap,
+          or serve.carddav must be enabled.
         '';
       }
       {
         assertion =
           !(cfg.tls.clientCAFile != null && (cfg.tls.certFile == null || cfg.tls.keyFile == null));
         message = ''
-          services.ferroxide.tls.clientCAFile requires both
-          services.ferroxide.tls.certFile and
-          services.ferroxide.tls.keyFile to be set.
+          services.hydroxide.tls.clientCAFile requires both
+          services.hydroxide.tls.certFile and
+          services.hydroxide.tls.keyFile to be set.
         '';
       }
     ];
 
-    systemd.services.ferroxide = {
-      description = "Ferroxide ProtonMail bridge";
-      documentation = [ "https://github.com/acheong08/ferroxide" ];
+    systemd.services.hydroxide = {
+      description = "hydroxide ProtonMail bridge";
+      documentation = [ "https://codeberg.org/emersion/hydroxide" ];
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       restartTriggers = [ cfg.package ];
+
+      environment.XDG_CONFIG_HOME = stateDir;
 
       serviceConfig = {
         Type = "simple";
@@ -371,7 +304,9 @@ in
 
         ExecStartPre = [ "+${copyAuthScript}" ];
 
-        ExecStart = "${getExe cfg.package} --config-home ${stateDir} serve ${serveArgs}";
+        # hydroxide parses flags with Go's `flag` package, which stops at the
+        # first non-flag argument: they must all precede `serve`.
+        ExecStart = "${getExe cfg.package} ${serveArgs} serve";
 
         Restart = "on-failure";
         RestartSec = "10s";

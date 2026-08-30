@@ -111,9 +111,9 @@ This flake exports modules in two ways:
 |---|---|
 | `services.brscan-skey` | [README](modules/nixos/services/brscan-skey/README.md) |
 | `services.degoog` | [README](modules/nixos/services/degoog/README.md) |
-| `services.ferroxide` | [README](modules/nixos/services/ferroxide/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
+| `services.hydroxide` | [README](modules/nixos/services/hydroxide/README.md) |
 | `services.keeper-sh` | [README](modules/nixos/services/keeper-sh/README.md) |
 | `services.mc-gate` | [README](modules/nixos/services/mc-gate/README.md) |
 | `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |

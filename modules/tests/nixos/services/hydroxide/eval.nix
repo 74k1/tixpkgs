@@ -5,39 +5,39 @@
   ...
 }:
 let
-  evalFerroxide =
+  evalHydroxide =
     cfg:
     import (pkgs.path + "/nixos") {
       inherit (pkgs.stdenv.hostPlatform) system;
       configuration = {
         imports = [ module ];
-        services.ferroxide = cfg;
+        services.hydroxide = cfg;
       };
     };
 
-  allEnabled = evalFerroxide {
+  allEnabled = evalHydroxide {
     enable = true;
     authFile = "/tmp/fake-auth.json";
     serve = {
       smtp = true;
       imap = true;
       carddav = true;
-      caldav = true;
     };
   };
 
-  smtpImap = evalFerroxide {
+  smtpOnly = evalHydroxide {
     enable = true;
     authFile = "/tmp/fake-auth.json";
-    serve = {
-      smtp = true;
-      imap = true;
-    };
+    serve.smtp = true;
   };
 
-  customAddrs = evalFerroxide {
+  customAddrs = evalHydroxide {
     enable = true;
     authFile = "/tmp/fake-auth.json";
+    tls = {
+      certFile = "/tmp/tls.pem";
+      keyFile = "/tmp/tls-key.pem";
+    };
     serve = {
       smtp = {
         host = "0.0.0.0";
@@ -50,8 +50,8 @@ let
     };
   };
 
-  getExecStart = cfg: cfg.config.systemd.services.ferroxide.serviceConfig.ExecStart;
-  getUnit = cfg: cfg.config.systemd.services.ferroxide;
+  getExecStart = cfg: cfg.config.systemd.services.hydroxide.serviceConfig.ExecStart;
+  getUnit = cfg: cfg.config.systemd.services.hydroxide;
 
   checks = [
     # All enabled → clean minimal command, no disable/host/port flags.
@@ -67,20 +67,30 @@ let
       message = "All-enabled should emit a minimal serve command.";
     }
 
-    # SMTP+IMAP only → carddav/caldav disabled, smtp/imap not.
+    # Flags must precede `serve` (Go's flag package stops at the first
+    # non-flag argument); nothing may follow it.
     {
       assertion =
         let
-          start = getExecStart smtpImap;
+          start = getExecStart allEnabled;
         in
-        lib.hasInfix "--disable-carddav" start
-        && lib.hasInfix "--disable-caldav" start
-        && !lib.hasInfix "--disable-smtp" start
-        && !lib.hasInfix "--disable-imap" start;
-      message = "SMTP+IMAP must disable carddav/caldav only.";
+        lib.hasSuffix " serve" start;
+      message = "All flags must be passed before the serve subcommand.";
     }
 
-    # Custom host/port overrides appear.
+    # SMTP only → imap/carddav disabled, smtp not.
+    {
+      assertion =
+        let
+          start = getExecStart smtpOnly;
+        in
+        lib.hasInfix "--disable-imap" start
+        && lib.hasInfix "--disable-carddav" start
+        && !lib.hasInfix "--disable-smtp" start;
+      message = "SMTP-only must disable imap/carddav only.";
+    }
+
+    # Custom host/port overrides and TLS flags appear.
     {
       assertion =
         let
@@ -89,11 +99,13 @@ let
         lib.hasInfix "--smtp-host 0.0.0.0" start
         && lib.hasInfix "--smtp-port 587" start
         && lib.hasInfix "--imap-host ::1" start
-        && lib.hasInfix "--imap-port 10143" start;
-      message = "Custom host/port must appear in serve args.";
+        && lib.hasInfix "--imap-port 10143" start
+        && lib.hasInfix "--tls-cert /tmp/tls.pem" start
+        && lib.hasInfix "--tls-key /tmp/tls-key.pem" start;
+      message = "Custom host/port and TLS options must appear in serve args.";
     }
 
-    # Systemd unit: DynamicUser, hardening, auth wiring.
+    # Systemd unit: DynamicUser, hardening, XDG_CONFIG_HOME, auth wiring.
     {
       assertion =
         let
@@ -102,16 +114,18 @@ let
           scriptBody = builtins.readFile (lib.removePrefix "+" preStart);
         in
         u.serviceConfig.DynamicUser == true
-        && u.serviceConfig.StateDirectory == "ferroxide"
+        && u.serviceConfig.StateDirectory == "hydroxide"
+        && u.environment.XDG_CONFIG_HOME == "/var/lib/hydroxide"
         && u.serviceConfig.ProtectSystem == "strict"
         && u.serviceConfig.NoNewPrivileges == true
         && u.serviceConfig.Restart == "on-failure"
         && builtins.length u.serviceConfig.ExecStartPre == 1
         && lib.hasInfix "CREDENTIALS_DIRECTORY/auth.json" scriptBody
+        && lib.hasInfix "/var/lib/hydroxide/hydroxide/auth.json" scriptBody
         && builtins.length u.serviceConfig.LoadCredential >= 1
         && lib.elem "AF_INET" u.serviceConfig.RestrictAddressFamilies
         && lib.elem "AF_UNIX" u.serviceConfig.RestrictAddressFamilies;
-      message = "Systemd unit must use DynamicUser, hardening, and credential wiring.";
+      message = "Systemd unit must use DynamicUser, hardening, XDG_CONFIG_HOME, and credential wiring.";
     }
   ];
 
@@ -120,6 +134,6 @@ in
 assert lib.assertMsg (failed == [ ]) (
   lib.concatMapStringsSep "\n" (check: "FAIL: ${check.message}") failed
 );
-pkgs.runCommand "ferroxide-module-eval" { } ''
+pkgs.runCommand "hydroxide-module-eval" { } ''
   echo ok > $out
 ''
