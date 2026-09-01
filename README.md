@@ -147,7 +147,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.2.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.1` |
-| `fourget` | `unstable-2026-08-30` |
+| `fourget` | `unstable-2026-09-01` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
 | `grimmory` | `3.3.3` |
@@ -158,7 +158,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
-| `mtkclient` | `0542a87` |
+| `mtkclient` | `60e07f3` |
 | `multi-scrobbler` | `0.16.5` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
