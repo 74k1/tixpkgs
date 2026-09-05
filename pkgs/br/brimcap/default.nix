@@ -5,7 +5,7 @@
   fetchzip,
   buildGoModule,
   makeWrapper,
-  zed,
+  super,
   autoPatchelfHook,
   zlib,
   nss,
@@ -30,7 +30,7 @@ buildGoModule rec {
     autoPatchelfHook
   ];
 
-  propagatedBuildInputs = [ zed ];
+  propagatedBuildInputs = [ super ];
 
   buildInputs = [
     stdenv.cc.cc.lib
@@ -78,7 +78,7 @@ buildGoModule rec {
 
     wrapProgram $out/bin/brimcap \
       --prefix PATH : $out/share/brimcap \
-      --prefix PATH : ${lib.makeBinPath [ zed ]} \
+      --prefix PATH : ${lib.makeBinPath [ super ]} \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
           stdenv.cc.cc.lib
