@@ -147,14 +147,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.2.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.1` |
-| `fourget` | `unstable-2026-09-02` |
+| `fourget` | `unstable-2026-09-05` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
 | `grimmory` | `3.3.3` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
-| `lidarr` | `3.1.4.5029` |
+| `lidarr` | `3.1.5.5066` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
