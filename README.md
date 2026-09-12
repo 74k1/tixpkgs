@@ -162,7 +162,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `multi-scrobbler` | `0.17.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
-| `rybbit` | `2.8.0` |
+| `rybbit` | `2.9.1` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.2.1` |
