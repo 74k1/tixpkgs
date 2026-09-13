@@ -143,7 +143,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.4.2+hotfix.2` |
-| `degoog` | `0.25.0` |
+| `degoog` | `0.26.0` |
 | `degoog-mcp` | `0.2.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.1` |
