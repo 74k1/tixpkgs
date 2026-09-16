@@ -150,7 +150,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `fourget` | `unstable-2026-09-15` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
-| `grimmory` | `3.4.0` |
+| `grimmory` | `3.4.1` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
