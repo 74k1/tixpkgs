@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   nodejs,
-  typescript,
+  typescript_5,
   bun,
   fetchFromGitHub,
   buildNpmPackage,
@@ -29,7 +29,9 @@ let
 
     nativeBuildInputs = [
       nodejs
-      typescript
+      # nixpkgs typescript is 7.x, which removed moduleResolution=node10
+      # that shared/tsconfig.json still uses.
+      typescript_5
     ];
 
     buildPhase = ''

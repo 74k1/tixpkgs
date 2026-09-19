@@ -7,7 +7,9 @@
 python3.pkgs.buildPythonPackage rec {
   pyproject = true;
   pname = "mtkclient";
-  version = "cd25cf9";
+  # Must be a PEP 440 version matching pyproject.toml; nixpkgs' metadata
+  # check fails on git-rev versions.
+  version = "2.1.4";
 
   buildInputs = with pkgs; [
     pkgs.keystone

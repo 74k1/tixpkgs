@@ -8,10 +8,20 @@ api="https://api.github.com/repos/bkerler/mtkclient/commits/main"
 
 commit="$(curl -fsSL "$api")"
 new_rev="$(jq -r '.sha // empty' <<< "$commit")"
-new_version="${new_rev:0:7}"
 
-if [[ -z "$new_rev" || -z "$new_version" ]]; then
+if [[ -z "$new_rev" ]]; then
   echo "failed to resolve latest mtkclient commit from $api" >&2
+  exit 1
+fi
+
+# The derivation version must be a PEP 440 version matching pyproject.toml
+# (nixpkgs' pythonMetadataCheckPhase enforces both); the git rev is tracked
+# separately in the fetchFromGitHub rev attribute.
+new_version="$(curl -fsSL "https://raw.githubusercontent.com/bkerler/mtkclient/$new_rev/pyproject.toml" \
+  | perl -ne 'print $1 if /^\s*version = "([^"]+)"/')"
+
+if [[ -z "$new_version" ]]; then
+  echo "failed to extract version from pyproject.toml at $new_rev" >&2
   exit 1
 fi
 

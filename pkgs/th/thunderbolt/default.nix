@@ -64,7 +64,7 @@ in
       runHook postInstall
     '';
 
-    outputHash = "sha256-BqIJL/MNif9PzZ2dasP+lHeoxpUfPzVWDEXsC4EyfgU=";
+    outputHash = "sha256-52k5WXgmoR7MeV1HozLklTIXyxMjvdhaZO13gSULc8M=";
     outputHashMode = "recursive";
   };
 
@@ -92,7 +92,12 @@ in
       runHook preBuild
 
       export BUN_INSTALL_CACHE_DIR=$(mktemp -d)
-      bun install --frozen-lockfile --production --no-progress --ignore-scripts
+      # bun >= 1.4 refuses --production when the lockfile needs refreshing
+      # (upstream's bun.lock trips the overrides check under 1.4), so run a
+      # full install first to bring the lockfile in sync, then prune to a
+      # production-only tree.
+      bun install --ignore-scripts --no-progress
+      bun install --production --ignore-scripts --no-progress
 
       runHook postBuild
     '';
@@ -105,7 +110,7 @@ in
       runHook postInstall
     '';
 
-    outputHash = "sha256-KgBQ23Wh1ZcLyw07+aDkiwoQIimzh8klcpEyj3PjrLc=";
+    outputHash = "sha256-HU5e/dQbrtI4eCNUeLtQQtXOWtrcsxOILySFB6JIgUY=";
     outputHashMode = "recursive";
   };
 
