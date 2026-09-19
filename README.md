@@ -154,12 +154,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.10.1` |
-| `lidarr` | `3.1.5.5066` |
+| `lidarr` | `3.1.6.5078` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
 | `mtkclient` | `cd25cf9` |
-| `multi-scrobbler` | `0.17.2` |
+| `multi-scrobbler` | `0.18.0` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
 | `rybbit` | `2.9.1` |
