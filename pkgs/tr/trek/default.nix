@@ -8,19 +8,19 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "trek";
-  version = "4.3.0";
+  version = "4.3.1";
 
   src = fetchFromGitHub {
     owner = "liketrek";
     repo = "TREK";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-dycxny+HEST3TqaWGtTkxDp20HIEORJLb489E6Aoq0w=";
+    hash = "sha256-awQywvehE9A0Pf70GLnqSaS7leahbitHZb2D1y3j3Mc=";
   };
 
   # TREK is an npm workspaces monorepo (client + server + shared) driven by a
   # single root package-lock.json. Fetcher v2 enables packument caching, which
   # is required for workspaces to resolve through `npm ci`.
-  npmDepsHash = "sha256-R5ha831YzemqZRMidaPrhzs7B7tJaK3+WS3z1gIabFc=";
+  npmDepsHash = "sha256-PQSh6IKMrSP2i+oKDe+t5WpbcMeR9plGKOlckYO/FtE=";
   npmDepsFetcherVersion = 2;
 
   nodejs = nodejs_22;
@@ -77,6 +77,10 @@ buildNpmPackage (finalAttrs: {
     # survives.
     cp -r --no-dereference node_modules $out/libexec/trek/node_modules
 
+    # Preserve npm's workspace dependency layout. Node resolves server-local
+    # dependencies from server/dist before falling back to the root tree.
+    cp -r --no-dereference server/node_modules $out/libexec/trek/server/node_modules
+
     # npm symlinks every workspace into node_modules/@trek/*. Only @trek/shared
     # is needed at runtime (the server imports it); @trek/client and @trek/server
     # would dangle because we don't ship those workspace trees whole, so drop
@@ -129,10 +133,12 @@ buildNpmPackage (finalAttrs: {
     test -x $out/bin/trek
     test -f $out/libexec/trek/server/dist/index.js
     test -d $out/libexec/trek/server/public
-    test -d $out/libexec/trek/node_modules/better-sqlite3
     test -d $out/libexec/trek/shared/dist
     test -f $out/libexec/trek/server/assets/atlas/admin0.geojson.gz
     test -f $out/libexec/trek/server/assets/airports.json
+    # Resolve and dlopen the nested sqlite addon exactly as the server does
+    # at runtime (from server/, walking up into server/node_modules).
+    (cd $out/libexec/trek/server && ${lib.getExe nodejs_22} -e "require('better-sqlite3')")
     runHook postInstallCheck
   '';
 
