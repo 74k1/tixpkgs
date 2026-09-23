@@ -4,6 +4,8 @@
   fetchFromGitHub,
   lsp-plugins,
   bankstown-lv2,
+  # ALSA sink of the internal speakers; the DSP output is pinned to it.
+  speakerSink ? "alsa_output.pci-0000_c5_00.6.analog-stereo",
 }:
 
 stdenvNoCC.mkDerivation {
@@ -36,6 +38,14 @@ stdenvNoCC.mkDerivation {
     substituteInPlace "$out/share/pipewire/pipewire.conf.d/sink-gpd-pocket-4.conf" \
       --replace-fail '/usr/share/pipewire/pipewire.conf.d' \
       "$out/share/pipewire/pipewire.conf.d"
+
+    # Pin the DSP playback node to the speakers and make it immovable. Otherwise
+    # a sink switch (or EasyEffects following the default sink) moves the DSP
+    # output into its own input: the graph stalls, silence comes out, and the
+    # looped-back audio plays as a burst when the switch is undone.
+    substituteInPlace "$out/share/pipewire/pipewire.conf.d/sink-gpd-pocket-4.conf" \
+      --replace-fail '"node.passive": "false",' \
+      "\"node.passive\": \"false\", \"target.object\": \"${speakerSink}\", \"node.dont-move\": true, \"node.dont-reconnect\": true,"
 
     runHook postInstall
   '';
