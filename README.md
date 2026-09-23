@@ -147,7 +147,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.2.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.1` |
-| `fourget` | `unstable-2026-09-19` |
+| `fourget` | `unstable-2026-09-22` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
