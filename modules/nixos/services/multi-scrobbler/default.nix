@@ -94,40 +94,54 @@ let
 
   configFileTypes = lib.unique (sourceTypes ++ clientTypes);
 
+  # ENV prefixes upstream matches against when looking for single-user (ENV based)
+  # source/client configs, one entry per type. Taken from the `prefix` of each type's
+  # envSchema in src/backend/common/infrastructure/config/{source,client}, verified
+  # against 0.18.1.
+  #
+  # Types that share a name with a client use the SOURCE_ form, and several prefixes
+  # are abbreviated: chromecast -> CC, webscrobbler -> WS, musikcube -> MC,
+  # musiccast -> MCAST, ytmusic -> YTM, azuracast -> AZURA, endpointlfm -> LFM,
+  # endpointlz -> LZE.
   upstreamAutoConfigEnvPrefixes = [
     "APPLEMUSIC_"
-    "AZURACAST_"
-    "CHROMECAST_"
+    "AZURA_"
+    "CC_"
     "DEEZER_"
     "DISCORD_"
-    "LFM_"
-    "LZE_"
     "ICECAST_"
     "JELLYFIN_"
     "JRIVER_"
     "KODI_"
     "KOITO_"
     "LASTFM_"
+    "LFM_"
     "LIBREFM_"
-    "LIBRFM_"
-    "LISTENBRAINZ_"
     "LZ_"
+    "LZE_"
     "MALOJA_"
+    "MC_"
+    "MCAST_"
     "MOPIDY_"
     "MPD_"
     "MPRIS_"
-    "MUSICCAST_"
-    "MUSIKCUBE_"
     "PLEX_"
     "ROCKSKY_"
     "SONOS_"
+    "SOURCE_KOITO_"
+    "SOURCE_LASTFM_"
+    "SOURCE_LIBREFM_"
+    "SOURCE_LZ_"
+    "SOURCE_MALOJA_"
+    "SOURCE_ROCKSKY_"
+    "SOURCE_TEALFM_"
     "SPOTIFY_"
     "SUBSONIC_"
     "TEALFM_"
     "VLC_"
-    "WEBSCROBBLER_"
+    "WS_"
     "YMBRIDGE_"
-    "YTMUSIC_"
+    "YTM_"
   ];
 
   reservedEnvironmentKeys = [
@@ -248,11 +262,11 @@ in
         secrets, since multi-scrobbler supports extensive ENV-based configuration
         and ENV interpolation inside JSON config files.
 
-        WARNING: upstream also treats many source/client env keys like
-        `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, and
-        similar as single-user config. If those names are present alongside
-        `configFiles` or `config`, multi-scrobbler will auto-create additional
-        `unnamed` / `unnamed-lfm` configs.
+        WARNING: upstream also treats every source/client ENV prefix like
+        `SPOTIFY_*`, `LASTFM_*`, `LZ_*`, `SOURCE_LZ_*`, `MALOJA_*`, and similar as
+        single-user config. If those names are present alongside `configFiles` or
+        `config`, multi-scrobbler will auto-create additional single-user
+        sources/clients of that type.
 
         Prefer neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` for interpolation.
       '';
@@ -275,10 +289,9 @@ in
 
         Secrets should go in `services.multi-scrobbler.environmentFile` instead.
 
-        WARNING: upstream treats many source/client env keys like `SPOTIFY_*`,
-        `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, and similar as
-        single-user config and will auto-create additional `unnamed` or
-        `unnamed-lfm` sources/clients when they are present.
+        WARNING: upstream treats source/client ENV prefixes like `SPOTIFY_*`,
+        `LASTFM_*`, `LZ_*`, `SOURCE_LZ_*`, `MALOJA_*`, and similar as single-user
+        config and will auto-create additional sources/clients when they are present.
 
         If you want ENV interpolation inside `configFiles` or `config`, prefer
         neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON
@@ -400,6 +413,10 @@ in
         Optional base URL exposed to multi-scrobbler as `BASE_URL`.
 
         This is used to derive callback URLs and other externally visible links.
+
+        Since 0.18.0 subpath deployments are supported, so a value like
+        `https://scrobble.example.com/multi-scrobbler` serves the UI under that
+        path instead of the domain root.
       '';
     };
 
@@ -439,7 +456,7 @@ in
         ((attrNames cfg.configFiles != [ ] || cfg.config != null) && cfg.environmentFile != "/dev/null")
         ''
           services.multi-scrobbler is using `environmentFile` together with `configFiles` or `config`.
-          Upstream single-user ENV keys like `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, `LZ_*`, and similar will auto-create extra `unnamed` / `unnamed-lfm` configs.
+          Upstream single-user ENV keys like `SPOTIFY_*`, `LASTFM_*`, `LZ_*`, `SOURCE_LZ_*`, `MALOJA_*`, and similar will auto-create extra single-user sources/clients.
           Prefer neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON with `[[TIX_SPOTIFY_CLIENT_ID]]`.
         ''
       ++

@@ -97,9 +97,9 @@ CUSTOM_SPOTIFY_CLIENT_SECRET=...
 ```
 
 > [!WARNING]
-> Do not put upstream single-user env keys like `SPOTIFY_*`, `LASTFM_*`, `LIBREFM_*`, `MALOJA_*`, `LISTENBRAINZ_*`, `LZ_*`, or similar into `environment` or `environmentFile` when you are also using `configFiles` or `config`.
+> Do not put upstream single-user env keys like `SPOTIFY_*`, `LASTFM_*`, `LZ_*`, `SOURCE_LZ_*`, `MALOJA_*`, `CC_*`, `WS_*`, or similar into `environment` or `environmentFile` when you are also using `configFiles` or `config`.
 >
-> multi-scrobbler consumes those names directly and will auto-create additional single-user configs like `unnamed` or `unnamed-lfm`.
+> multi-scrobbler consumes those names directly and will auto-create additional single-user sources/clients of that type alongside yours.
 >
 > Use neutral env names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON with `[[CUSTOM_SPOTIFY_CLIENT_ID]]`.
 
