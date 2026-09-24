@@ -87,13 +87,13 @@ let
 in
 flutter341.buildFlutterApplication (finalAttrs: {
   pname = "commet";
-  version = "0.4.2+hotfix.2";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "commetchat";
     repo = "commet";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-z8V6p8DO/8YVDhpoin4FajMvDNg8FGEi27QH9q7+7wM=";
+    hash = "sha256-B9vs8xdtFR7+VmE3v5YH6tPIdF2mEGP8ef33ZWx+zL0=";
   };
 
   sourceRoot = "source";
