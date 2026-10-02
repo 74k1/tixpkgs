@@ -12,7 +12,6 @@ stdenvNoCC.mkDerivation {
   pname = "gpd-pocket-4-pipewire";
   version = "0-unstable-2025-04-08";
 
-  # Last upstream commit; there are no tags.
   src = fetchFromGitHub {
     owner = "Manawyrm";
     repo = "gpd-pocket-4-pipewire";
@@ -39,19 +38,13 @@ stdenvNoCC.mkDerivation {
       --replace-fail '/usr/share/pipewire/pipewire.conf.d' \
       "$out/share/pipewire/pipewire.conf.d"
 
-    # Pin the DSP playback node to the speakers and make it immovable. Otherwise
-    # a sink switch (or EasyEffects following the default sink) moves the DSP
-    # output into its own input: the graph stalls, silence comes out, and the
-    # looped-back audio plays as a burst when the switch is undone.
     substituteInPlace "$out/share/pipewire/pipewire.conf.d/sink-gpd-pocket-4.conf" \
       --replace-fail '"node.passive": "false",' \
-      "\"node.passive\": \"false\", \"target.object\": \"${speakerSink}\", \"node.dont-move\": true, \"node.dont-reconnect\": true,"
+      "\"node.passive\": \"false\", \"target.object\": \"${speakerSink}\", \"node.dont-move\": true,"
 
     runHook postInstall
   '';
 
-  # Consumed by services.pipewire.configPackages via
-  # passthru.requiredLv2Packages, which feeds the pipewire unit's LV2_PATH.
   passthru.requiredLv2Packages = [
     lsp-plugins
     bankstown-lv2
