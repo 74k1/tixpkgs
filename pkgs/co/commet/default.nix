@@ -34,6 +34,7 @@
   pango,
   pcre2,
   pipewire,
+  pkg-config,
   sqlite,
   webkitgtk_4_1,
   xdg-utils,
@@ -42,13 +43,13 @@
 
 let
   libwebrtcZip = fetchurl {
-    url = "https://github.com/flutter-webrtc/flutter-webrtc/releases/download/v1.2.1/libwebrtc.zip";
-    hash = "sha256-rMQjW2KdD3yPGj8mAU/9Qw7WYrqeHtRHFJcAnBIHWpk=";
+    url = "https://github.com/flutter-webrtc/flutter-webrtc/releases/download/v1.4.0/libwebrtc.zip";
+    hash = "sha256-K8rEcKw1BahrF20z+HCQBiZVweLHjqWGlMQ64G0xUzw=";
   };
 
   libwebrtc = fetchzip {
-    url = "https://github.com/flutter-webrtc/flutter-webrtc/releases/download/v1.2.1/libwebrtc.zip";
-    hash = "sha256-i4LRG44f//SDIOl072yZavkYoTZdiydPZndeOm6/fBM=";
+    url = "https://github.com/flutter-webrtc/flutter-webrtc/releases/download/v1.4.0/libwebrtc.zip";
+    hash = "sha256-OvqUF6RuytDorJE+C58EnIxPHfcphs8iPiPjt7SDrU0=";
   };
 
   runtimeLibraries = [
@@ -87,13 +88,13 @@ let
 in
 flutter341.buildFlutterApplication (finalAttrs: {
   pname = "commet";
-  version = "0.4.2+hotfix.2";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "commetchat";
     repo = "commet";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-z8V6p8DO/8YVDhpoin4FajMvDNg8FGEi27QH9q7+7wM=";
+    hash = "sha256-B9vs8xdtFR7+VmE3v5YH6tPIdF2mEGP8ef33ZWx+zL0=";
   };
 
   sourceRoot = "source";
@@ -181,6 +182,51 @@ flutter341.buildFlutterApplication (finalAttrs: {
       '';
     };
 
+  customSourceBuilders.rust_lib_commet =
+    { version, src, ... }:
+    let
+      rustDep = rustPlatform.buildRustPackage {
+        pname = "rust_lib_commet-rs";
+        inherit version src;
+
+        # workspace root: Cargo.toml/Cargo.lock live at the repo root
+        cargoLock.lockFile = src + "/Cargo.lock";
+
+        nativeBuildInputs = [ pkg-config ];
+        buildInputs = [
+          gtk3
+          webkitgtk_4_1
+        ];
+
+        passthru.libraryPath = "lib/librust_lib_commet.so";
+      };
+
+      fakeCargokitCmake = writeText "FakeCargokit.cmake" ''
+        function(apply_cargokit target manifest_dir lib_name any_symbol_name)
+          set("''${target}_cargokit_lib" ${rustDep}/${rustDep.passthru.libraryPath} PARENT_SCOPE)
+        endfunction()
+      '';
+    in
+    stdenv.mkDerivation {
+      pname = "rust_lib_commet";
+      inherit version src;
+      passthru = src.passthru // {
+        inherit (rustDep) cargoDeps;
+      };
+
+      installPhase = ''
+        runHook preInstall
+
+        cp -r "$src" "$out"
+        pushd $out
+          chmod +rwx rust/rust_builder/cargokit/cmake/cargokit.cmake
+          cp ${fakeCargokitCmake} rust/rust_builder/cargokit/cmake/cargokit.cmake
+        popd
+
+        runHook postInstall
+      '';
+    };
+
   buildInputs = runtimeLibraries;
 
   env.COMMET_PROD = "1";
@@ -256,6 +302,5 @@ flutter341.buildFlutterApplication (finalAttrs: {
     maintainers = with lib.maintainers; [ _74k1 ];
     mainProgram = "commet";
     platforms = [ "x86_64-linux" ];
-    broken = true;
   };
 })
