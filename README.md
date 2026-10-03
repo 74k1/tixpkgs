@@ -143,11 +143,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.5.0` |
-| `degoog` | `0.26.0` |
+| `degoog` | `1.0.0` |
 | `degoog-mcp` | `0.2.0` |
 | `ferroxide` | `0.5.0` |
 | `fogpanther` | `0.8.2` |
-| `fourget` | `unstable-2026-09-22` |
+| `fourget` | `unstable-2026-10-03` |
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
