@@ -56,11 +56,28 @@
         "type": "github"
       }
     },
+    "nixpkgs-waterfox": {
+      "locked": {
+        "lastModified": 1790803155,
+        "narHash": "sha256-Br/8jdGA8HTafJ7UHWmzOdND9zaNYuC5mEblxxRI9ys=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5a5bef37dbd6c06de93943087fbb0d7d2efcb975",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "refs/pull/475318/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-waterfox": "nixpkgs-waterfox"
       }
     }
   },

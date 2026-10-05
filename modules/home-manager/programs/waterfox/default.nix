@@ -36,16 +36,9 @@ in
       {
         assertion = cfg.package != null;
         message = ''
-          tixpkgs does not ship a waterfox package.
+          Set the waterfox package explicitly:
 
-          Add the Hythera flake to your inputs:
-
-            inputs.hythera-waterfox.url = "github:Hythera/nixpkgs/pkgs/waterfox/init";
-
-          Then set:
-
-            programs.waterfox.package =
-              inputs.hythera-waterfox.legacyPackages.''${pkgs.stdenv.hostPlatform.system}.waterfox;
+            programs.waterfox.package = pkgs.waterfox;
         '';
       }
     ];

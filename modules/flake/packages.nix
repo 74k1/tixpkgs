@@ -50,13 +50,45 @@ in
       };
     in
     {
-      packages = mkImportedPackages pkgs';
+      packages =
+        (mkImportedPackages pkgs')
+        // (with pkgs'; {
+          inherit waterfox waterfox-unwrapped;
+        });
     };
   flake.overlays.default =
     final: prev:
     mkImportedPackages final
     // {
-      waterfox = null;
-      waterfox-unwrapped = null;
+      waterfox-unwrapped =
+        let
+          upstream =
+            inputs.nixpkgs-waterfox.legacyPackages.${final.stdenv.hostPlatform.system}.waterfox-unwrapped;
+        in
+        upstream.override {
+          fetchFromGitHub =
+            args:
+            final.fetchgit {
+              name = "source";
+              url = "https://github.com/${args.owner}/${args.repo}.git";
+              inherit (args)
+                tag
+                hash
+                leaveDotGit
+                fetchSubmodules
+                preFetch
+                postFetch
+                ;
+              netrcPhase = ''
+                if [ -n "''${GITHUB_TOKEN:-}" ]; then
+                  printf 'machine github.com\nlogin x-access-token\npassword %s\n' "$GITHUB_TOKEN" > netrc
+                else
+                  : > netrc
+                fi
+              '';
+              netrcImpureEnvVars = [ "GITHUB_TOKEN" ];
+            };
+        };
+      waterfox = final.wrapFirefox final.waterfox-unwrapped { };
     };
 }

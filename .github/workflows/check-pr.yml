@@ -221,7 +221,7 @@ jobs:
           if [ -n "$skip_list" ] && [ -s packages.txt ]; then
             while IFS= read -r pkg; do
               if echo "$skip_list" | grep -Fxq "$pkg"; then
-                echo "Skipping $pkg (CACHIX_SKIP)"
+                echo "Skipping $pkg (CACHIX_SKIP)" >&2
               else
                 echo "$pkg"
               fi
