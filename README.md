@@ -169,6 +169,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `trek` | `4.3.3` |
 | `waterfox` | `6.7.5` |
 | `waterfox-unwrapped` | `6.7.5` |
+| `whowatch` | `1.8.6` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
