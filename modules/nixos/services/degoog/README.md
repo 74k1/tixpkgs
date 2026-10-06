@@ -61,9 +61,13 @@ services.degoog = {
   environmentFile = "/run/secrets/degoog.env"; # environment style
   database = { # uses SQLite by default. postgres as alternative:
     type = "postgres";
-    createLocally = true;
+    createLocally = true; # wires DEGOOG_POSTGRES_* automatically
   };
   cache.createLocally = true; # adds Valkey to degoog, disabled by default
+  fourget = { # PHP runtime for the 4get compatibility layer (needs PHP 8.1+ with sodium/mbstring/zlib)
+    enabled = true; # disabled by default
+  };
+  extraPackages = [ ]; # extra packages on the service PATH, e.g. pkgs.php
   mcp = { # MCP server
     enabled = true; # disabled by default
     port = 4443; # default

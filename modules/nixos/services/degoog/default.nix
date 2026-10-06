@@ -24,6 +24,8 @@ let
 
   cfg = config.services.degoog;
 
+  pathPackages = [ cfg.package ] ++ cfg.extraPackages;
+
   serviceName = "degoog";
   stateDir = "/var/lib/${serviceName}";
 
@@ -89,7 +91,7 @@ in
         }
       '';
       description = ''
-        Environment variables passed to Degoog. See more at in their [docs](https://degoog-org.github.io/docs/env.html)
+        Environment variables passed to Degoog. See more at in their [docs](https://degoog-org.github.io/docs/server-settings.html)
 
         Secrets should go in {option}`services.degoog.environmentFile` instead.
       '';
@@ -153,6 +155,47 @@ in
         `services.redis.servers.degoog` with Valkey over a unix socket (no
         TCP port exposed) and sets `DEGOOG_VALKEY_URL` automatically.
       '';
+    };
+
+    extraPackages = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      example = literalExpression "[ pkgs.php ]";
+      description = ''
+        Extra packages to add to the Degoog service PATH. Use this for
+        external tools required by engines or compatibility layers, e.g. a
+        PHP interpreter for the 4get compatibility layer.
+      '';
+    };
+
+    fourget = {
+      enable = mkEnableOption ''
+        the PHP runtime for the 4get compatibility layer.
+
+        The 4get compatibility layer spawns short-lived PHP processes and
+        requires PHP 8.1+ with the `sodium`, `mbstring`, and `zlib`
+        extensions. This option adds a suitable PHP to the service PATH
+        automatically.
+      '';
+
+      package = mkOption {
+        type = types.package;
+        default = pkgs.php.withExtensions (
+          { enabled, all }:
+          enabled
+          ++ (with all; [
+            sodium
+            mbstring
+            zlib
+          ])
+        );
+        defaultText = literalExpression ''
+          pkgs.php.withExtensions (
+            { enabled, all }: enabled ++ (with all; [ sodium mbstring zlib ])
+          )
+        '';
+        description = "PHP interpreter used by the 4get compatibility layer.";
+      };
     };
 
     mcp = {
@@ -252,6 +295,9 @@ in
           DEGOOG_DATA_DIR = stateDir;
           HOST = cfg.host;
         }
+        // optionalAttrs (cfg.extraPackages != [ ]) {
+          PATH = lib.mkForce (lib.makeBinPath pathPackages);
+        }
         // cfg.environment;
 
         serviceConfig = {
@@ -263,7 +309,7 @@ in
           WorkingDirectory = stateDir;
           ExecStartPre = "${pkgs.writeShellScript "degoog-init-data" ''
             set -eu
-            for f in aliases.json plugin-settings.json default-engines.json user-settings.json; do
+            for f in aliases.json plugin-settings.json default-engines.json; do
               [ -f "${stateDir}/$f" ] || echo "{}" > "${stateDir}/$f"
             done
             for f in blocklist.json settings-tokens.json; do
@@ -327,6 +373,10 @@ in
       networking.firewall.allowedTCPPorts = optional cfg.openFirewall cfg.port;
     }
 
+    (mkIf cfg.fourget.enable {
+      systemd.services.degoog.environment.DEGOOG_PHP_BIN = mkDefault (lib.getExe cfg.fourget.package);
+    })
+
     (mkIf (cfg.database.type == "postgres" && cfg.database.createLocally) {
       services.postgresql = {
         enable = true;
@@ -342,6 +392,12 @@ in
       systemd.services.degoog = {
         after = [ "postgresql.service" ];
         requires = [ "postgresql.service" ];
+        environment = {
+          DEGOOG_POSTGRES_HOST = mkDefault "/run/postgresql";
+          DEGOOG_POSTGRES_PORT = mkDefault (toString config.services.postgresql.settings.port);
+          DEGOOG_POSTGRES_USER = mkDefault cfg.database.user;
+          DEGOOG_POSTGRES_DATABASE = mkDefault cfg.database.name;
+        };
       };
     })
 
