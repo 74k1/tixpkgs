@@ -1,0 +1,75 @@
+{
+  lib,
+  stdenv,
+  fetchurl,
+  dpkg,
+  alsa-lib,
+  autoPatchelfHook,
+  libxkbcommon,
+  vulkan-loader,
+  wayland,
+  xorg,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
+  pname = "effectcraft-bin";
+  version = "0.3.1";
+
+  src = fetchurl {
+    url = "https://github.com/storytold/effectcraft/releases/download/v${finalAttrs.version}/effectcraft-${finalAttrs.version}-linux-x86_64.deb";
+    hash = "sha256-9D8n+nArLFO8NB1NmzuA+vpzy97NAgXS5OqzlhyvUcQ=";
+  };
+
+  nativeBuildInputs = [
+    dpkg
+    autoPatchelfHook
+  ];
+
+  buildInputs = [
+    alsa-lib
+    libxkbcommon
+    vulkan-loader
+    wayland
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXi
+    xorg.libXrandr
+    xorg.libxcb
+    stdenv.cc.cc.lib
+  ];
+
+  dontConfigure = true;
+  dontBuild = true;
+
+  runtimeDependencies = [
+    libxkbcommon
+    vulkan-loader
+    wayland
+  ];
+
+  unpackPhase = ''
+    dpkg-deb -x $src .
+  '';
+
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out
+    cp -r usr/bin usr/share $out/
+    chmod -R u+w $out
+    runHook postInstall
+  '';
+
+  meta = {
+    description = "Open-source, native motion graphics and visual effects app (prebuilt binary)";
+    homepage = "https://github.com/storytold/effectcraft";
+    changelog = "https://github.com/storytold/effectcraft/releases/tag/v${finalAttrs.version}";
+    license = with lib.licenses; [
+      mit
+      asl20
+    ];
+    maintainers = with lib.maintainers; [ _74k1 ];
+    mainProgram = "effectcraft";
+    platforms = [ "x86_64-linux" ];
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+  };
+})
