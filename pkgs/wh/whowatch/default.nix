@@ -25,7 +25,7 @@ stdenv.mkDerivation (finalAttrs: {
     changelog = "https://github.com/mtsuszycki/whowatch/releases/tag/whowatch-${finalAttrs.version}";
     license = lib.licenses.gpl2Only;
     mainProgram = "whowatch";
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.unix;
   };
 })

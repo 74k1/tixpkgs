@@ -22,7 +22,7 @@ buildGoModule {
     homepage = "https://github.com/degoog-org/mcp";
     license = lib.licenses.agpl3Only;
     mainProgram = "degoog-mcp";
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.unix;
   };
 }

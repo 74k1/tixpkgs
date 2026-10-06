@@ -39,7 +39,7 @@ let
   publicUrl = "${protocol}://${cfg.domain}";
 in
 {
-  meta.maintainers = [ "74k1" ];
+  meta.maintainers = with lib.maintainers; [ _74k1 ];
 
   options.services.trek = {
     enable = mkEnableOption "TREK self-hosted travel planner";

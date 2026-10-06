@@ -51,7 +51,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     changelog = "https://github.com/degoog-org/degoog/releases/tag/${finalAttrs.version}";
     license = lib.licenses.agpl3Only;
     mainProgram = "degoog";
-    maintainers = [ "74k1" ];
+    maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.unix;
   };
 })
