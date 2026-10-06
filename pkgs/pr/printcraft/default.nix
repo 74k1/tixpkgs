@@ -1,6 +1,8 @@
 {
   lib,
   rustPlatform,
+  autoPatchelfHook,
+  stdenv,
   fetchFromGitHub,
   libxkbcommon,
   vulkan-loader,
@@ -17,6 +19,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     tag = "v${finalAttrs.version}";
     hash = "sha256-XRjNp87xei9tfU0KNLnf6Us90yGxQs3nfN0b/qGDld4=";
   };
+
+  buildInputs = [ stdenv.cc.cc.lib ];
+
+  nativeBuildInputs = [ autoPatchelfHook ];
 
   cargoHash = "sha256-Azzns+xa2bx6jn9XkL8RxvJ6PEXihWKtdASVtz1QblI=";
 

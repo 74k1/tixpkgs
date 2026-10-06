@@ -2,6 +2,8 @@
   lib,
   alsa-lib,
   libxkbcommon,
+  autoPatchelfHook,
+  stdenv,
   pkg-config,
   rustPlatform,
   fetchFromGitHub,
@@ -22,8 +24,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-lHtzfEh1t51WIJPQupiIEkQrc+w1l1mt2EYOwulpz+o=";
 
-  nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ alsa-lib ];
+
+  nativeBuildInputs = [ autoPatchelfHook pkg-config ];
+  buildInputs = [ alsa-lib stdenv.cc.cc.lib ];
 
   cargoBuildFlags = [
     "-p"
