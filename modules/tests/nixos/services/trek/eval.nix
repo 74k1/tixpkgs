@@ -50,8 +50,8 @@ let
 
   checks = [
     {
-      assertion = cfg.services.trek.package.version == "3.3.0";
-      message = "TREK module should use TREK 3.3.0 by default.";
+      assertion = cfg.services.trek.package.version == "4.3.3";
+      message = "TREK module should use TREK 4.3.3 by default.";
     }
     {
       assertion = cfg.services.trek.dataDir == "/var/lib/trek";
