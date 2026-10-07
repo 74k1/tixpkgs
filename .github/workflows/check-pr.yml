@@ -210,6 +210,13 @@ jobs:
                 printf '%s\n' "${all_packages[@]}" >> packages.txt
                 sort -u -o packages.txt packages.txt
                 ;;
+
+              flake.lock)
+                # A lockfile bump can affect anything: build all packages and
+                # all module checks.
+                printf '%s\n' "${all_packages[@]}" >> packages.txt
+                printf '%s\n' "${all_module_checks[@]}" >> module-checks.txt
+                ;;
             esac
           done < changed-files.txt
 

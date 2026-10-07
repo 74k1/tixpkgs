@@ -1,0 +1,68 @@
+name: Update flake inputs
+
+on:
+  schedule:
+    # Mondays 04:00 UTC; the odd-week guard makes this effectively bi-weekly.
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    name: Update flake.lock and open PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip on odd ISO weeks
+        id: week-guard
+        if: github.event_name == 'schedule'
+        run: |
+          set -euo pipefail
+          week="$(date +%V)"
+          echo "ISO week: $week"
+          if (( 10#$week % 2 == 1 )); then
+            echo "Odd week, skipping (bi-weekly schedule)."
+            echo skip=true >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.week-guard.outputs.skip != 'true'
+
+      - uses: cachix/install-nix-action@v31
+        if: steps.week-guard.outputs.skip != 'true'
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Update flake inputs
+        id: update
+        if: steps.week-guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          nix flake update 2>&1 | tee update.log
+          {
+            echo 'Automated nix flake update. CI builds all packages and module checks on this PR (see check-pr).'
+            echo
+            echo '### Updated inputs'
+            echo
+            echo '```'
+            grep -E '^[[:space:]]*[•*] (Updated|Updated input|Locked input)' update.log || echo 'No input changes.'
+            echo '```'
+          } > pr-body.md
+          cat pr-body.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create or update PR
+        if: steps.week-guard.outputs.skip != 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # Author the PR as the repo owner so check-pr's auto-merge job
+          # (user.login == '74k2') applies to it.
+          token: ${{ secrets.GH_PAT }}
+          branch: flake-inputs-auto-update
+          delete-branch: true
+          title: Update flake inputs
+          commit-message: 'flake.lock: update inputs'
+          body-path: pr-body.md
+          labels: |
+            automation
+            flake-update
