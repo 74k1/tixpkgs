@@ -5,10 +5,14 @@
   dpkg,
   alsa-lib,
   autoPatchelfHook,
+  libx11,
+  libxcb,
+  libxcursor,
+  libxi,
   libxkbcommon,
+  libxrandr,
   vulkan-loader,
   wayland,
-  xorg,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -30,11 +34,11 @@ stdenv.mkDerivation (finalAttrs: {
     libxkbcommon
     vulkan-loader
     wayland
-    xorg.libX11
-    xorg.libXcursor
-    xorg.libXi
-    xorg.libXrandr
-    xorg.libxcb
+    libx11
+    libxcursor
+    libxi
+    libxrandr
+    libxcb
     stdenv.cc.cc.lib
   ];
 
