@@ -180,7 +180,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
 | `vectorcraft` | `0.3.1` |
-| `vectorcraft-bin` | `0.3.1` |
+| `vectorcraft-bin` | `0.4.0` |
 | `waterfox` | `6.7.5` |
 | `waterfox-unwrapped` | `6.7.5` |
 | `whowatch` | `1.8.6` |
