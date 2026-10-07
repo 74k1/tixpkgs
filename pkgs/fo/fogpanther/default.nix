@@ -181,7 +181,7 @@ stdenv.mkDerivation (finalAttrs: {
       $out/opt/fogpanther/lib/libxml2.so.2
     ln -s ${lib.getLib libraw}/lib/libraw_r.so.25 \
       $out/opt/fogpanther/lib/libraw_r.so.23
-    ln -s ${lib.getLib openexr}/lib/libOpenEXRCore-3_4.so.33 \
+    ln -s ${lib.getLib openexr}/lib/libOpenEXRCore-3_5.so.34 \
       $out/opt/fogpanther/lib/libOpenEXRCore-3_2.so.31
 
     rm -f $out/opt/fogpanther/lib/libgav1.so.1 $out/opt/fogpanther/libgav1.so.1

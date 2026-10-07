@@ -475,6 +475,15 @@
    "jar": "sha256-OiM42Zb9MFZ5HfjTNfqbqKYqcG7UJF7PgbPlg9830Io=",
    "module": "sha256-oC3NjCPkdisob+NIgeEHNiwiPfqLXeazI25j9Yc94BQ=",
    "pom": "sha256-k26Jl7VJ3lYhJUPCq/npH7oJRr5RSvqVbXFMLcKeosg="
+  },
+  "org/jetbrains/kotlin#kotlin-reflect/2.4.10": {
+   "jar": "sha256-JaGu90VNRlSOyq9RAhsOUuOBQaYu11rxJNoQm3MkxOU=",
+   "pom": "sha256-QljwIS9L1y4wR/farOOODeLr/z9+kj6DZDH9j1sZGJ0="
+  },
+  "org/jetbrains/kotlin#kotlin-stdlib/2.4.10": {
+   "jar": "sha256-TsApO8N1FCOyA/HYSTJRxXxC5z62N3prhWDQl0/wpt8=",
+   "module": "sha256-HASpjxIAyHBdAV3wiXchFYnuy8h88cTG0oqSaC/oRG4=",
+   "pom": "sha256-n4HyXpa5GRUzkt7VO9MyFudmJJCc/QgKPtsnjUT8NPA="
   }
  },
  "https://repo.maven.apache.org/maven2": {
