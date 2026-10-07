@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   src = fetchFromGitHub {
     owner = "storytold";
-    repo = "printcraft";
+    repo = "pdfcraft";
     tag = "v${finalAttrs.version}";
     hash = "sha256-XRjNp87xei9tfU0KNLnf6Us90yGxQs3nfN0b/qGDld4=";
   };
