@@ -44,7 +44,12 @@ stdenv.mkDerivation (finalAttrs: {
   dontBuild = true;
 
   runtimeDependencies = [
+    libx11
+    libxcb
+    libxcursor
+    libxi
     libxkbcommon
+    libxrandr
     vulkan-loader
     wayland
   ];
