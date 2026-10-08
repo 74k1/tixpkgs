@@ -1,0 +1,20 @@
+name: Label automated PRs
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  label:
+    name: Add "3. automated" label
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == '74k2'
+    steps:
+      - name: Apply label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: gh pr edit "$PR_NUMBER" --add-label "3. automated" --repo "$GITHUB_REPOSITORY"
