@@ -16,11 +16,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "lightcraft-bin";
-  version = "0.2.1";
+  version = "0.4.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/lightcraft/releases/download/v${finalAttrs.version}/lightcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-UVFayvG9bmZ9Hhg0cKfZS+lwgYHaNdekiU0TSzVgGfc=";
+    hash = "sha256-DVtIjWQcrxMnsyO9GDcjGltgn70Nm24RGZBZKkoyrNs=";
   };
 
   nativeBuildInputs = [
