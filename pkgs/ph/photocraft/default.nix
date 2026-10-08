@@ -4,6 +4,7 @@
   autoPatchelfHook,
   stdenv,
   fetchFromGitHub,
+  libglvnd,
   libxkbcommon,
   vulkan-loader,
   wayland,
@@ -36,6 +37,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   doCheck = false;
 
   runtimeDependencies = [
+    libglvnd
     libxkbcommon
     vulkan-loader
     wayland
