@@ -4,6 +4,7 @@
   fetchurl,
   dpkg,
   autoPatchelfHook,
+  libglvnd,
   libx11,
   libxcb,
   libxcursor,
@@ -44,6 +45,7 @@ stdenv.mkDerivation (finalAttrs: {
   dontBuild = true;
 
   runtimeDependencies = [
+    libglvnd
     libxkbcommon
     vulkan-loader
     wayland
