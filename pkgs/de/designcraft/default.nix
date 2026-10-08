@@ -4,7 +4,12 @@
   autoPatchelfHook,
   stdenv,
   fetchFromGitHub,
+  libx11,
+  libxcb,
+  libxcursor,
+  libxi,
   libxkbcommon,
+  libxrandr,
   vulkan-loader,
   wayland,
 }:
@@ -20,7 +25,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
     hash = "sha256-ejNPIawWXt4Yyow+pgf3dzIRHLaMQYc6BHowwT/x0XE=";
   };
 
-  buildInputs = [ stdenv.cc.cc.lib ];
+  buildInputs = [
+    libx11
+    libxcb
+    libxcursor
+    libxi
+    libxkbcommon
+    libxrandr
+    stdenv.cc.cc.lib
+  ];
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
@@ -36,7 +49,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
   doCheck = false;
 
   runtimeDependencies = [
+    libx11
+    libxcb
+    libxcursor
+    libxi
     libxkbcommon
+    libxrandr
     vulkan-loader
     wayland
   ];
