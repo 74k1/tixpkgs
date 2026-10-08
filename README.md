@@ -147,10 +147,10 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.2.0` |
 | `designcraft` | `0.4.0` |
 | `designcraft-bin` | `0.4.0` |
-| `effectcraft` | `0.4.0` |
+| `effectcraft` | `0.6.0` |
 | `effectcraft-bin` | `0.6.0` |
 | `ferroxide` | `0.5.0` |
-| `filmcraft` | `0.2.1` |
+| `filmcraft` | `0.4.0` |
 | `filmcraft-bin` | `0.4.0` |
 | `fogpanther` | `0.8.2` |
 | `fourget` | `unstable-2026-10-03` |
@@ -163,7 +163,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `keeper-sh` | `2.10.1` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.2.1` |
-| `lightcraft-bin` | `0.2.1` |
+| `lightcraft-bin` | `0.4.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
