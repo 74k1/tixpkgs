@@ -4,6 +4,7 @@
   stdenv,
   pkg-config,
   rustPlatform,
+  dbus,
   fetchFromGitHub,
   alsa-lib,
   libxkbcommon,
@@ -38,6 +39,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   doCheck = false;
 
   runtimeDependencies = [
+    dbus.lib
     libxkbcommon
     vulkan-loader
     wayland

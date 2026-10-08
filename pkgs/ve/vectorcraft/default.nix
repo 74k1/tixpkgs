@@ -3,6 +3,7 @@
   rustPlatform,
   autoPatchelfHook,
   stdenv,
+  dbus,
   fetchFromGitHub,
   libxkbcommon,
   vulkan-loader,
@@ -36,6 +37,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   doCheck = false;
 
   runtimeDependencies = [
+    dbus.lib
     libxkbcommon
     vulkan-loader
     wayland

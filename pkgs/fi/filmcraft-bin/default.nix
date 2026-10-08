@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  dbus,
   fetchurl,
   dpkg,
   alsa-lib,
@@ -46,6 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
   dontBuild = true;
 
   runtimeDependencies = [
+    dbus.lib
     libxkbcommon
     vulkan-loader
     wayland
