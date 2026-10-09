@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  dbus,
   fetchurl,
   dpkg,
   autoPatchelfHook,
@@ -48,6 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
     libxcb
     libxcursor
     libxi
+    dbus.lib
     libxkbcommon
     libxrandr
     vulkan-loader

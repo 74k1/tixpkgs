@@ -3,6 +3,7 @@
   rustPlatform,
   autoPatchelfHook,
   stdenv,
+  dbus,
   fetchFromGitHub,
   libx11,
   libxcb,
@@ -53,6 +54,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     libxcb
     libxcursor
     libxi
+    dbus.lib
     libxkbcommon
     libxrandr
     vulkan-loader

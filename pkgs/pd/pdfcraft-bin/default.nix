@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  dbus,
   fetchurl,
   dpkg,
   autoPatchelfHook,
@@ -15,12 +16,12 @@
 }:
 
 stdenv.mkDerivation (finalAttrs: {
-  pname = "printcraft-bin";
-  version = "0.2.1";
+  pname = "pdfcraft-bin";
+  version = "0.4.0";
 
   src = fetchurl {
-    url = "https://github.com/storytold/printcraft/releases/download/v${finalAttrs.version}/printcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-dKRVdPD1+qVSpXYYyZulHugYrcZe0yu0KbGV7CYM0eY=";
+    url = "https://github.com/storytold/pdfcraft/releases/download/v${finalAttrs.version}/pdfcraft-${finalAttrs.version}-linux-x86_64.deb";
+    hash = "sha256-G/nN8IGrpBLQsxTkrR3f+lCBHcmmA/9DIN4f9nJU4IU=";
   };
 
   nativeBuildInputs = [
@@ -44,6 +45,7 @@ stdenv.mkDerivation (finalAttrs: {
   dontBuild = true;
 
   runtimeDependencies = [
+    dbus.lib
     libxkbcommon
     vulkan-loader
     wayland
@@ -63,14 +65,14 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = {
     description = "Open-source, native PDF reader, organizer and protector (prebuilt binary)";
-    homepage = "https://github.com/storytold/printcraft";
-    changelog = "https://github.com/storytold/printcraft/releases/tag/v${finalAttrs.version}";
+    homepage = "https://github.com/storytold/pdfcraft";
+    changelog = "https://github.com/storytold/pdfcraft/releases/tag/v${finalAttrs.version}";
     license = with lib.licenses; [
       mit
       asl20
     ];
     maintainers = with lib.maintainers; [ _74k1 ];
-    mainProgram = "printcraft";
+    mainProgram = "pdfcraft";
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
   };

@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  dbus,
   fetchurl,
   dpkg,
   autoPatchelfHook,
@@ -46,6 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   runtimeDependencies = [
     libglvnd
+    dbus.lib
     libxkbcommon
     vulkan-loader
     wayland

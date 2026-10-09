@@ -3,6 +3,7 @@
   rustPlatform,
   autoPatchelfHook,
   stdenv,
+  dbus,
   fetchFromGitHub,
   libxkbcommon,
   vulkan-loader,
@@ -10,21 +11,21 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
-  pname = "printcraft";
-  version = "0.2.1";
+  pname = "pdfcraft";
+  version = "0.4.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "pdfcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-XRjNp87xei9tfU0KNLnf6Us90yGxQs3nfN0b/qGDld4=";
+    hash = "sha256-Fkzo9qb9obrXa1X4klio+gRgM2UZIO8QwfI0/xSYwmo=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-Azzns+xa2bx6jn9XkL8RxvJ6PEXihWKtdASVtz1QblI=";
+  cargoHash = "sha256-2y4jFVHDHUYoKo9gzRb7uq2dhtLa97P1iffRrMw46IQ=";
 
   prePatch = ''
     substituteInPlace "$cargoDepsCopy/source-registry-0/rten-gemm-0.26.0/src/i8dot.rs" \
@@ -36,38 +37,39 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoBuildFlags = [
     "-p"
-    "printcraft"
+    "pdfcraft"
     "-p"
-    "printcraft-cli"
+    "pdfcraft-cli"
   ];
 
   doCheck = false;
 
   runtimeDependencies = [
+    dbus.lib
     libxkbcommon
     vulkan-loader
     wayland
   ];
 
   postInstall = ''
-    install -Dm644 packaging/linux/ai.storyteller.printcraft.desktop \
-      $out/share/applications/ai.storyteller.printcraft.desktop
+    install -Dm644 packaging/linux/ai.storyteller.pdfcraft.desktop \
+      $out/share/applications/ai.storyteller.pdfcraft.desktop
     for size in 16 24 32 48 64 128 256 512; do
       install -Dm644 \
-        assets/app-icon/hicolor/$size\x$size/apps/ai.storyteller.printcraft.png \
-        $out/share/icons/hicolor/$size\x$size/apps/ai.storyteller.printcraft.png
+        assets/app-icon/hicolor/$size\x$size/apps/ai.storyteller.pdfcraft.png \
+        $out/share/icons/hicolor/$size\x$size/apps/ai.storyteller.pdfcraft.png
     done
   '';
 
   meta = {
     description = "Open-source, native PDF reader, organizer and protector";
-    homepage = "https://github.com/storytold/printcraft";
-    changelog = "https://github.com/storytold/printcraft/releases/tag/v${finalAttrs.version}";
+    homepage = "https://github.com/storytold/pdfcraft";
+    changelog = "https://github.com/storytold/pdfcraft/releases/tag/v${finalAttrs.version}";
     license = with lib.licenses; [
       mit
       asl20
     ];
-    mainProgram = "printcraft";
+    mainProgram = "pdfcraft";
     maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.unix;
   };
