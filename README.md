@@ -171,10 +171,10 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `multi-scrobbler` | `0.19.2` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
+| `pdfcraft` | `0.4.0` |
+| `pdfcraft-bin` | `0.4.0` |
 | `photocraft` | `0.5.0` |
 | `photocraft-bin` | `0.5.0` |
-| `printcraft` | `0.2.1` |
-| `printcraft-bin` | `0.2.1` |
 | `rybbit` | `2.9.1` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
