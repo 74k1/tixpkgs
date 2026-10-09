@@ -6,8 +6,11 @@ root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 package_file="$root/pkgs/g3/g3m/default.nix"
 repo="https://github.com/y114git/G3M"
 
-old_version="$(perl -ne 'print $1 if /^\s*version = "([^"]+)";/' "$package_file")"
-old_src_hash="$(perl -ne 'print $1 if /^\s*hash = "([^"]+)";/' "$package_file" | head -1)"
+# The file also defines g3mtool and playsound3, so read g3m's own values
+# from Nix instead of grepping for the first version/hash.
+nix_eval() { nix --extra-experimental-features 'nix-command flakes' eval --raw "path:$root#g3m.$1"; }
+old_version="$(nix_eval version)"
+old_src_hash="$(nix_eval src.outputHash)"
 
 new_version="$({
   git ls-remote --tags --refs "$repo.git" \
@@ -33,7 +36,7 @@ new_src_hash="$(nix --extra-experimental-features nix-command store prefetch-fil
 OLD_VERSION="$old_version" NEW_VERSION="$new_version" \
 OLD_SRC_HASH="$old_src_hash" NEW_SRC_HASH="$new_src_hash" \
 perl -0pi -e '
-  s/version = "\Q$ENV{OLD_VERSION}\E";/version = "$ENV{NEW_VERSION}";/ or die "failed to replace version\n";
+  s/(pname = "g3m";\s*version = )"\Q$ENV{OLD_VERSION}\E";/$1"$ENV{NEW_VERSION}";/ or die "failed to replace version\n";
   s/hash = "\Q$ENV{OLD_SRC_HASH}\E";/hash = "$ENV{NEW_SRC_HASH}";/ or die "failed to replace source hash\n";
 ' "$package_file"
 

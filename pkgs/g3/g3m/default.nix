@@ -86,7 +86,7 @@ python314Packages.buildPythonApplication (finalAttrs: {
   src = fetchFromGitHub {
     owner = "y114git";
     repo = "G3M";
-    rev = "e98e0c0214910dc0b8f30ba239c33c9c9c323614";
+    tag = finalAttrs.version;
     hash = "sha256-KL3i3/N+yJurhZVmonIKYQsIzx5ol9mUNJ1aAET9nSs=";
   };
 
