@@ -142,7 +142,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `arcbrush` | `1.6.3` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
+| `cadcraft` | `0.3.0` |
+| `cadcraft-bin` | `0.3.0` |
 | `commet` | `0.5.0` |
+| `deckcraft` | `0.3.0` |
+| `deckcraft-bin` | `0.3.0` |
 | `degoog` | `1.0.0` |
 | `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.4.0` |
@@ -157,6 +161,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `g3m` | `3.2.1` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
+| `gridcraft` | `0.3.0` |
+| `gridcraft-bin` | `0.3.0` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
@@ -176,6 +182,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `photocraft` | `0.5.0` |
 | `photocraft-bin` | `0.5.0` |
 | `rybbit` | `2.9.1` |
+| `soundcraft` | `0.3.0` |
+| `soundcraft-bin` | `0.3.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
@@ -184,6 +192,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `waterfox` | `6.7.5` |
 | `waterfox-unwrapped` | `6.7.5` |
 | `whowatch` | `1.8.6` |
+| `wordcraft` | `0.3.0` |
+| `wordcraft-bin` | `0.3.0` |
 | `yopass` | `14.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
