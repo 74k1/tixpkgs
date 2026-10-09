@@ -144,7 +144,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brscan-skey` | `0.3.5-0` |
 | `commet` | `0.5.0` |
 | `degoog` | `1.0.0` |
-| `degoog-mcp` | `0.2.0` |
+| `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.4.0` |
 | `designcraft-bin` | `0.4.0` |
 | `effectcraft` | `0.6.0` |
