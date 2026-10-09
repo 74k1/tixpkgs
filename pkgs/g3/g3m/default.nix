@@ -80,17 +80,24 @@ let
 in
 python314Packages.buildPythonApplication (finalAttrs: {
   pname = "g3m";
-  version = "3.2.1";
+  version = "3.4.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "y114git";
     repo = "G3M";
     tag = finalAttrs.version;
-    hash = "sha256-KL3i3/N+yJurhZVmonIKYQsIzx5ol9mUNJ1aAET9nSs=";
+    hash = "sha256-AlWDto5ubCbvZAtqqQdpFVoWhGAwm3FEm46UIi80554=";
   };
 
   patches = [ ./runtime-paths.patch ];
+
+  # Upstream pins exact build-system versions that lag nixpkgs' python314 set.
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail 'requires = ["setuptools==84.0.0", "wheel==0.48.0"]' \
+        'requires = ["setuptools", "wheel"]'
+  '';
 
   build-system = [ python314Packages.setuptools ];
 
