@@ -57,17 +57,17 @@ perl -0pi -e '
   s/(outputHash = ")\Q$ENV{OLD_MODULES_HASH}\E(";)/$1$ENV{FAKE_HASH}$2/ or die "failed to replace nodeModules hash\n";
 ' "$package_file"
 
-set +e
-build_log="$(nix build "$root#keeper-sh" --no-link 2>&1)"
-build_status=$?
-set -e
+# The `||` keeps the expected build failure from firing the ERR trap (which
+# runs even under `set +e`) and restoring the file mid-update.
+build_status=0
+build_log="$(nix build "$root#keeper-sh" --no-link 2>&1)" || build_status=$?
 
 if [[ $build_status -eq 0 ]]; then
   echo "unexpectedly built with fake nodeModules hash" >&2
   exit 1
 fi
 
-new_modules_hash="$(grep -o 'got:[[:space:]]*sha256-[A-Za-z0-9+/=]*' <<< "$build_log" | tail -n1 | sed 's/got:[[:space:]]*//')"
+new_modules_hash="$(grep -o 'got:[[:space:]]*sha256-[A-Za-z0-9+/=]*' <<< "$build_log" | tail -n1 | sed 's/got:[[:space:]]*//')" || true
 if [[ -z "$new_modules_hash" ]]; then
   echo "failed to discover new nodeModules hash" >&2
   echo "$build_log" >&2

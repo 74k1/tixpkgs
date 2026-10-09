@@ -1,5 +1,5 @@
 {
-  buildGoModule,
+  buildGo127Module,
   fetchFromGitHub,
   fetchYarnDeps,
   lib,
@@ -45,11 +45,14 @@ let
     '';
   });
 in
-buildGoModule (finalAttrs: {
+buildGo127Module (finalAttrs: {
   inherit version src;
   pname = "yopass";
 
   vendorHash = "sha256-4gQOXYDA0aN5CdTP6IPv7LuJNdIKKST8qD8fPvo8ZS4=";
+
+  # Upstream ships a go.work since 14.10; vendor the module, not the workspace.
+  env.GOWORK = "off";
 
   nativeBuildInputs = [ makeBinaryWrapper ];
 

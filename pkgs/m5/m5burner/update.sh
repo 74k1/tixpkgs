@@ -1,17 +1,19 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash -p bash curl git libxml2 perl coreutils nix
+#!nix-shell -i bash -p bash curl git gnugrep perl coreutils nix
 set -euo pipefail
 
 page="https://docs.m5stack.com/en/uiflow/m5burner/intro"
-xpath="/html/body/div[1]/div/div/div/div[1]/div[3]/div[3]/div/div[1]/table/tbody/tr[3]/td[2]/a"
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 package_file="$root/pkgs/m5/m5burner/default.nix"
 
+# Match the Linux download link itself; the page layout changes too often
+# for a fixed XPath.
 url="$(curl -fsSL "$page" \
-  | xmllint --html --xpath "string($xpath/@href)" - 2>/dev/null)"
+  | grep -oE '[^"'"'"' ]*M5Burner-v[^"'"'"' /]+-linux-x64\.zip' \
+  | head -n1)" || true
 
 if [[ -z "$url" ]]; then
-  echo "failed to find M5Burner download URL using XPath: $xpath" >&2
+  echo "failed to find the M5Burner linux-x64 download URL on $page" >&2
   exit 1
 fi
 
