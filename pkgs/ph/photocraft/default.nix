@@ -13,20 +13,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "photocraft";
-  version = "0.5.0";
+  version = "0.6.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "photocraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Ye8Fv4CPBUtqi1ZAJvXfpvyaXk7Ga9BAwl2nrsLEZWA=";
+    hash = "sha256-jjQXjLLAg1hfp9Ikw/f8TmmG7hWOa/zaxA5u2oVB+dQ=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-Id7pMLTkMvW/3/CESTGnWpdVVoF7yJLnbNMTQVt8n3s=";
+  cargoHash = "sha256-X5AB6CkTqlwpBSjFqNwMBvUZmYGzeFLVMlqGUscztNI=";
 
   cargoBuildFlags = [
     "-p"
