@@ -143,7 +143,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `cadcraft` | `0.3.0` |
-| `cadcraft-bin` | `0.3.0` |
+| `cadcraft-bin` | `0.4.0` |
 | `commet` | `0.5.0` |
 | `deckcraft` | `0.3.0` |
 | `deckcraft-bin` | `0.3.0` |
