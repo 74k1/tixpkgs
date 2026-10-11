@@ -19,16 +19,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "soundcraft";
-  version = "0.4.0";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "soundcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-M0XX6JySJOwh+MB3BHSeAr4HKV2Hi2IyTezzkEbjtu0=";
+    hash = "sha256-rOFqnKmhbokRZQObNGBQOeqeXT6sZwO623G/7oUPJGk=";
   };
 
-  cargoHash = "sha256-gtYGDc0kcRxa4+RMINhNFTLh5wy75Kq5kmFxzJODdi0=";
+  cargoHash = "sha256-4zY/R2IJ8lpSrEx6+7cEtdsrjgPhyzwngbMoRk5yErk=";
 
   nativeBuildInputs = [
     autoPatchelfHook
