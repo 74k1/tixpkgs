@@ -161,7 +161,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `g3m` | `3.4.2` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
-| `gridcraft` | `0.4.0` |
+| `gridcraft` | `0.5.0` |
 | `gridcraft-bin` | `0.5.0` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
@@ -169,7 +169,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `keeper-sh` | `2.24.6` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.5.0` |
-| `lightcraft-bin` | `0.5.0` |
+| `lightcraft-bin` | `0.6.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
