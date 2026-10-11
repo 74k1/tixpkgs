@@ -145,7 +145,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `cadcraft` | `0.4.0` |
 | `cadcraft-bin` | `0.4.0` |
 | `commet` | `0.5.0` |
-| `deckcraft` | `0.3.0` |
+| `deckcraft` | `0.4.0` |
 | `deckcraft-bin` | `0.4.0` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.0` |
@@ -158,7 +158,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `filmcraft-bin` | `0.5.0` |
 | `fogpanther` | `0.8.2` |
 | `fourget` | `unstable-2026-10-10` |
-| `g3m` | `3.2.1` |
+| `g3m` | `3.4.1` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
 | `gridcraft` | `0.4.0` |
