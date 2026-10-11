@@ -155,7 +155,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `effectcraft-bin` | `0.8.0` |
 | `ferroxide` | `0.5.0` |
 | `filmcraft` | `0.5.0` |
-| `filmcraft-bin` | `0.5.0` |
+| `filmcraft-bin` | `0.6.0` |
 | `fogpanther` | `0.8.2` |
 | `fourget` | `unstable-2026-10-10` |
 | `g3m` | `3.4.1` |
