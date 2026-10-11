@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "cadcraft-bin";
-  version = "0.4.0";
+  version = "0.5.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/cadcraft/releases/download/v${finalAttrs.version}/cadcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-KS6jVwKBTAQ2DVszh0WReM21YH5ioWfFK4i6GbUTg74=";
+    hash = "sha256-wT9iE5To/k0TIxQNCEOAxcfrl8sDoeSJr3pawgUho9E=";
   };
 
   nativeBuildInputs = [
