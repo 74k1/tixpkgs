@@ -309,18 +309,3 @@ jobs:
             printf 'Failed module checks: %s\n' "${failed[*]}" >&2
             exit 1
           fi
-
-  auto-merge:
-    name: Enable auto-merge
-    runs-on: ubuntu-latest
-    needs: changed-things
-    if: github.event.pull_request.user.login == '74k2'
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Enable auto-merge
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: gh pr merge "$PR_NUMBER" --auto --merge --delete-branch --repo "$GITHUB_REPOSITORY"

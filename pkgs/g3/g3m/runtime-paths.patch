@@ -1,5 +1,5 @@
 diff --git a/src/adapters/g3mtool_adapter.py b/src/adapters/g3mtool_adapter.py
-index f3ac67c..3553f47 100644
+index 6359911..5ad42dc 100644
 --- a/src/adapters/g3mtool_adapter.py
 +++ b/src/adapters/g3mtool_adapter.py
 @@ -5,6 +5,7 @@ import logging
@@ -10,7 +10,7 @@ index f3ac67c..3553f47 100644
  import subprocess
  import threading
  from collections.abc import Callable
-@@ -54,7 +55,7 @@ class G3MToolManager:
+@@ -59,7 +60,7 @@ class G3MToolManager:
  
      def _get_configured_xdelta_path(self) -> str | None:
          path = str(self._get_local_config().get("custom_xdelta_path", "") or "").strip()
@@ -19,16 +19,16 @@ index f3ac67c..3553f47 100644
  
      def _find_executable(self) -> str | None:
          custom_path = self._get_configured_g3mtool_path()
-@@ -70,7 +71,7 @@ class G3MToolManager:
+@@ -75,7 +76,7 @@ class G3MToolManager:
          exe_name = "G3MTool.exe" if self.platform == "windows" else "G3MTool"
          exe_path = os.path.join(base_path, exe_name)
-         if os.path.exists(exe_path):
+         if os.path.isfile(exe_path):
 -            if self.platform != "windows":
 +            if self.platform != "windows" and not os.access(exe_path, os.X_OK):
                  try:
                      os.chmod(exe_path, 0o700)
                  except Exception as e:
-@@ -82,6 +83,13 @@ class G3MToolManager:
+@@ -87,6 +88,13 @@ class G3MToolManager:
                  self._logged_executable_paths.add(exe_path)
              self._cached_executable_paths[self.platform] = exe_path
              return exe_path
@@ -43,10 +43,10 @@ index f3ac67c..3553f47 100644
          self._cached_executable_paths[self.platform] = None
          return None
 diff --git a/src/app/startup.py b/src/app/startup.py
-index 02ffab9..5de9774 100644
+index 19589a7..35fdf3f 100644
 --- a/src/app/startup.py
 +++ b/src/app/startup.py
-@@ -217,10 +217,14 @@ def register_url_protocol():
+@@ -209,10 +209,14 @@ def register_url_protocol():
      if getattr(sys, "frozen", False):
          executable_path = f'"{sys.executable}"'
      else:
@@ -65,7 +65,7 @@ index 02ffab9..5de9774 100644
      system = platform.system()
      try:
          if system == "Windows":
-@@ -250,15 +254,14 @@ def register_url_protocol():
+@@ -244,15 +248,14 @@ def register_url_protocol():
              with open(desktop_file_path, "w", encoding="utf-8") as f:
                  f.write(desktop_file_content)
              if shutil.which("xdg-mime"):
@@ -90,7 +90,7 @@ index 02ffab9..5de9774 100644
          logger.warning(f"Failed to register URL protocol handler: {e}", exc_info=True)
  
 diff --git a/src/ui/dialogs/downloads_dialog.py b/src/ui/dialogs/downloads_dialog.py
-index 8891f49..da0d943 100644
+index 61ccc87..55db318 100644
 --- a/src/ui/dialogs/downloads_dialog.py
 +++ b/src/ui/dialogs/downloads_dialog.py
 @@ -1,5 +1,6 @@
@@ -99,11 +99,11 @@ index 8891f49..da0d943 100644
 +import contextlib
  import logging
  import os
+ from typing import cast
+@@ -297,9 +298,14 @@ class DownloadsDialog(DynamicDialog):
  
-@@ -286,9 +287,14 @@ class DownloadsDialog(QDialog):
-         self._manager.record_removed.connect(self._on_record_removed)
- 
-     def closeEvent(self, event):
+     def closeEvent(self, a0):
+         event = cast(QCloseEvent, a0)
 -        self._manager.record_added.disconnect(self._on_record_added)
 -        self._manager.record_updated.disconnect(self._on_record_updated)
 -        self._manager.record_removed.disconnect(self._on_record_removed)
