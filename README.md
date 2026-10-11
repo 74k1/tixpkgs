@@ -180,7 +180,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pdfcraft` | `0.4.0` |
 | `pdfcraft-bin` | `0.5.0` |
 | `photocraft` | `0.5.0` |
-| `photocraft-bin` | `0.5.0` |
+| `photocraft-bin` | `0.6.0` |
 | `rybbit` | `2.9.1` |
 | `soundcraft` | `0.3.0` |
 | `soundcraft-bin` | `0.3.0` |
