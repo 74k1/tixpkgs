@@ -1,0 +1,77 @@
+name: Merge tested pull requests
+
+# Keep privileged merge logic on the default branch, without checking out
+# PR code. Merge only the PR head validated by the completed build.
+
+on:
+  workflow_run:
+    workflows: ["Check PR"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  auto-merge:
+    name: Merge tested pull request
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    steps:
+      - name: Merge tested pull request
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${PR_NUMBER:-}" ]; then
+            echo "No pull request associated with this run, skipping."
+            exit 0
+          fi
+
+          # A workflow can succeed with a skipped build (for example, a draft PR).
+          build_conclusion="$(gh api --paginate \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/attempts/$RUN_ATTEMPT/jobs" \
+            --jq '.jobs[] | select(.name == "Build changed packages and module checks") | .conclusion')"
+          if [ "$build_conclusion" != "success" ]; then
+            echo "Build job did not succeed, skipping."
+            exit 0
+          fi
+
+          for attempt in 1 2 3; do
+            pr="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
+              --json author,isDraft,state,headRefOid,baseRefName,isCrossRepository)"
+
+            # Eligibility follows the PR author, not the actor pushing fixes.
+            if ! jq -e '
+              .author.login == "74k2" and .state == "OPEN" and
+              .isDraft == false and .baseRefName == "main" and
+              .isCrossRepository == false
+            ' <<< "$pr" > /dev/null; then
+              echo "Pull request is not eligible for automatic merging, skipping."
+              exit 0
+            fi
+
+            if [ "$(jq -r .headRefOid <<< "$pr")" != "$TESTED_SHA" ]; then
+              echo "Pull request head changed; waiting for its own successful build."
+              exit 0
+            fi
+
+            # The server-side SHA guard also covers pushes after the query above.
+            if gh pr merge "$PR_NUMBER" --merge --delete-branch \
+              --match-head-commit "$TESTED_SHA" --repo "$GITHUB_REPOSITORY"; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "Attempt $attempt failed, retrying in 30s."
+              sleep 30
+            fi
+          done
+          echo "Could not merge tested pull request after 3 attempts." >&2
+          exit 1
