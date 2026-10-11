@@ -187,12 +187,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
-| `vectorcraft` | `0.7.0` |
+| `vectorcraft` | `0.8.0` |
 | `vectorcraft-bin` | `0.8.0` |
 | `waterfox` | `6.7.5` |
 | `waterfox-unwrapped` | `6.7.5` |
 | `whowatch` | `1.8.6` |
-| `wordcraft` | `0.3.0` |
+| `wordcraft` | `0.4.0` |
 | `wordcraft-bin` | `0.4.0` |
 | `yopass` | `15.0.0` |
 | `zui` | `1.18.0` |
