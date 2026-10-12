@@ -68,6 +68,8 @@ jobs:
         with:
           nix_conf: |
             experimental-features = nix-command flakes
+            extra-substituters = https://tixpkgs.cachix.org
+            extra-trusted-public-keys = tixpkgs.cachix.org-1:Q52x6PMD7ZuTC7oRihwp5lP9YaEaYtrfxYkwzEpjSRI=
 
       - uses: nixbuild/nixbuild-action@v25
         with:

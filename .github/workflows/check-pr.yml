@@ -46,6 +46,9 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            extra-substituters = https://tixpkgs.cachix.org
+            extra-trusted-public-keys = tixpkgs.cachix.org-1:Q52x6PMD7ZuTC7oRihwp5lP9YaEaYtrfxYkwzEpjSRI=
 
       - uses: cachix/cachix-action@v17
         with:

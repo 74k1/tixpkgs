@@ -15,7 +15,6 @@ Generated check names use the path:
 
 ```sh
 nix build .#checks.x86_64-linux.module-nixos-services-grimmory-basic
-nix build .#checks.x86_64-linux.module-home-manager-programs-waterfox-basic
 ```
 
 NixOS test files may return a normal `pkgs.testers.runNixOSTest` attribute set, or a custom derivation.
