@@ -182,7 +182,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `photocraft` | `0.6.0` |
 | `photocraft-bin` | `0.7.0` |
 | `rybbit` | `2.9.1` |
-| `soundcraft` | `0.4.0` |
+| `soundcraft` | `0.5.0` |
 | `soundcraft-bin` | `0.5.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
