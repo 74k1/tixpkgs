@@ -149,10 +149,10 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `deckcraft-bin` | `0.6.1` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.0` |
-| `designcraft` | `0.6.0` |
+| `designcraft` | `0.7.1` |
 | `designcraft-bin` | `0.7.1` |
 | `effectcraft` | `0.8.0` |
-| `effectcraft-bin` | `0.8.0` |
+| `effectcraft-bin` | `0.9.2` |
 | `ferroxide` | `0.5.0` |
 | `filmcraft` | `0.6.0` |
 | `filmcraft-bin` | `0.6.0` |
