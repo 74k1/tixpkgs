@@ -145,12 +145,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `cadcraft` | `0.6.2` |
 | `cadcraft-bin` | `0.6.2` |
 | `commet` | `0.5.0` |
-| `deckcraft` | `0.5.0` |
+| `deckcraft` | `0.6.1` |
 | `deckcraft-bin` | `0.6.1` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.6.0` |
-| `designcraft-bin` | `0.6.0` |
+| `designcraft-bin` | `0.7.1` |
 | `effectcraft` | `0.8.0` |
 | `effectcraft-bin` | `0.8.0` |
 | `ferroxide` | `0.5.0` |
