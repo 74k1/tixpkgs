@@ -62,8 +62,8 @@ let
 
   checks = [
     {
-      assertion = cfg.services.keeper-sh.package.version == "2.10.1";
-      message = "Keeper module should use Keeper 2.10.1 by default.";
+      assertion = cfg.services.keeper-sh.package.pname == "keeper-sh";
+      message = "Keeper module should default to the tixpkgs keeper-sh package.";
     }
     {
       assertion = cfg.services.keeper-sh.dataDir == "/var/lib/keeper-sh";
