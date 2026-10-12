@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "wordcraft";
-  version = "0.4.0";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "wordcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-IBfOqEMpJy+FkIBVgtVsKYwRIqh86Tx2SUdt7I+2LdQ=";
+    hash = "sha256-yJk5hzvvjwJXJkZFc/dO+Llf70w7xZnoX7zI3ifIuoY=";
   };
 
   buildInputs = [
@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-oiVyOJmWAKmi9+N/d0ue6x4nq3IQs+ijB70SBsC3XmQ=";
+  cargoHash = "sha256-OljEFWaPOT3nmWU/xVTcbn3ePAdEYkhG6/U4ysVG9Kc=";
 
   cargoBuildFlags = [
     "-p"
