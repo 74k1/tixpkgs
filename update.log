@@ -1,0 +1,15 @@
+warning: ignoring untrusted flake configuration setting 'extra-substituters'.
+Pass '--accept-flake-config' to trust it
+warning: ignoring untrusted flake configuration setting 'extra-trusted-public-keys'.
+Pass '--accept-flake-config' to trust it
+unpacking 'github:hercules-ci/flake-parts/024633cd702b10285db5cb19b40ad48d2399ba60' into the Git cache...
+unpacking 'github:nix-community/home-manager/c58f54c733a7894d84fa2fdff26cc12088c4b78c' into the Git cache...
+unpacking 'github:nixos/nixpkgs/6510408d147d8c5e6d76043e899e9251756f6a75' into the Git cache...
+unpacking 'github:NixOS/nixpkgs/5a5bef37dbd6c06de93943087fbb0d7d2efcb975' into the Git cache...
+warning: updating lock file "/home/runner/work/tixpkgs/tixpkgs/flake.lock":
+• Updated input 'home-manager':
+    'github:nix-community/home-manager/fae6e9e42c3b762ab47635cddcfaf6f52374a61b?narHash=sha256-KuLePuhwJM9NLt/gTLHzXaOoSZKGoB3m7NfXjiQ98HY%3D' (2026-10-06)
+  → 'github:nix-community/home-manager/c58f54c733a7894d84fa2fdff26cc12088c4b78c?narHash=sha256-0bK0A59rVUn1SRZzo4cNi4VSqAe7vR1gL2/MZl53Frw%3D' (2026-10-10)
+• Updated input 'nixpkgs':
+    'github:nixos/nixpkgs/151fa4e8ddfdd8dd25d945ad94ed54a13de9f6e4?narHash=sha256-Miqqk/ammqnTUxaoCyvtwoPeLbI1ksFyLxi/CazZpWY%3D' (2026-10-06)
+  → 'github:nixos/nixpkgs/6510408d147d8c5e6d76043e899e9251756f6a75?narHash=sha256-XK4KceonkwD8LuMAt/vNrz982mXJM5jeHAxMwsUXXAQ%3D' (2026-10-10)
