@@ -37,19 +37,21 @@ jobs:
       - name: Update flake inputs
         id: update
         if: steps.week-guard.outputs.skip != 'true'
+        # Log and PR body go to /tmp so the bot's branch commit stays
+        # clean (create-pull-request commits every changed file in the
+        # working tree).
         run: |
           set -euo pipefail
-          nix flake update 2>&1 | tee update.log
+          nix flake update 2>&1 | tee /tmp/update.log
           {
             echo 'Automated nix flake update. CI builds all packages and module checks on this PR (see check-pr).'
             echo
             echo '### Updated inputs'
             echo
             echo '```'
-            grep -E '^[[:space:]]*[•*] (Updated|Updated input|Locked input)' update.log || echo 'No input changes.'
+            cat /tmp/update.log
             echo '```'
-          } > pr-body.md
-          cat pr-body.md >> "$GITHUB_STEP_SUMMARY"
+          } > /tmp/pr-body.md
 
       - name: Create or update PR
         if: steps.week-guard.outputs.skip != 'true'
@@ -58,11 +60,12 @@ jobs:
           # Author the PR as the repo owner so check-pr's auto-merge job
           # (user.login == '74k2') applies to it.
           token: ${{ secrets.GH_PAT }}
-          branch: flake-inputs-auto-update
+          author: 74k1 <git.t@betsumei.com>
+          committer: 74k1 <git.t@betsumei.com>
+          branch: flake/auto-update
           delete-branch: true
           title: Update flake inputs
           commit-message: 'flake.lock: update inputs'
-          body-path: pr-body.md
+          body-path: /tmp/pr-body.md
           labels: |
-            automation
-            flake-update
+            3. automated
