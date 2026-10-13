@@ -154,14 +154,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `effectcraft` | `0.9.2` |
 | `effectcraft-bin` | `0.9.2` |
 | `ferroxide` | `0.5.0` |
-| `filmcraft` | `0.6.0` |
+| `filmcraft` | `0.7.2` |
 | `filmcraft-bin` | `0.7.2` |
 | `fogpanther` | `0.8.2` |
 | `fourget` | `unstable-2026-10-11` |
 | `g3m` | `3.4.2` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
-| `gridcraft` | `0.5.0` |
+| `gridcraft` | `0.6.1` |
 | `gridcraft-bin` | `0.6.1` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
