@@ -151,7 +151,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.7.1` |
 | `designcraft-bin` | `0.7.1` |
-| `effectcraft` | `0.8.0` |
+| `effectcraft` | `0.9.2` |
 | `effectcraft-bin` | `0.9.2` |
 | `ferroxide` | `0.5.0` |
 | `filmcraft` | `0.6.0` |
@@ -162,11 +162,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
 | `gridcraft` | `0.5.0` |
-| `gridcraft-bin` | `0.5.0` |
+| `gridcraft-bin` | `0.6.1` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
-| `keeper-sh` | `2.24.6` |
+| `keeper-sh` | `2.24.7` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.6.0` |
 | `lightcraft-bin` | `0.6.0` |
