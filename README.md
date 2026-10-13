@@ -192,7 +192,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `waterfox` | `6.7.5` |
 | `waterfox-unwrapped` | `6.7.5` |
 | `whowatch` | `1.8.6` |
-| `wordcraft` | `0.5.0` |
+| `wordcraft` | `0.6.1` |
 | `wordcraft-bin` | `0.6.1` |
 | `yopass` | `15.0.0` |
 | `zui` | `1.18.0` |
