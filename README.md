@@ -152,7 +152,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `designcraft` | `0.7.1` |
 | `designcraft-bin` | `0.8.0` |
 | `effectcraft` | `0.9.2` |
-| `effectcraft-bin` | `0.9.2` |
+| `effectcraft-bin` | `0.10.0` |
 | `ferroxide` | `0.5.0` |
 | `filmcraft` | `0.7.2` |
 | `filmcraft-bin` | `0.7.2` |
