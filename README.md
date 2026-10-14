@@ -150,7 +150,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.7.1` |
-| `designcraft-bin` | `0.7.1` |
+| `designcraft-bin` | `0.8.0` |
 | `effectcraft` | `0.9.2` |
 | `effectcraft-bin` | `0.9.2` |
 | `ferroxide` | `0.5.0` |
