@@ -179,11 +179,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `parallels-ras-client` | `21.2.27300` |
 | `pdfcraft` | `0.8.0` |
 | `pdfcraft-bin` | `0.8.0` |
-| `photocraft` | `0.8.2` |
+| `photocraft` | `0.9.0` |
 | `photocraft-bin` | `0.9.0` |
 | `rybbit` | `2.9.1` |
-| `soundcraft` | `0.6.1` |
-| `soundcraft-bin` | `0.6.1` |
+| `soundcraft` | `0.7.0` |
+| `soundcraft-bin` | `0.7.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
