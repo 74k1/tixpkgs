@@ -18,11 +18,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "soundcraft-bin";
-  version = "0.6.1";
+  version = "0.7.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/soundcraft/releases/download/v${finalAttrs.version}/soundcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-yzXwtkwaa8uBfCqcZuJoO19/IHox8s6m+hNzI+9iPpU=";
+    hash = "sha256-vlOq44V3K3Te/zl8I1NCCB/7vmL2kmJlrJmoX10Hxqs=";
   };
 
   nativeBuildInputs = [
