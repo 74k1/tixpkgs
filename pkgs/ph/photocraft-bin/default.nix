@@ -18,11 +18,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "photocraft-bin";
-  version = "0.8.2";
+  version = "0.9.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/photocraft/releases/download/v${finalAttrs.version}/photocraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-1SfXId0yEx1gABO5D7yvb5DEm0zKjH9EMaFD73vHxMI=";
+    hash = "sha256-GFmP0XcRsmGDlshZQm7z6O15AvDZnF6MBleEfr/HQN8=";
   };
 
   nativeBuildInputs = [
