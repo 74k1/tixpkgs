@@ -194,7 +194,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.7.0` |
 | `wordcraft-bin` | `0.7.0` |
-| `yopass` | `15.1.0` |
+| `yopass` | `16.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 
