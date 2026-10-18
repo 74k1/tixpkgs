@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/id/idahelper/default.nix"
+package_file="$root/pkgs/id/idahelper/package.nix"
 pypi="https://pypi.org/pypi/idahelper/json"
 
 json="$(curl -fsSL "$pypi")"

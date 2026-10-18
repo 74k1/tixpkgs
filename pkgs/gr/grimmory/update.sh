@@ -4,7 +4,7 @@ set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 pkg_dir="$root/pkgs/gr/grimmory"
-nix_file="$pkg_dir/default.nix"
+nix_file="$pkg_dir/package.nix"
 lock_file="$pkg_dir/package-lock.json"
 
 # Read current version
@@ -55,7 +55,7 @@ fi
 
 echo "Updating grimmory: $old_version -> $new_version" >&2
 
-# Update version and src hash in default.nix
+# Update version and src hash in package.nix
 OLD_VERSION="$old_version" NEW_VERSION="$new_version" \
 OLD_SRC_HASH="$old_src_hash" NEW_SRC_HASH="$new_src_hash" \
 perl -0pi -e '

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/fo/fogpanther/default.nix"
+package_file="$root/pkgs/fo/fogpanther/package.nix"
 installer_url="https://fogpanther.com/install.sh"
 
 installer="$(curl -fsSL "$installer_url")"

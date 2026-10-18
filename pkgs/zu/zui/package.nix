@@ -154,6 +154,8 @@ stdenv.mkDerivation (finalAttrs: {
     fi
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = {
     description = "Zui (formerly Brim) is a GUI for exploring data in Zed lakes.";
     homepage = "https://zui.brimdata.io/";

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-pkg_file="$root/pkgs/de/degoog/default.nix"
+pkg_file="$root/pkgs/de/degoog/package.nix"
 
 old_version="$(perl -ne 'print $1 if /^\s*version = "([^"]+)";/' "$pkg_file")"
 old_hash="$(perl -ne 'print $1 if /^\s*hash = "([^"]+)";/' "$pkg_file")"

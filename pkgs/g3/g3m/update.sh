@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/g3/g3m/default.nix"
+package_file="$root/pkgs/g3/g3m/package.nix"
 repo="https://github.com/y114git/G3M"
 
 # The file also defines g3mtool and playsound3, so read g3m's own values

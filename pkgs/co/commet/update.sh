@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/co/commet/default.nix"
+package_file="$root/pkgs/co/commet/package.nix"
 pubspec_lock_json="$root/pkgs/co/commet/pubspec.lock.json"
 git_hashes_json="$root/pkgs/co/commet/git-hashes.json"
 api="https://api.github.com/repos/commetchat/commet/releases/latest"

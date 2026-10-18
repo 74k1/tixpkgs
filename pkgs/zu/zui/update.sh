@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/zu/zui/default.nix"
+package_file="$root/pkgs/zu/zui/package.nix"
 repo="brimdata/zui"
 
 old_version="$(perl -ne 'print $1 if /^\s*version = "([^"]+)";/' "$package_file")"

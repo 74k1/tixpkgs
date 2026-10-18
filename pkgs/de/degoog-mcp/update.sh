@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/de/degoog-mcp/default.nix"
+package_file="$root/pkgs/de/degoog-mcp/package.nix"
 repo="https://github.com/degoog-org/mcp.git"
 fake_hash="sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 

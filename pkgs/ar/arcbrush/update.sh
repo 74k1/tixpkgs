@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/ar/arcbrush/default.nix"
+package_file="$root/pkgs/ar/arcbrush/package.nix"
 api="https://api.arcbrush.com/api/version?platform=linux"
 
 release="$(curl -fsSL "$api")"
