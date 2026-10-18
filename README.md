@@ -22,7 +22,7 @@ If something's broken or missing, PRs / Issues welcome. See [contributing](./CON
 
 # Usage
 
-To use this flake in your own setup, make sure to include it in your flake inputs. (also make `home-manager` follow your `nixpkgs`)
+To use this flake in your own setup, include it in your flake inputs and let it follow your `nixpkgs`.
 
 In your `flake.nix`:
 
@@ -36,10 +36,7 @@ In your `flake.nix`:
     };
     tixpkgs = {
       url = "github:74k1/tixpkgs";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     ...
   };
@@ -66,9 +63,9 @@ nix.settings = {
 
 # Modules
 
-This flake exports modules in two ways:
+This flake exports NixOS modules in two ways:
 
-- via `nixosModules'` or `homeManagerModules'`, which are nested (like `legacyPackages` package sets)
+- via `nixosModules'`, which is nested (like `legacyPackages` package sets)
 
 <details>
   <summary>example</summary>
@@ -88,7 +85,7 @@ This flake exports modules in two ways:
 ```
 </details>
 
-- via the classic `nixosModules` or `homeManagerModules`, flat
+- via the classic `nixosModules`, flat
 
 <details>
   <summary>example</summary>
@@ -123,14 +120,6 @@ This flake exports modules in two ways:
 | `services.trek` | [README](modules/nixos/services/trek/README.md) |
 | `services.yopass` | [README](modules/nixos/services/yopass/README.md) |
 <!-- END NIXOS MODULES -->
-
-## Home Manager Modules
-
-<!-- BEGIN HOME MANAGER MODULES -->
-| Module | Docs |
-|---|---|
-| `programs.waterfox` | [README](modules/home-manager/programs/waterfox/README.md) |
-<!-- END HOME MANAGER MODULES -->
 
 # Packages
 
@@ -192,8 +181,6 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `trek` | `4.3.3` |
 | `vectorcraft` | `0.13.1` |
 | `vectorcraft-bin` | `0.13.1` |
-| `waterfox` | `6.7.5` |
-| `waterfox-unwrapped` | `6.7.5` |
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.8.0` |
 | `wordcraft-bin` | `0.8.0` |

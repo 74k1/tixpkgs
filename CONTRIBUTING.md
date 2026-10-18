@@ -2,7 +2,7 @@
 
 ## Code
 
-- Packages go in `pkgs/` using two-letter prefixes: `pkgs/gr/grimmory/`, `pkgs/zu/zui.nix`
+- Packages go in `pkgs/` using two-letter prefixes: `pkgs/gr/grimmory/package.nix`, `pkgs/zu/zui.nix`
 - Modules go in `modules/nixos/services/<name>/default.nix`
 - Verify it builds: `nix build .#package-name`
 - If it's already in [nixpkgs](https://search.nixos.org/packages), it doesn't belong here
@@ -14,7 +14,7 @@
 
 ```
 feat(godap): init at 2.10.4
-feat(waterfox): 6.6.6 -> 6.6.7
+feat(godap): 2.12.2 -> 2.13.0
 fix(nixos/onyx): correct service dependency ordering
 ```
 
