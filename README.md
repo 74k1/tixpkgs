@@ -173,6 +173,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
+| `mpdq` | `2.4.5` |
 | `mtkclient` | `2.1.4` |
 | `multi-scrobbler` | `0.20.0` |
 | `outerbase-studio-desktop` | `0.1.29` |
