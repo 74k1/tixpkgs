@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       packages:
-        description: 'Package names to build, space or comma-separated (e.g. waterfox firefox arcbrush)'
+        description: 'Package names to build, space or comma-separated (e.g. zui arcbrush godap)'
         required: true
         type: string
       flake:

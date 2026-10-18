@@ -81,17 +81,14 @@ jobs:
           }
 
           nixos_mod_table=$(make_module_table modules/nixos)
-          home_manager_mod_table=$(make_module_table modules/home-manager)
 
           # --- Patch README.md ---
           # Replace content between markers
-          awk -v pkg="$pkg_table" -v nixos_mods="$nixos_mod_table" -v home_manager_mods="$home_manager_mod_table" '
+          awk -v pkg="$pkg_table" -v nixos_mods="$nixos_mod_table" '
             /<!-- BEGIN PACKAGES -->/ { print; print pkg; skip=1; next }
             /<!-- END PACKAGES -->/   { skip=0 }
             /<!-- BEGIN NIXOS MODULES -->/         { print; print nixos_mods; skip=1; next }
             /<!-- END NIXOS MODULES -->/           { skip=0 }
-            /<!-- BEGIN HOME MANAGER MODULES -->/  { print; print home_manager_mods; skip=1; next }
-            /<!-- END HOME MANAGER MODULES -->/    { skip=0 }
             !skip { print }
           ' README.md > README.md.tmp
 

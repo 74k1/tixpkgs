@@ -175,27 +175,9 @@ jobs:
                 fi
                 ;;
 
-              modules/home-manager/*)
-                module_path="$(module_path_from_file home-manager "$file" || true)"
-                if [ -n "${module_path:-}" ]; then
-                  add_checks_for_module home-manager "$module_path"
-                fi
-                ;;
-
               modules/tests/nixos/*.nix)
                 rel="${file#modules/tests/nixos/}"
                 check="module-nixos-${rel%.nix}"
-                check="${check//\//-}"
-                if module_check_exists "$check"; then
-                  add_unique module-checks.txt "$check"
-                else
-                  printf "Changed test %s did not map to an exported check (%s).\n" "$file" "$check"
-                fi
-                ;;
-
-              modules/tests/home-manager/*.nix)
-                rel="${file#modules/tests/home-manager/}"
-                check="module-home-manager-${rel%.nix}"
                 check="${check//\//-}"
                 if module_check_exists "$check"; then
                   add_unique module-checks.txt "$check"
@@ -214,8 +196,8 @@ jobs:
                 sort -u -o packages.txt packages.txt
                 ;;
 
-              flake.lock)
-                # A lockfile bump can affect anything: build all packages and
+              flake.nix|flake.lock)
+                # A flake change can affect anything: build all packages and
                 # all module checks.
                 printf '%s\n' "${all_packages[@]}" >> packages.txt
                 printf '%s\n' "${all_module_checks[@]}" >> module-checks.txt
