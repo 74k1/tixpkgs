@@ -8,58 +8,47 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs-waterfox = {
-      url = "github:NixOS/nixpkgs/refs/pull/475318/head";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
   };
 
   outputs =
-    inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
-      {
-        withSystem,
-        flake-parts-lib,
-        ...
-      }:
-      {
-        systems = [
-          "aarch64-darwin"
-          "aarch64-linux"
-          "i686-linux"
-          "x86_64-darwin"
-          "x86_64-linux"
-        ];
+    { self, nixpkgs, ... }@inputs:
+    let
+      inherit (nixpkgs) lib;
 
-        imports = [
-          ./modules/flake/packages.nix
-          ./modules/flake/modules.nix
-          ./modules/flake/checks.nix
-        ];
+      systems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      forAllSystems = lib.genAttrs systems;
 
-        debug = false;
-
-        perSystem =
-          {
-            lib,
-            pkgs,
-            system,
-            inputs',
-            ...
-          }:
-          {
-            formatter = pkgs.nixfmt-rs;
-          };
-
-        flake = {
+      pkgsFor =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [ self.overlays.default ];
+          config.allowUnfree = true;
         };
-      }
-    );
+
+      mkPackages = import ./modules/flake/packages.nix { inherit lib; };
+
+      nixosModules = import ./modules/flake/modules.nix { inherit self inputs lib; } ./modules/nixos;
+    in
+    {
+      packages = forAllSystems (system: mkPackages (pkgsFor system));
+
+      overlays.default = final: _prev: mkPackages final;
+
+      nixosModules = nixosModules.flat;
+      nixosModules' = nixosModules.nested;
+
+      # Module tests only run on the platform the modules/packages target.
+      checks.x86_64-linux = import ./modules/flake/checks.nix {
+        inherit self inputs lib;
+        system = "x86_64-linux";
+        pkgs = pkgsFor "x86_64-linux";
+      };
+
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rs);
+    };
 }

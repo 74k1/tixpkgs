@@ -4,7 +4,7 @@ set -euo pipefail
 
 page="https://docs.m5stack.com/en/uiflow/m5burner/intro"
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/m5/m5burner/default.nix"
+package_file="$root/pkgs/m5/m5burner/package.nix"
 
 # Match the Linux download link itself; the page layout changes too often
 # for a fixed XPath.

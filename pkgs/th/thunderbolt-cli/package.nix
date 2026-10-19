@@ -97,6 +97,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = {
     description = "Thunderbolt CLI — a portable, single-binary terminal coding agent";
     homepage = "https://thunderbolt.io";

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/mt/mtkclient/default.nix"
+package_file="$root/pkgs/mt/mtkclient/package.nix"
 api="https://api.github.com/repos/bkerler/mtkclient/commits/main"
 
 commit="$(curl -fsSL "$api")"

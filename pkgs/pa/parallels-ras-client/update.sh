@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/pa/parallels-ras-client/default.nix"
+package_file="$root/pkgs/pa/parallels-ras-client/package.nix"
 readme_file="$root/README.md"
 base="https://download.parallels.com/website_links"
 

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/br/brscan-skey/default.nix"
+package_file="$root/pkgs/br/brscan-skey/package.nix"
 # Brother's generic x86_64 RPM download page for Scan-key-tool.
 download_page="https://support.brother.com/g/b/downloadhowto.aspx?c=us&lang=en&prod=mfcl3770cdw_us_eu_as&os=127&dlid=dlf006650_000&flang=4&type3=568"
 

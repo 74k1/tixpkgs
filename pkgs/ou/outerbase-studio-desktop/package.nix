@@ -28,6 +28,8 @@ appimageTools.wrapType2 rec {
       cp -r ${contents}/usr/share/icons $out/share
     '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = with lib; {
     description = "A lightweight Electron wrapper for the Outerbase Studio web version.";
     homepage = "https://www.outerbase.com/";

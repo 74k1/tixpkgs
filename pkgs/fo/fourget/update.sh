@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/fo/fourget/default.nix"
+package_file="$root/pkgs/fo/fourget/package.nix"
 repo="https://git.lolcat.ca/lolcat/4get.git"
 
 new_rev="$(git ls-remote "$repo" HEAD | awk '{print $1}')"

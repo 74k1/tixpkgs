@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/id/ida-ios-helper/default.nix"
+package_file="$root/pkgs/id/ida-ios-helper/package.nix"
 repo="https://github.com/yoavst/ida-ios-helper"
 
 old_version="$(perl -ne 'print $1 if /^\s*version = "([^"]+)";/' "$package_file")"

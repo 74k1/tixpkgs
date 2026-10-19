@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-package_file="$root/pkgs/ou/outerbase-studio-desktop/default.nix"
+package_file="$root/pkgs/ou/outerbase-studio-desktop/package.nix"
 repo="outerbase/studio-desktop"
 
 old_version="$(perl -ne 'print $1 if /^\s*version = "([^"]+)";/' "$package_file")"

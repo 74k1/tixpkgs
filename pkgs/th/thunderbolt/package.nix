@@ -177,6 +177,8 @@ in
     runHook postInstall
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = {
     description = "Self-hosted Thunderbolt frontend and backend bundle";
     homepage = "https://thunderbolt.io";
