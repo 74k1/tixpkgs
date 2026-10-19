@@ -80,14 +80,14 @@ let
 in
 python314Packages.buildPythonApplication (finalAttrs: {
   pname = "g3m";
-  version = "3.4.2";
+  version = "3.4.3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "y114git";
     repo = "G3M";
     tag = finalAttrs.version;
-    hash = "sha256-ufMdTEbOXGzgYwHjvVAhBLOM0zx2US3axROL/DnAgbg=";
+    hash = "sha256-NTi+YF8qMABIvc6Qhnct0HIedwFSnBLfpivSEvGbjXo=";
   };
 
   patches = [ ./runtime-paths.patch ];
