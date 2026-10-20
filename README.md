@@ -128,7 +128,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 <!-- BEGIN PACKAGES -->
 | Package | Version |
 |---|---|
-| `arcbrush` | `1.6.3` |
+| `arcbrush` | `1.7.0` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
 | `cadcraft` | `0.8.0` |
