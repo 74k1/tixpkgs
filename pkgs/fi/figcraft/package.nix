@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "figcraft";
-  version = "0.7.0";
+  version = "0.8.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "figcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-0K9K3EEe/HKpufzW8ym9NUwsNpioUvPUxV9rxpoJU2Q=";
+    hash = "sha256-Sekxnqg1Cg1gxzQhGaMZaJhe+vTD3QhOGmA+tiz0XLs=";
   };
 
   buildInputs = [
@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-BdDJmIoTAH06y+bvfY8WyzxgV7572oxSdkA8kN4wz4E=";
+  cargoHash = "sha256-0nFdUgOtJu3AoHDnuYz3WJWKBEfdEbt77M5xBicVlwE=";
 
   cargoBuildFlags = [
     "-p"
