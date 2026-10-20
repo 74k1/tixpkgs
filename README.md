@@ -143,7 +143,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `effectcraft` | `0.11.1` |
 | `effectcraft-bin` | `0.11.1` |
 | `ferroxide` | `0.5.0` |
-| `figcraft` | `0.7.0` |
+| `figcraft` | `0.8.0` |
 | `figcraft-bin` | `0.8.0` |
 | `filmcraft` | `0.9.0` |
 | `filmcraft-bin` | `0.9.0` |
@@ -152,7 +152,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `g3m` | `3.4.3` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
-| `gridcraft` | `0.8.0` |
+| `gridcraft` | `0.9.0` |
 | `gridcraft-bin` | `0.9.0` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
