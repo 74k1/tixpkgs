@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "designcraft";
-  version = "0.9.0";
+  version = "0.10.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "designcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-IL5kXdkFG1CiIuh3dWTphFu5EPHeSrg2eQ8N9dFNqkQ=";
+    hash = "sha256-wLPZ3hLR1phqRWwGj6FDuCis5F0QCKpTpusMOj+vKcA=";
   };
 
   buildInputs = [
@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-pt/8PkH2c9IKFRgNIKkEUyUMca/glpEoo5CjgM3VVyU=";
+  cargoHash = "sha256-5QLWzsYsXE+uN/GKb8ymzbz/r3rY+cy4sjJ9FLKypEQ=";
 
   cargoBuildFlags = [
     "-p"
