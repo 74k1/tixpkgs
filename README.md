@@ -141,7 +141,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `designcraft` | `0.10.0` |
 | `designcraft-bin` | `0.11.0` |
 | `effectcraft` | `0.11.1` |
-| `effectcraft-bin` | `0.11.1` |
+| `effectcraft-bin` | `0.14.0` |
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.8.0` |
 | `figcraft-bin` | `0.8.0` |
