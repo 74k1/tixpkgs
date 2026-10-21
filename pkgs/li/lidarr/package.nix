@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   stdenv,
   fetchurl,
@@ -45,7 +46,7 @@ stdenv.mkDerivation rec {
   '';
 
   passthru = {
-    updateScript = ./update.sh;
+    updateScript = nix-update-script { extraArgs = [ "--version=unstable" ]; };
   };
 
   meta = with lib; {

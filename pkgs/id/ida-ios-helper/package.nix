@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   python3Packages,
   fetchFromGitHub,
@@ -34,7 +35,7 @@ python3Packages.buildPythonPackage rec {
   # pythonImportsCheck = [ "ida_ios_helper" ];
   pythonImportsCheck = [ ];
 
-  passthru.updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "IDA Plugin for ease the reversing of iOS usermode and kernelcache";

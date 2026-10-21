@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   stdenv,
   fetchurl,
@@ -154,7 +155,7 @@ stdenv.mkDerivation (finalAttrs: {
     fi
   '';
 
-  passthru.updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Zui (formerly Brim) is a GUI for exploring data in Zed lakes.";

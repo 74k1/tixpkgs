@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   python3Packages,
 }:
@@ -24,7 +25,7 @@ python3Packages.buildPythonPackage rec {
   pythonImportsCheck = [ "idahelper" ];
   doCheck = false;
 
-  passthru.updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Standard library for IDA Pro plugins";

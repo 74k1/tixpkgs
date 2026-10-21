@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   stdenvNoCC,
   nodejs,
@@ -197,7 +198,7 @@ buildNpmPackage {
 
   passthru = {
     inherit rybbit-client rybbit-shared;
-    updateScript = ./update.sh;
+    updateScript = nix-update-script { extraArgs = [ "--subpackage=rybbit-client" ]; };
   };
 
   meta = with lib; {

@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   stdenv,
   fetchurl,
@@ -28,7 +29,7 @@ appimageTools.wrapType2 rec {
       cp -r ${contents}/usr/share/icons $out/share
     '';
 
-  passthru.updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "A lightweight Electron wrapper for the Outerbase Studio web version.";

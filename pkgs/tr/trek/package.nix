@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   stdenv,
   buildNpmPackage,
@@ -142,7 +143,9 @@ buildNpmPackage (finalAttrs: {
     runHook postInstallCheck
   '';
 
-  passthru.updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--version-regex=^v?([0-9]+\\.[0-9]+\\.[0-9]+)$" ];
+  };
 
   meta = {
     description = "Self-hosted real-time collaborative travel planner with maps, budgets, packing lists, and AI";

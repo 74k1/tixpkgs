@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   lib,
   stdenvNoCC,
   fetchurl,
@@ -43,7 +44,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Search engine aggregator with a comprehensive plugin/extension system";

@@ -1,4 +1,5 @@
 {
+  nix-update-script,
   buildGo127Module,
   fetchFromGitHub,
   fetchYarnDeps,
@@ -87,5 +88,8 @@ buildGo127Module (finalAttrs: {
     platforms = lib.platforms.unix;
   };
 
-  passthru.updateScript = ./update.sh;
+  passthru = {
+    inherit website;
+    updateScript = nix-update-script { extraArgs = [ "--subpackage=website" ]; };
+  };
 })
