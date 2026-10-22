@@ -12,20 +12,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "lightcraft";
-  version = "0.9.1";
+  version = "0.11.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "lightcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-zjud9GW1oTGlL2IA4dNH5LKmYAqAU9EyPIvTryW19RM=";
+    hash = "sha256-4Ia+X9mv7A1vtKP+Wv0Ba8ubkDiXpcPYZuWpLrd3QkU=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-aVfcTaecTHpsZHDmTw9Js+4MfY1QHgaDzq/Sd2+Ckg4=";
+  cargoHash = "sha256-fOUCv0A3o1EMzDhC3yoOzV8gYXPqt8KafBwR6lY1nV0=";
 
   cargoBuildFlags = [
     "-p"
