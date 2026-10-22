@@ -170,13 +170,13 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
 | `pdfcraft` | `0.9.0` |
-| `pdfcraft-bin` | `0.9.0` |
+| `pdfcraft-bin` | `0.11.0` |
 | `photocraft` | `0.11.1` |
 | `photocraft-bin` | `0.11.1` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
 | `soundcraft` | `0.10.0` |
-| `soundcraft-bin` | `0.10.0` |
+| `soundcraft-bin` | `0.11.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
