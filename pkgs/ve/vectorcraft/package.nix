@@ -12,20 +12,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "vectorcraft";
-  version = "0.13.1";
+  version = "0.14.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "vectorcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-6fnvggL1zSNnO2w32zKpgtE2bv/4SWs//uAEDR+UFIo=";
+    hash = "sha256-q56jTGQtU3L15JqmR/II6zX+m3/eERva+82n3wipo7s=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-3bE4+qcKPubcfJ3ZDTKzqh+xT325qNFR08rSxRhny6E=";
+  cargoHash = "sha256-kOEnoQCn2BhSVFrA2N4yvYbfHkBRwmM4n3BDY++7isU=";
 
   cargoBuildFlags = [
     "-p"
