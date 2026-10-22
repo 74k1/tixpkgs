@@ -131,11 +131,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `arcbrush` | `1.7.0` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.5-0` |
-| `cadcraft` | `0.10.0` |
+| `cadcraft` | `0.11.0` |
 | `cadcraft-bin` | `0.11.0` |
 | `commet` | `0.5.0` |
 | `deckcraft` | `0.9.0` |
-| `deckcraft-bin` | `0.9.0` |
+| `deckcraft-bin` | `0.10.0` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.11.0` |
