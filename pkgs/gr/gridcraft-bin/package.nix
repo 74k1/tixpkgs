@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gridcraft-bin";
-  version = "0.9.0";
+  version = "0.10.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/gridcraft/releases/download/v${finalAttrs.version}/gridcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-dMcro5sLUgh9zZm1mjkdO/Wyujohu2IpMSxBxmi9kRE=";
+    hash = "sha256-xNS7iW95a1DtNVjw8y/AID+/f9HKRmclHDD+2hXlm/E=";
   };
 
   nativeBuildInputs = [
