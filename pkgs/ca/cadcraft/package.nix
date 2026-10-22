@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "cadcraft";
-  version = "0.10.0";
+  version = "0.11.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "cadcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-pvFqbmFKFN5mhq0NJgpVoQfmb5JD+KbjHWglWBnz2+I=";
+    hash = "sha256-akeufowB7mOKLPMlAotKz2xQzoh7x1epKmAz3Dz+Qbc=";
   };
 
   buildInputs = [
@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-4zJXVYX5M6h66JDUDWBmssukCKIphDlBbL/TDTmDhtM=";
+  cargoHash = "sha256-N88swOZ+gwkJUvq1+U3bP78nFo457KEGwtFtRbqA+dc=";
 
   cargoBuildFlags = [
     "-p"
