@@ -14,16 +14,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "effectcraft";
-  version = "0.14.0";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "effectcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-5wursR7nr+n2UW1SLEFAZ8GudCSMdympFKJVb+7490o=";
+    hash = "sha256-2ox9/z6T0h8aVCGgPsLZXfOwN0IsCTXAx5eNumqMqtU=";
   };
 
-  cargoHash = "sha256-13d/LTsXzHHHsGUby+vC4yTCRwJUr/8YXRCEzww5tRA=";
+  cargoHash = "sha256-17N2iloIhdftroisnOlMpw1h6fXJuA4OCX8yMw5+upk=";
 
 
   nativeBuildInputs = [ autoPatchelfHook pkg-config ];
