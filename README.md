@@ -159,7 +159,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.26.0` |
 | `lidarr` | `3.1.6.5078` |
-| `lightcraft` | `0.9.1` |
+| `lightcraft` | `0.11.0` |
 | `lightcraft-bin` | `0.11.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
@@ -172,10 +172,10 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pdfcraft` | `0.9.0` |
 | `pdfcraft-bin` | `0.11.0` |
 | `photocraft` | `0.11.1` |
-| `photocraft-bin` | `0.11.1` |
+| `photocraft-bin` | `0.12.0` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
-| `soundcraft` | `0.10.0` |
+| `soundcraft` | `0.11.0` |
 | `soundcraft-bin` | `0.11.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
