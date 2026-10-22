@@ -180,11 +180,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
-| `vectorcraft` | `0.13.1` |
+| `vectorcraft` | `0.14.0` |
 | `vectorcraft-bin` | `0.14.0` |
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.8.0` |
-| `wordcraft-bin` | `0.8.0` |
+| `wordcraft-bin` | `0.9.0` |
 | `yopass` | `16.0.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
