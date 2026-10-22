@@ -171,7 +171,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `parallels-ras-client` | `21.2.27300` |
 | `pdfcraft` | `0.11.0` |
 | `pdfcraft-bin` | `0.11.0` |
-| `photocraft` | `0.11.1` |
+| `photocraft` | `0.12.0` |
 | `photocraft-bin` | `0.12.0` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
@@ -181,7 +181,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
 | `vectorcraft` | `0.13.1` |
-| `vectorcraft-bin` | `0.13.1` |
+| `vectorcraft-bin` | `0.14.0` |
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.8.0` |
 | `wordcraft-bin` | `0.8.0` |
