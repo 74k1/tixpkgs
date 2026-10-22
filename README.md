@@ -139,7 +139,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.0` |
 | `designcraft` | `0.11.0` |
-| `designcraft-bin` | `0.11.0` |
+| `designcraft-bin` | `0.12.0` |
 | `effectcraft` | `0.14.0` |
 | `effectcraft-bin` | `0.14.0` |
 | `ferroxide` | `0.5.0` |
