@@ -146,7 +146,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `figcraft` | `0.10.0` |
 | `figcraft-bin` | `0.10.0` |
 | `filmcraft` | `0.11.0` |
-| `filmcraft-bin` | `0.11.0` |
+| `filmcraft-bin` | `0.12.0` |
 | `fogpanther` | `0.8.3` |
 | `fourget` | `unstable-2026-10-21` |
 | `g3m` | `3.4.3` |
