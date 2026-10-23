@@ -12,20 +12,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "pdfcraft";
-  version = "0.12.0";
+  version = "0.13.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "pdfcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-/jxXeoj2dDmm0EMpF18b41hM01e3fIbV/KsAV6oGgBU=";
+    hash = "sha256-DS2jfwzH3LtvEhlxcoSywyDDenvH2N9DkdDVzEP6QdQ=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  cargoHash = "sha256-qYdfjk33WLa8qxRgYCccmydTp7mfUeonQSmAtbA0wRc=";
+  cargoHash = "sha256-w56jGzgk82D67vH3z0aUL49iGMtl9oYQVmgwVZ4EkLc=";
 
   prePatch = ''
     substituteInPlace "$cargoDepsCopy/source-registry-0/rten-gemm-0.26.0/src/i8dot.rs" \
