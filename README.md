@@ -145,7 +145,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.10.0` |
 | `figcraft-bin` | `0.10.0` |
-| `filmcraft` | `0.11.0` |
+| `filmcraft` | `0.12.0` |
 | `filmcraft-bin` | `0.12.0` |
 | `fogpanther` | `0.8.3` |
 | `fourget` | `unstable-2026-10-21` |
@@ -160,7 +160,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `keeper-sh` | `2.26.1` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.12.0` |
-| `lightcraft-bin` | `0.12.0` |
+| `lightcraft-bin` | `0.13.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
