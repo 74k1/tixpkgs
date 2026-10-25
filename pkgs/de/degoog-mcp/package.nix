@@ -9,13 +9,13 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "degoog-mcp";
-  version = "0.4.0";
+  version = "0.4.1";
 
   src = fetchFromGitHub {
     owner = "degoog-org";
     repo = "mcp";
     tag = finalAttrs.version;
-    hash = "sha256-P99iylJBt+OdO8CXifb0cu1oYWlB6fyoGnTO1sn+fdo=";
+    hash = "sha256-bFKFOn9xYL+qpff9/Bj7ADwwpnb9LTNTZhBNoxJjD38=";
   };
 
   # Fixed-output `bun install`. --production skips devDependencies
