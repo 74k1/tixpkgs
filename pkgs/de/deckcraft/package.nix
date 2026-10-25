@@ -19,13 +19,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "deckcraft";
-  version = "0.10.0";
+  version = "0.11.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "deckcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-q18YQXHmkPaULSMPxu5vY9/F7JThejIhKwpHhme0UCI=";
+    hash = "sha256-sxLcPfXXitvbQWWRV3pdsLEHYLde05qp7/QRinNz0xc=";
   };
 
   buildInputs = [
@@ -44,7 +44,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     pkg-config
   ];
 
-  cargoHash = "sha256-iHkyrHz2VMx0+bpYnve5EtBiuH32VSYHRSvg+ihIdwU=";
+  cargoHash = "sha256-JPjjGZ7/A5EYdpwsjQksPFh9Q5usZGcqv5en1P3hbVs=";
 
   cargoBuildFlags = [
     "-p"
