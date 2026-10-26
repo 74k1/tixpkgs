@@ -1,0 +1,52 @@
+name: Diagnose automation token
+
+# Temporary: reports what each automation token can see and do.
+# Prints no credential material, only identity, scopes, and repo permission.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    name: Token ${{ matrix.secret }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - secret: GH_PAT
+          - secret: GH_PAT_BOT
+    steps:
+      - name: Inspect token
+        env:
+          GH_TOKEN: ${{ secrets[matrix.secret] }}
+          SECRET_NAME: ${{ matrix.secret }}
+        run: |
+          set -uo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "${SECRET_NAME}: secret is empty"
+            exit 0
+          fi
+
+          echo "${SECRET_NAME}: identity -> $(gh api user --jq .login 2>&1 | head -1)"
+
+          echo "${SECRET_NAME}: oauth scopes -> $(
+            curl -sS -o /dev/null -D - https://api.github.com/user \
+              -H "Authorization: token ${GH_TOKEN}" \
+              | tr -d '\r' | grep -i '^x-oauth-scopes:' | cut -d' ' -f2- || true
+          )"
+
+          status="$(curl -sS -o /tmp/repo.json -w '%{http_code}' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}" \
+            -H "Authorization: token ${GH_TOKEN}")"
+          echo "${SECRET_NAME}: GET /repos/${GITHUB_REPOSITORY} -> HTTP ${status}"
+          head -c 300 /tmp/repo.json; echo
+
+          echo "${SECRET_NAME}: push permission -> $(jq -c '.permissions.push // "absent"' /tmp/repo.json 2>/dev/null)"
