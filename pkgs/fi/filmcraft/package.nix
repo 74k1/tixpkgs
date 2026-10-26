@@ -14,16 +14,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "filmcraft";
-  version = "0.12.0";
+  version = "0.13.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "filmcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-NY6PABV6Jsg6Rahl3uSM8+qW61yAcAEhWzCDH+wDUMo=";
+    hash = "sha256-mEMNK+uizVpO0szEonWxkK3M6MpGV5s0Blzt9Y5VdAg=";
   };
 
-  cargoHash = "sha256-FWCOqH4tMJJjLUJc0z+F++PObsbAvDIzgdGt8rMUZSc=";
+  cargoHash = "sha256-Ad4aHiGj7dbABxXUIQ9yHnW6q4xuOWnRvm3KC0lu230=";
 
 
   nativeBuildInputs = [ autoPatchelfHook pkg-config ];
