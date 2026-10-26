@@ -171,11 +171,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `parallels-ras-client` | `21.2.27300` |
 | `pdfcraft` | `0.14.0` |
 | `pdfcraft-bin` | `0.14.0` |
-| `photocraft` | `0.15.1` |
+| `photocraft` | `0.16.0` |
 | `photocraft-bin` | `0.16.0` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
-| `soundcraft` | `0.12.1` |
+| `soundcraft` | `0.13.1` |
 | `soundcraft-bin` | `0.13.1` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
