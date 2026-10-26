@@ -57,13 +57,12 @@ jobs:
           } > /tmp/pr-body.md
 
       - name: Create or update PR
+        id: cpr
         if: steps.week-guard.outputs.skip != 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          # Bot-account token (74k2). The PR author must be 74k2 so
-          # label-automated-prs and enable-auto-merge recognize it as an
-          # automation PR. The commit identity below is still the repo owner.
-          token: ${{ secrets.GH_PAT_BOT }}
+          # 74k2's token is rejected with "Permission to 74k1/tixpkgs.git denied to 74k2".
+          token: ${{ secrets.GH_PAT }}
           author: 74k1 <git.t@betsumei.com>
           committer: 74k1 <git.t@betsumei.com>
           branch: flake/auto-update
@@ -73,3 +72,21 @@ jobs:
           body-path: /tmp/pr-body.md
           labels: |
             3. automated
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-number != '' && steps.cpr.outputs.pull-request-operation != 'closed'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 30); do
+            if gh pr merge "$PR_NUMBER" --auto --merge --delete-branch --repo "$GITHUB_REPOSITORY" 2>/dev/null; then
+              echo "Auto-merge enabled on PR #${PR_NUMBER}"
+              exit 0
+            fi
+            echo "PR still stabilizing, retrying... ($i/30)"
+            sleep 10
+          done
+          echo "::error::Timed out waiting for PR checks to stabilize"
+          exit 1
