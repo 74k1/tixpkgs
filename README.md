@@ -172,11 +172,11 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pdfcraft` | `0.14.0` |
 | `pdfcraft-bin` | `0.14.0` |
 | `photocraft` | `0.15.1` |
-| `photocraft-bin` | `0.15.1` |
+| `photocraft-bin` | `0.16.0` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
 | `soundcraft` | `0.12.1` |
-| `soundcraft-bin` | `0.12.1` |
+| `soundcraft-bin` | `0.13.1` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
