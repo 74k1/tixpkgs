@@ -87,7 +87,7 @@ python314Packages.buildPythonApplication (finalAttrs: {
     owner = "y114git";
     repo = "G3M";
     tag = finalAttrs.version;
-    hash = "sha256-NTi+YF8qMABIvc6Qhnct0HIedwFSnBLfpivSEvGbjXo=";
+    hash = "sha256-JrTUXAGOVDhu7WUkvceNRkfKCxLCFFH7t5H1W2PqcyU=";
   };
 
   patches = [ ./runtime-paths.patch ];
