@@ -10,11 +10,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "brscan-skey";
-  version = "0.3.5-0";
+  version = "0.3.6-0";
 
   src = fetchurl {
     url = "https://download.brother.com/welcome/dlf006650/brscan-skey-${finalAttrs.version}.x86_64.rpm";
-    hash = "sha256-AdyFnxl45kUUfO1exLVEjMPiaxxtLxEEg09YkcDhdGk=";
+    hash = "sha256-pgaxlF9x8123cjEo/eQnWm7gd4/GF6DzTgtzhzD9QrM=";
   };
 
   passthru.updateScript = ./update.sh;
