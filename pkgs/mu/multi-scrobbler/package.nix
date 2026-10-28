@@ -8,16 +8,16 @@
 
 buildNpmPackage rec {
   pname = "multi-scrobbler";
-  version = "0.20.2";
+  version = "0.20.3";
 
   src = fetchFromGitHub {
     owner = "FoxxMD";
     repo = "multi-scrobbler";
     rev = version;
-    hash = "sha256-EXteU7mDCyVQDoC77yLpEIyQ+DaXL52deUOubwMaR38=";
+    hash = "sha256-3WMMaMu5OfLa410gJTL2n6JHSuO6Fv4SBTez1sMrPsY=";
   };
 
-  npmDepsHash = "sha256-KV6pvKOmaRUld0cSReZXM9Dw5p+8gEdA+qR8Smwbd6g=";
+  npmDepsHash = "sha256-xyKjOk0yTQ1vZOBZbhMMJCS/DuJBJqW7Fhh9N1UwMUE=";
 
   npmBuildScript = "build:frontend";
 
