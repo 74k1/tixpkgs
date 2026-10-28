@@ -130,7 +130,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 |---|---|
 | `arcbrush` | `1.7.1` |
 | `brimcap` | `1.18.0` |
-| `brscan-skey` | `0.3.5-0` |
+| `brscan-skey` | `0.3.6-0` |
 | `cadcraft` | `0.13.0` |
 | `cadcraft-bin` | `0.13.0` |
 | `commet` | `0.5.0` |
@@ -148,7 +148,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `filmcraft` | `0.13.0` |
 | `filmcraft-bin` | `0.13.0` |
 | `fogpanther` | `0.8.3` |
-| `fourget` | `unstable-2026-10-24` |
+| `fourget` | `unstable-2026-10-27` |
 | `g3m` | `3.4.3` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
@@ -157,7 +157,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
-| `keeper-sh` | `2.26.1` |
+| `keeper-sh` | `2.28.1` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.14.0` |
 | `lightcraft-bin` | `0.14.0` |
@@ -166,7 +166,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `moonlight-qt-fork` | `6.21.46` |
 | `mpdq` | `2.4.5` |
 | `mtkclient` | `2.1.4` |
-| `multi-scrobbler` | `0.20.2` |
+| `multi-scrobbler` | `0.20.3` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `21.2.27300` |
 | `pdfcraft` | `0.14.0` |
