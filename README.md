@@ -132,14 +132,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.6-0` |
 | `cadcraft` | `0.13.0` |
-| `cadcraft-bin` | `0.13.0` |
+| `cadcraft-bin` | `0.14.0` |
 | `commet` | `0.5.0` |
 | `deckcraft` | `0.11.1` |
 | `deckcraft-bin` | `0.11.1` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.13.0` |
-| `designcraft-bin` | `0.13.0` |
+| `designcraft-bin` | `0.14.0` |
 | `effectcraft` | `0.17.0` |
 | `effectcraft-bin` | `0.17.0` |
 | `ferroxide` | `0.5.0` |
