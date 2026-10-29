@@ -108,6 +108,7 @@ This flake exports NixOS modules in two ways:
 |---|---|
 | `services.brscan-skey` | [README](modules/nixos/services/brscan-skey/README.md) |
 | `services.degoog` | [README](modules/nixos/services/degoog/README.md) |
+| `services.enclosed` | [README](modules/nixos/services/enclosed/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
 | `services.hydroxide` | [README](modules/nixos/services/hydroxide/README.md) |
@@ -142,6 +143,8 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `designcraft-bin` | `0.14.0` |
 | `effectcraft` | `0.18.0` |
 | `effectcraft-bin` | `0.18.0` |
+| `enclosed` | `1.16.1` |
+| `enclosed-cli` | `1.16.1` |
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.12.1` |
 | `figcraft-bin` | `0.12.1` |
