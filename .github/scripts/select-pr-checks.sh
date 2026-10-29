@@ -117,6 +117,15 @@ while IFS= read -r file; do
         fi
         if package_exists "$package"; then
           add_unique packages.txt "$package"
+
+          # Companion packages built from another package's source tree.
+          case "$package" in
+            enclosed)
+              if package_exists enclosed-cli; then
+                add_unique packages.txt enclosed-cli
+              fi
+              ;;
+          esac
         else
           printf 'Changed package path %s maps to %s, but that package is not currently exported.\n' \
             "$file" "$package"

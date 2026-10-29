@@ -156,6 +156,11 @@ mv check-inventory-updated.json check-inventory.json
 assert_selection 'package-level integration tests are selected by name' '["godap"]' \
   '["module-nixos-pkgs-godap-basic"]' pkgs/go/godap/package.nix
 
+jq '. + ["enclosed","enclosed-cli"]' package-inventory.json > package-inventory-updated.json
+mv package-inventory-updated.json package-inventory.json
+assert_selection 'companion package is selected from the same source tree' '["enclosed","enclosed-cli"]' '[]' \
+  pkgs/en/enclosed/package.nix
+
 printf '%s\n' '[]' > package-inventory.json
 printf '%s\n' '[]' > check-inventory.json
 assert_selection 'empty inventories do not produce empty target names' '[]' '[]' flake.lock
