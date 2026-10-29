@@ -17,4 +17,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PAT_BOT }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: gh pr edit "$PR_NUMBER" --add-label "3. automated" --repo "$GITHUB_REPOSITORY"
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/labels" -f 'labels[]=3. automated'
