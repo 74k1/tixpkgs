@@ -65,6 +65,7 @@ jobs:
         with:
           name: tixpkgs
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          useDaemon: false
 
       - name: Build changed packages
         env:
