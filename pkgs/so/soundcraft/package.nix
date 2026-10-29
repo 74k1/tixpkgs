@@ -28,6 +28,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     hash = "sha256-u6aRlfonVjzK6HRfXWDftz118sD3/OR/ZcoALXiky3A=";
   };
 
+  postPatch = ''
+    sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
+  '';
+
   cargoHash = "sha256-lysmnO12fqA0fJrmunX3kQXWpYPCmJ719LFm4WUwsXY=";
 
   nativeBuildInputs = [
