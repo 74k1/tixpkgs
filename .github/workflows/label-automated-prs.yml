@@ -15,6 +15,6 @@ jobs:
     steps:
       - name: Apply label
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT_BOT }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: gh pr edit "$PR_NUMBER" --add-label "3. automated" --repo "$GITHUB_REPOSITORY"
