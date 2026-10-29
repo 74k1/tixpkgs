@@ -5,7 +5,7 @@
   coreutils,
   autoPatchelfHook,
   makeWrapper,
-  qt5,
+  qt6,
   alsa-lib,
   cups,
   libusb-compat-0_1,
@@ -24,18 +24,18 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "parallels-ras-client";
-  version = "21.2.27300";
+  version = "22.0.28160";
 
   src = fetchurl {
     # The directory version is independent from the archive version.
-    url = "https://download.parallels.com/ras/v21/21.2.1.27300/RASClient-21.2.27300_x86_64.tar.bz2";
-    hash = "sha256-ZTHWpaw8/yAaS8JQRf06WxAU44GISSxiHi2zJJZlp7s=";
+    url = "https://download.parallels.com/ras/v22/22.0.0.28160/RASClient-22.0.28160_x86_64.tar.bz2";
+    hash = "sha256-1lBrHRAl3r6ZyodSBex2Kj0tVTPy0v7DjrB8JhHeK9Q=";
   };
 
   nativeBuildInputs = [
     autoPatchelfHook
     makeWrapper
-    qt5.wrapQtAppsHook
+    qt6.wrapQtAppsHook
   ];
 
   buildInputs = [
@@ -45,9 +45,7 @@ stdenv.mkDerivation (finalAttrs: {
     libusb1
     libxml2_13
     pcsclite
-    qt5.qtbase
-    qt5.qtmultimedia
-    qt5.qtx11extras
+    qt6.qtbase
     zlib
     libX11
     libXinerama
@@ -56,7 +54,7 @@ stdenv.mkDerivation (finalAttrs: {
     stdenv.cc.cc.lib
   ]
   ++ lib.optionals withQtWebEngine [
-    qt5.qtwebengine
+    qt6.qtwebengine
   ];
 
   runtimeDependencies = [
@@ -73,13 +71,12 @@ stdenv.mkDerivation (finalAttrs: {
   # Keep both in the wrapper's library path even though libusb-1.0 is not
   # visible to autoPatchelf as a DT_NEEDED dependency.
 
-  # Only libwebview.so links to QtWebEngine. Qt 5 WebEngine is marked
-  # insecure in nixpkgs, so keep the rest of the client usable without
-  # forcing consumers to allow it. Override withQtWebEngine = true if you
-  # need embedded web views and have permitted qtwebengine-5.15.x.
+  # Only libwebview.so links to QtWebEngine, a Chromium-scale dependency.
+  # Keep the rest of the client usable without it. Override
+  # withQtWebEngine = true if you need embedded web views.
   autoPatchelfIgnoreMissingDeps = lib.optionals (!withQtWebEngine) [
-    "libQt5WebEngineCore.so.5"
-    "libQt5WebEngineWidgets.so.5"
+    "libQt6WebEngineCore.so.6"
+    "libQt6WebEngineWidgets.so.6"
   ];
 
   unpackPhase = ''
