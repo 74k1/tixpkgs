@@ -143,7 +143,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `effectcraft` | `0.18.0` |
 | `effectcraft-bin` | `0.18.0` |
 | `ferroxide` | `0.5.0` |
-| `figcraft` | `0.11.2` |
+| `figcraft` | `0.12.1` |
 | `figcraft-bin` | `0.12.1` |
 | `filmcraft` | `0.14.0` |
 | `filmcraft-bin` | `0.14.0` |
