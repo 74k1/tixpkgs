@@ -18,11 +18,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "deckcraft-bin";
-  version = "0.11.1";
+  version = "0.12.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/deckcraft/releases/download/v${finalAttrs.version}/deckcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-L2OJA/+L3enduHg4mBLbuaAvdIkiFbWZ6Ll85Ey9gp8=";
+    hash = "sha256-Mg5b70H9sQQQ0hZsQZrGst+ry6FxxjeibcWzdH4puNQ=";
   };
 
   nativeBuildInputs = [
