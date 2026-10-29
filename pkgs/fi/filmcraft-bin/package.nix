@@ -18,11 +18,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "filmcraft-bin";
-  version = "0.13.0";
+  version = "0.14.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/filmcraft/releases/download/v${finalAttrs.version}/filmcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-KU0FF85+Ti68DpMDCiBIU9m9BqmmCHgZCqabWwqcL/0=";
+    hash = "sha256-FNgmrPHRYJPkNmOJMM7cVgcpU5LQrceRrCnQIqCmKkw=";
   };
 
   nativeBuildInputs = [
