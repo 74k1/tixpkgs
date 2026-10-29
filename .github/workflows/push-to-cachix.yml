@@ -88,6 +88,10 @@ jobs:
                       package="${package%.nix}"
                     fi
                     candidates+=("$package")
+                    # Companion packages built from another package's source tree.
+                    case "$package" in
+                      enclosed) candidates+=("enclosed-cli") ;;
+                    esac
                   fi
                   ;;
               esac
