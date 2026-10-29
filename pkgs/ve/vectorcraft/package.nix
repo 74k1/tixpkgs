@@ -25,6 +25,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
+  postPatch = ''
+    sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
+  '';
+
   cargoHash = "sha256-cfABh/4Wx8pA2nMJZ9/BvbQvYADmnb+B1Ws82EP3HKY=";
 
   cargoBuildFlags = [
