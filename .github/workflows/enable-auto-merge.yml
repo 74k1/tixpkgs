@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Merge tested pull request
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GH_PAT_BOT }}
           PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
           TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
           RUN_ID: ${{ github.event.workflow_run.id }}

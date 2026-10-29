@@ -62,10 +62,10 @@ jobs:
         with:
           # Bot-account token (74k2). The PR author must be 74k2 so
           # label-automated-prs and enable-auto-merge recognize it as an
-          # automation PR. The commit identity below is still the repo owner.
+          # automation PR.
           token: ${{ secrets.GH_PAT_BOT }}
-          author: 74k1 <git.t@betsumei.com>
-          committer: 74k1 <git.t@betsumei.com>
+          author: 74k2 <git.74k2.t@betsumei.com>
+          committer: 74k2 <git.74k2.t@betsumei.com>
           branch: flake/auto-update
           delete-branch: true
           title: Update flake inputs
