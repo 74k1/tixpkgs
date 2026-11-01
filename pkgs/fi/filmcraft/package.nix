@@ -14,20 +14,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "filmcraft";
-  version = "0.14.0";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "filmcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-2UvPxCyhRT7XMXZqX1aHArLuL0VUo3hC5a8q2WFph6w=";
+    hash = "sha256-g+D4opUe2DjTQ0yHkZvP6XKVbSKnbFe4dMNz7bpO34w=";
   };
 
   postPatch = ''
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-uStVTwwZBP396uyBjdu+aF+zMqQVaZrn7cw14Nd2U4Y=";
+  cargoHash = "sha256-AErLpXkRS3qDRLk6kQ1nh0tOhd4FgQTSbiw0wMhtU9g=";
 
 
   nativeBuildInputs = [ autoPatchelfHook pkg-config ];
