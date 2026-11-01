@@ -180,7 +180,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
 | `soundcraft` | `0.14.0` |
-| `soundcraft-bin` | `0.14.0` |
+| `soundcraft-bin` | `0.15.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
