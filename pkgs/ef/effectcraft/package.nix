@@ -14,20 +14,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "effectcraft";
-  version = "0.18.0";
+  version = "0.19.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "effectcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-5TDL98KE2j9blT8FeqMOTUznhfdJNOO+exn4LJcth58=";
+    hash = "sha256-uIiBIQCs2AWfXzTV+g3ezgl27aKpZMou4RqdZZzSEFo=";
   };
 
   postPatch = ''
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-PxW3amIo5yA2jlupIUePFTx72tdfcmXcyK0/eC79KTM=";
+  cargoHash = "sha256-QC96etdIQHOsd4ocvwwwGr/GLjbfBm8FDh/b6GsbhBQ=";
 
 
   nativeBuildInputs = [ autoPatchelfHook pkg-config ];
