@@ -147,12 +147,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
 | `ferroxide` | `0.5.0` |
-| `figcraft` | `0.12.1` |
+| `figcraft` | `0.13.1` |
 | `figcraft-bin` | `0.13.1` |
 | `filmcraft` | `0.14.0` |
-| `filmcraft-bin` | `0.14.0` |
+| `filmcraft-bin` | `0.15.0` |
 | `fogpanther` | `0.8.3` |
-| `fourget` | `unstable-2026-10-30` |
+| `fourget` | `unstable-2026-10-31` |
 | `g3m` | `3.4.3` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
