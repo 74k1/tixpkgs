@@ -6,6 +6,7 @@ root="${UPDATE_NIXPKGS_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 package_file="$root/pkgs/co/commet/package.nix"
 pubspec_lock_json="$root/pkgs/co/commet/pubspec.lock.json"
 git_hashes_json="$root/pkgs/co/commet/git-hashes.json"
+cargo_hashes_json="$root/pkgs/co/commet/cargo-output-hashes.json"
 api="https://api.github.com/repos/commetchat/commet/releases/latest"
 
 release="$(curl -fsSL "$api")"
@@ -57,6 +58,9 @@ curl -fsSL -o "$tmpdir/pubspec.lock" \
   "https://raw.githubusercontent.com/commetchat/commet/${encoded_tag}/pubspec.lock"
 yq -o=json . "$tmpdir/pubspec.lock" > "$tmpdir/pubspec.lock.json"
 
+curl -fsSL -o "$tmpdir/Cargo.lock" \
+  "https://raw.githubusercontent.com/commetchat/commet/${encoded_tag}/Cargo.lock"
+
 printf '{}\n' > "$tmpdir/git-hashes.json"
 while IFS=$'\t' read -r name url rev; do
   hash="$(nix-prefetch-git --quiet --fetch-submodules --url "$url" --rev "$rev" | jq -r '.hash')"
@@ -72,6 +76,33 @@ done < <(
     "$tmpdir/pubspec.lock.json"
 )
 
+printf '{}\n' > "$tmpdir/cargo-output-hashes.json"
+while IFS=$'\t' read -r name url rev; do
+  # No --fetch-submodules: importCargoLock fetches plain trees, so the hash
+  # would not match if submodules were included.
+  hash="$(nix-prefetch-git --quiet --url "$url" --rev "$rev" | jq -r '.hash')"
+  if [[ -z "$hash" ]]; then
+    echo "failed to prefetch cargo git dependency $name ($url @ $rev)" >&2
+    exit 1
+  fi
+  jq -S --arg name "$name" --arg hash "$hash" '. + {($name): $hash}' \
+    "$tmpdir/cargo-output-hashes.json" > "$tmpdir/cargo-output-hashes.next.json"
+  mv "$tmpdir/cargo-output-hashes.next.json" "$tmpdir/cargo-output-hashes.json"
+done < <(
+  # Cargo.lock is cargo-generated TOML, so block-wise extraction is enough.
+  # The fragment after '#' is the resolved commit, which is what we pin.
+  perl -0777 -ne '
+    while (/\[\[package\]\]\s*\n(.*?)(?=\n\[\[package\]\]|\z)/sg) {
+      my $block = $1;
+      my ($name) = $block =~ /^name = "([^"]+)"/m or next;
+      my ($version) = $block =~ /^version = "([^"]+)"/m or next;
+      my ($source) = $block =~ /^source = "([^"]+)"/m or next;
+      next unless $source =~ m{^git\+(.+?)\?[^#]*#([0-9a-f]+)$};
+      print "$name-$version\t$1\t$2\n";
+    }
+  ' "$tmpdir/Cargo.lock"
+)
+
 OLD_VERSION="$old_version" NEW_VERSION="$new_version" \
 OLD_HASH="$old_hash" NEW_HASH="$new_hash" \
 perl -0pi -e '
@@ -81,6 +112,7 @@ perl -0pi -e '
 
 cp "$tmpdir/pubspec.lock.json" "$pubspec_lock_json"
 cp "$tmpdir/git-hashes.json" "$git_hashes_json"
+cp "$tmpdir/cargo-output-hashes.json" "$cargo_hashes_json"
 
-printf '[{"attrPath":"commet","oldVersion":"%s","newVersion":"%s","files":["%s","%s","%s"]}]\n' \
-  "$old_version" "$new_version" "$package_file" "$pubspec_lock_json" "$git_hashes_json"
+printf '[{"attrPath":"commet","oldVersion":"%s","newVersion":"%s","files":["%s","%s","%s","%s"]}]\n' \
+  "$old_version" "$new_version" "$package_file" "$pubspec_lock_json" "$git_hashes_json" "$cargo_hashes_json"
