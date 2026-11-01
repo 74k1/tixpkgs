@@ -173,7 +173,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `multi-scrobbler` | `0.20.3` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `22.0.28160` |
-| `pdfcraft` | `0.15.0` |
+| `pdfcraft` | `0.16.1` |
 | `pdfcraft-bin` | `0.16.1` |
 | `photocraft` | `0.17.0` |
 | `photocraft-bin` | `0.17.0` |
