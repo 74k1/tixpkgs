@@ -12,13 +12,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "lightcraft";
-  version = "0.15.0";
+  version = "0.16.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "lightcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-oXvuQpFZZMntX1wY8Q+ZpF7TUoamosY9aDbD614JgjA=";
+    hash = "sha256-sEHMjuAANyicLAqtApxyosPuSYOxInGv7ojjiYIETWE=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
@@ -29,7 +29,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-gQNlh3QElGyWu6jnfdDHaJol5FT3FlN6ylXBZYP2z+4=";
+  cargoHash = "sha256-4XYOogbyriYjwWSwxuSWuYrlPJiGyHa5qCXBNYj2AgY=";
 
   cargoBuildFlags = [
     "-p"
