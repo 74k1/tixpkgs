@@ -157,7 +157,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
 | `gridcraft` | `0.13.0` |
-| `gridcraft-bin` | `0.13.0` |
+| `gridcraft-bin` | `0.14.2` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
