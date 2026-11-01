@@ -149,7 +149,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.13.1` |
 | `figcraft-bin` | `0.13.1` |
-| `filmcraft` | `0.14.0` |
+| `filmcraft` | `0.15.0` |
 | `filmcraft-bin` | `0.15.0` |
 | `fogpanther` | `0.8.3` |
 | `fourget` | `unstable-2026-10-31` |
