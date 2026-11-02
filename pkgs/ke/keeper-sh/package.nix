@@ -3,20 +3,19 @@
   stdenvNoCC,
   fetchFromGitHub,
   bun,
-  jq,
   nodejs_22,
   makeWrapper,
   writableTmpDirAsHomeHook,
 }:
 
 let
-  version = "2.28.4";
+  version = "2.28.8";
 
   src = fetchFromGitHub {
     owner = "ridafkih";
     repo = "keeper.sh";
     rev = "v${version}";
-    hash = "sha256-H/LjGYagdFtpw1b8FC4gzp4jj4Dre0E8u+Nes9UkYK4=";
+    hash = "sha256-Y9JyDw2tzp4IfSuz5G0Y85qPFvDefo5Ow+JPsoZWZD0=";
   };
 
   # Fixed-output derivation that runs `bun install` with network access and
@@ -67,21 +66,12 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   # `applications/web/seo` is a git submodule pointing at the private
   # keeperdotsh/seo repository, so the release archive ships it as an empty
-  # directory. The web build reads seo/marketing/*.json and rejects missing or
-  # schema-invalid files, so write schema-valid placeholders. The marketing
-  # pages then render without copy instead of failing the build. If upstream
-  # changes a schema, the build fails with the arktype summary for that file.
-  postPatch = ''
-    mkdir -p applications/web/seo/marketing
-    for surface in $(jq -r 'keys[]' ${./marketing-placeholder.json}); do
-      jq --arg surface "$surface" '.[$surface]' ${./marketing-placeholder.json} \
-        > "applications/web/seo/marketing/$surface.json"
-    done
-  '';
+  # directory. Since 2.28.8 the marketing plugin detects the empty collection
+  # and builds with its built-in fallback copy, so no placeholder files are
+  # needed.
 
   nativeBuildInputs = [
     bun
-    jq
     nodejs_22
     makeWrapper
     writableTmpDirAsHomeHook
