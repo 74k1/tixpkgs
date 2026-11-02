@@ -147,7 +147,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
 | `ferroxide` | `0.5.0` |
-| `figcraft` | `0.13.1` |
+| `figcraft` | `0.14.0` |
 | `figcraft-bin` | `0.14.0` |
 | `filmcraft` | `0.15.0` |
 | `filmcraft-bin` | `0.16.0` |
