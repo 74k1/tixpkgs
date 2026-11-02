@@ -163,7 +163,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.28.3` |
 | `lidarr` | `3.1.6.5078` |
-| `lightcraft` | `0.16.0` |
+| `lightcraft` | `0.17.0` |
 | `lightcraft-bin` | `0.17.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
@@ -174,7 +174,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `22.0.28160` |
 | `pdfcraft` | `0.16.1` |
-| `pdfcraft-bin` | `0.16.1` |
+| `pdfcraft-bin` | `0.17.0` |
 | `photocraft` | `0.18.0` |
 | `photocraft-bin` | `0.18.0` |
 | `pipemixer` | `0.5.1` |
