@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "wordcraft";
-  version = "0.13.2";
+  version = "0.14.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "wordcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Y+lVmOeuZHovomHqi1z/15v9GGxaOs6HxD8PmRzBOY4=";
+    hash = "sha256-VmwgSZMhq8Z4hzdO4kVH/yUiWvxnueOz+7Vf+xa9OMo=";
   };
 
   buildInputs = [
@@ -42,7 +42,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-nPgPlmWlzTAExqGue06uAmeanMNssPlFCzH9W41dceI=";
+  cargoHash = "sha256-C4FCTPprZsN5WQxKT1BEWip6YbjafHq3T/XCIZmPUlc=";
 
   cargoBuildFlags = [
     "-p"
