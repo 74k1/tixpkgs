@@ -19,13 +19,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "deckcraft";
-  version = "0.13.1";
+  version = "0.14.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "deckcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-i8OeXQuQcQILDZadwRVFZz9W3fhg0NbGxx8lYaq0bk0=";
+    hash = "sha256-XA9m6mQerXw6pb82qS3cymLt82W9c13alILYBB8XYaw=";
   };
 
   buildInputs = [
@@ -48,7 +48,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-VibhZc/7guZBodb6Lv2uEG6HNo7mbL2sdjNo6GxozPM=";
+  cargoHash = "sha256-wl14uO9dmEGFeR+XNBoGdUYaZycPB5oQ25ylriQkHRM=";
 
   cargoBuildFlags = [
     "-p"
