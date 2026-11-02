@@ -135,7 +135,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `brscan-skey` | `0.3.6-0` |
 | `cadcraft` | `0.16.0` |
 | `cadcraft-bin` | `0.16.0` |
-| `commet` | `0.5.0` |
+| `commet` | `0.5.1` |
 | `deckcraft` | `0.14.1` |
 | `deckcraft-bin` | `0.14.1` |
 | `degoog` | `1.1.0` |
