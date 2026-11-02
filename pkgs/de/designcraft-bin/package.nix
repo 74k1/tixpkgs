@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "designcraft-bin";
-  version = "0.15.2";
+  version = "0.16.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/designcraft/releases/download/v${finalAttrs.version}/designcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-At2P9mO+YN7tQWy/kIH/Ie9j9hklb2jwwUfs96p5ogI=";
+    hash = "sha256-ymMYmoDE0nkScvB4C3L6uQHAYHx3QOZCpfbCsIEoyyU=";
   };
 
   nativeBuildInputs = [
