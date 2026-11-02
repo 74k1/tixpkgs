@@ -137,7 +137,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `cadcraft-bin` | `0.16.0` |
 | `commet` | `0.5.0` |
 | `deckcraft` | `0.13.1` |
-| `deckcraft-bin` | `0.13.1` |
+| `deckcraft-bin` | `0.14.1` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.15.2` |
