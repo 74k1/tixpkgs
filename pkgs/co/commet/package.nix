@@ -23,6 +23,8 @@
   libepoxy,
   libgbm,
   libpulseaudio,
+  libxcb,
+  libxkbcommon,
   mpv-unwrapped,
   libX11,
   libXcomposite,
@@ -36,6 +38,7 @@
   pipewire,
   pkg-config,
   sqlite,
+  wayland,
   webkitgtk_4_1,
   xdg-utils,
   zlib,
@@ -43,13 +46,13 @@
 
 let
   libwebrtcZip = fetchurl {
-    url = "https://github.com/flutter-webrtc/flutter-webrtc/releases/download/v1.4.0/libwebrtc.zip";
-    hash = "sha256-K8rEcKw1BahrF20z+HCQBiZVweLHjqWGlMQ64G0xUzw=";
+    url = "https://github.com/webrtc-sdk/libwebrtc/releases/download/libwebrtc.m150.7871.02/libwebrtc-linux-x64-release.zip";
+    hash = "sha256-QymFglKd1J4d2QOk/4JXMik6lxQ6PSdqrQjgGEPuIsw=";
   };
 
   libwebrtc = fetchzip {
-    url = "https://github.com/flutter-webrtc/flutter-webrtc/releases/download/v1.4.0/libwebrtc.zip";
-    hash = "sha256-OvqUF6RuytDorJE+C58EnIxPHfcphs8iPiPjt7SDrU0=";
+    url = "https://github.com/webrtc-sdk/libwebrtc/releases/download/libwebrtc.m150.7871.02/libwebrtc-linux-x64-release.zip";
+    hash = "sha256-0C+nRrTOlmERYMivgG/P/rQYwcr1Wc5c1gm+meHjpTc=";
   };
 
   runtimeLibraries = [
@@ -69,6 +72,10 @@ let
     libepoxy
     libgbm
     libpulseaudio
+    # overlay pulls smithay-client-toolkit and winit: sctk links xkbcommon,
+    # winit dlopens libwayland-client and libxcb at runtime.
+    libxcb
+    libxkbcommon
     mpv-unwrapped
     libX11
     libXcomposite
@@ -82,19 +89,20 @@ let
     pipewire
     sqlite
     stdenv.cc.cc.lib
+    wayland
     webkitgtk_4_1
     zlib
   ];
 in
 flutter341.buildFlutterApplication (finalAttrs: {
   pname = "commet";
-  version = "0.5.0";
+  version = "0.5.1";
 
   src = fetchFromGitHub {
     owner = "commetchat";
     repo = "commet";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-B9vs8xdtFR7+VmE3v5YH6tPIdF2mEGP8ef33ZWx+zL0=";
+    hash = "sha256-WBAzN/7GsPoILwCLmjwSiuE19vOX9XcJ+fdw/uq2bgw=";
   };
 
   sourceRoot = "source";
@@ -166,9 +174,13 @@ flutter341.buildFlutterApplication (finalAttrs: {
       inherit (src) passthru;
 
       postPatch = ''
-        substituteInPlace third_party/CMakeLists.txt \
-          --replace-fail 'set(ZIPFILE "''${CMAKE_CURRENT_LIST_DIR}/downloads/libwebrtc.zip")' \
-                         'set(ZIPFILE "${libwebrtcZip}")'
+        # third_party/CMakeLists.txt reads binary_version and download_url from
+        # libwebrtc_version.ini and looks for the archive at
+        # downloads/libwebrtc-linux-x64-release.zip. It skips both the download
+        # and the extraction when that archive and third_party/libwebrtc exist.
+        # The asset name encodes linux-x64, which matches meta.platforms.
+        mkdir -p third_party/downloads
+        ln -s ${libwebrtcZip} third_party/downloads/libwebrtc-linux-x64-release.zip
         ln -s ${libwebrtc} third_party/libwebrtc
       '';
 
@@ -190,11 +202,17 @@ flutter341.buildFlutterApplication (finalAttrs: {
         inherit version src;
 
         # workspace root: Cargo.toml/Cargo.lock live at the repo root
-        cargoLock.lockFile = src + "/Cargo.lock";
+        cargoLock = {
+          lockFile = src + "/Cargo.lock";
+          outputHashes = lib.importJSON ./cargo-output-hashes.json;
+        };
 
         nativeBuildInputs = [ pkg-config ];
         buildInputs = [
           gtk3
+          # smithay-client-toolkit's build script probes xkbcommon with pkg-config.
+          libxkbcommon
+          wayland
           webkitgtk_4_1
         ];
 
