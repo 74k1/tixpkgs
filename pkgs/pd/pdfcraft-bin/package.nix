@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "pdfcraft-bin";
-  version = "0.16.1";
+  version = "0.17.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/pdfcraft/releases/download/v${finalAttrs.version}/pdfcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-+3H5s2YhTIsNr+Aa+6gNUoDVVKdoOrd1b2AaFwZogjs=";
+    hash = "sha256-VQDsVpPy4uxzzcbit8K0qolxScCy10ZaTOQOZltB20Y=";
   };
 
   nativeBuildInputs = [
