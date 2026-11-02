@@ -1,16 +1,16 @@
 diff --git a/src/adapters/g3mtool_adapter.py b/src/adapters/g3mtool_adapter.py
-index 6359911..5ad42dc 100644
+index 859f9af..03a808a 100644
 --- a/src/adapters/g3mtool_adapter.py
 +++ b/src/adapters/g3mtool_adapter.py
-@@ -5,6 +5,7 @@ import logging
+@@ -7,6 +7,7 @@ import logging
  import os
  import platform
  import re
 +import shutil
  import subprocess
  import threading
- from collections.abc import Callable
-@@ -59,7 +60,7 @@ class G3MToolManager:
+ import time
+@@ -89,7 +90,7 @@ class G3MToolManager:
  
      def _get_configured_xdelta_path(self) -> str | None:
          path = str(self._get_local_config().get("custom_xdelta_path", "") or "").strip()
@@ -19,7 +19,7 @@ index 6359911..5ad42dc 100644
  
      def _find_executable(self) -> str | None:
          custom_path = self._get_configured_g3mtool_path()
-@@ -75,7 +76,7 @@ class G3MToolManager:
+@@ -105,7 +106,7 @@ class G3MToolManager:
          exe_name = "G3MTool.exe" if self.platform == "windows" else "G3MTool"
          exe_path = os.path.join(base_path, exe_name)
          if os.path.isfile(exe_path):
@@ -28,7 +28,7 @@ index 6359911..5ad42dc 100644
                  try:
                      os.chmod(exe_path, 0o700)
                  except Exception as e:
-@@ -87,6 +88,13 @@ class G3MToolManager:
+@@ -117,6 +118,13 @@ class G3MToolManager:
                  self._logged_executable_paths.add(exe_path)
              self._cached_executable_paths[self.platform] = exe_path
              return exe_path
@@ -43,29 +43,20 @@ index 6359911..5ad42dc 100644
          self._cached_executable_paths[self.platform] = None
          return None
 diff --git a/src/app/startup.py b/src/app/startup.py
-index 19589a7..35fdf3f 100644
+index 84577d9..08da04e 100644
 --- a/src/app/startup.py
 +++ b/src/app/startup.py
-@@ -209,10 +209,14 @@ def register_url_protocol():
+@@ -210,6 +210,9 @@ def install_excepthook(show_message_callback=None):
+ def _protocol_executable() -> str:
      if getattr(sys, "frozen", False):
-         executable_path = f'"{sys.executable}"'
-     else:
--        main_script_path = os.path.abspath(
--            os.path.join(get_launcher_dir(), "..", "src", "main.py")
--        )
--        executable_path = f'"{sys.executable}" "{main_script_path}"'
-+        launcher_path = shutil.which("g3m")
-+        if launcher_path:
-+            executable_path = f'"{launcher_path}"'
-+        else:
-+            main_script_path = os.path.abspath(
-+                os.path.join(get_launcher_dir(), "..", "src", "main.py")
-+            )
-+            executable_path = f'"{sys.executable}" "{main_script_path}"'
-     system = platform.system()
-     try:
-         if system == "Windows":
-@@ -244,15 +248,14 @@ def register_url_protocol():
+         return f'"{sys.executable}"'
++    launcher_path = shutil.which("g3m")
++    if launcher_path:
++        return f'"{launcher_path}"'
+     # get_launcher_dir() is src/utils when running from source, so main.py sits one level up
+     main_script_path = os.path.abspath(os.path.join(get_launcher_dir(), "..", "main.py"))
+     return f'"{sys.executable}" "{main_script_path}"'
+@@ -248,15 +251,14 @@ def register_url_protocol():
              with open(desktop_file_path, "w", encoding="utf-8") as f:
                  f.write(desktop_file_content)
              if shutil.which("xdg-mime"):
@@ -90,7 +81,7 @@ index 19589a7..35fdf3f 100644
          logger.warning(f"Failed to register URL protocol handler: {e}", exc_info=True)
  
 diff --git a/src/ui/dialogs/downloads_dialog.py b/src/ui/dialogs/downloads_dialog.py
-index 61ccc87..55db318 100644
+index 2a2967c..ee37d92 100644
 --- a/src/ui/dialogs/downloads_dialog.py
 +++ b/src/ui/dialogs/downloads_dialog.py
 @@ -1,5 +1,6 @@
@@ -100,7 +91,7 @@ index 61ccc87..55db318 100644
  import logging
  import os
  from typing import cast
-@@ -297,9 +298,14 @@ class DownloadsDialog(DynamicDialog):
+@@ -299,9 +300,14 @@ class DownloadsDialog(DynamicDialog):
  
      def closeEvent(self, a0):
          event = cast(QCloseEvent, a0)
