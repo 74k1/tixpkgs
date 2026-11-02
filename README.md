@@ -176,7 +176,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pdfcraft` | `0.17.0` |
 | `pdfcraft-bin` | `0.17.0` |
 | `photocraft` | `0.18.0` |
-| `photocraft-bin` | `0.18.0` |
+| `photocraft-bin` | `0.19.0` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
 | `soundcraft` | `0.15.0` |
