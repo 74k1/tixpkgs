@@ -136,12 +136,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `cadcraft` | `0.16.0` |
 | `cadcraft-bin` | `0.16.0` |
 | `commet` | `0.5.0` |
-| `deckcraft` | `0.13.1` |
+| `deckcraft` | `0.14.1` |
 | `deckcraft-bin` | `0.14.1` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.15.2` |
-| `designcraft-bin` | `0.15.2` |
+| `designcraft-bin` | `0.16.0` |
 | `effectcraft` | `0.19.0` |
 | `effectcraft-bin` | `0.19.0` |
 | `enclosed` | `1.16.1` |
