@@ -12,13 +12,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "pdfcraft";
-  version = "0.16.1";
+  version = "0.17.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "pdfcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-/OIb4TcNQ92z2PO7kPJxHkPny6kXYz8kjVT+JDzYnMo=";
+    hash = "sha256-ngJKF5nYzEgxIiQOFRs+JzD3EpFaQJEIh9i5lmmQ98U=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
@@ -29,7 +29,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-3fRYRG00cvmGrveRLhu+e+e0F3LoWUJNPwEu380HqXE=";
+  cargoHash = "sha256-feZEfaMopHBWPe3CJjqvgL8iORoXUuioFMiI6OSjOyE=";
 
   prePatch = ''
     substituteInPlace "$cargoDepsCopy/source-registry-0/rten-gemm-0.26.0/src/i8dot.rs" \
