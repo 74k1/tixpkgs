@@ -133,7 +133,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `blink-qt` | `7.2.4` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.6-0` |
-| `cadcraft` | `0.16.0` |
+| `cadcraft` | `0.17.0` |
 | `cadcraft-bin` | `0.17.0` |
 | `commet` | `0.5.1` |
 | `craft-anything` | `0.3.0` |
