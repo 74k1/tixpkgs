@@ -138,12 +138,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `commet` | `0.5.1` |
 | `craft-anything` | `0.3.0` |
 | `craft-anything-bin` | `0.3.0` |
-| `deckcraft` | `0.14.1` |
+| `deckcraft` | `0.15.0` |
 | `deckcraft-bin` | `0.15.0` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.16.0` |
-| `designcraft-bin` | `0.16.0` |
+| `designcraft-bin` | `0.17.0` |
 | `effectcraft` | `0.20.0` |
 | `effectcraft-bin` | `0.20.0` |
 | `enclosed` | `1.16.1` |
