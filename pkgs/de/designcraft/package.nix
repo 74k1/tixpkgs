@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "designcraft";
-  version = "0.16.0";
+  version = "0.17.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "designcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-zp5Xr4ppzN9M6pzHW6eb7shr6cGLGxzYyIClwPWptIU=";
+    hash = "sha256-7yyNVvZFO4F1SmDhpFytxM3BoPNA4uOLY0ldP5Ic2mE=";
   };
 
   buildInputs = [
@@ -42,7 +42,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-in/+raVrEkTSN3SUydOhTLVse7F+NkU07G395frXsw0=";
+  cargoHash = "sha256-Ur5EhZEE0VTQsXKgeWqqXMKF70cl4/jkPcFlsa28APE=";
 
   cargoBuildFlags = [
     "-p"
