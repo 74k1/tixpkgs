@@ -166,7 +166,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `keeper-sh` | `2.28.11` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.17.0` |
-| `lightcraft-bin` | `0.17.0` |
+| `lightcraft-bin` | `0.18.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
 | `moonlight-qt-fork` | `6.21.46` |
