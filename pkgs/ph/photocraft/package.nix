@@ -13,13 +13,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "photocraft";
-  version = "0.19.0";
+  version = "0.20.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "photocraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-tJdMVllEh0iq2DDtlhBTlQt/5sAZg5ImVgJ71LwMT9E=";
+    hash = "sha256-wThSwug4qWWz7RkhZ8s1ZF9pKFZVKPhnhUw0w5Xurwk=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
@@ -30,7 +30,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-/IBYlcRQRfr9mHfWiRt1q/5YUiTbd3dAYyC6Gd3+3Us=";
+  cargoHash = "sha256-FiQ4zYcjGK5yhgVjb7zH2gBbByPrcz/NuwtwjL1nPD0=";
 
   cargoBuildFlags = [
     "-p"
