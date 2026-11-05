@@ -144,7 +144,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.17.0` |
-| `designcraft-bin` | `0.17.0` |
+| `designcraft-bin` | `0.17.1` |
 | `effectcraft` | `0.21.0` |
 | `effectcraft-bin` | `0.21.0` |
 | `enclosed` | `1.16.1` |
@@ -156,7 +156,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `filmcraft-bin` | `0.17.0` |
 | `fogpanther` | `0.8.3` |
 | `fourget` | `unstable-2026-11-01` |
-| `g3m` | `3.4.4` |
+| `g3m` | `3.4.5` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
 | `gridcraft` | `0.16.0` |
