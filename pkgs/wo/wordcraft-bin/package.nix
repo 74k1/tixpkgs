@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "wordcraft-bin";
-  version = "0.15.0";
+  version = "0.15.1";
 
   src = fetchurl {
     url = "https://github.com/storytold/wordcraft/releases/download/v${finalAttrs.version}/wordcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-m5fUik53WhCWLyT2/OXoBIuOWKtFMVA7bwGutjTrKfA=";
+    hash = "sha256-fDQJgqt7g3Y7JTQvxAQycy626uylvkrVNJaCVDZynY8=";
   };
 
   nativeBuildInputs = [
