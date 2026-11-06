@@ -150,10 +150,10 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
 | `ferroxide` | `0.5.0` |
-| `figcraft` | `0.15.0` |
+| `figcraft` | `0.15.1` |
 | `figcraft-bin` | `0.15.1` |
 | `filmcraft` | `0.17.0` |
-| `filmcraft-bin` | `0.17.0` |
+| `filmcraft-bin` | `0.17.1` |
 | `fogpanther` | `0.8.3` |
 | `fourget` | `unstable-2026-11-01` |
 | `g3m` | `3.4.5` |
