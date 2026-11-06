@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "figcraft";
-  version = "0.15.0";
+  version = "0.15.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "figcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-E3DdHHgJVdebbXqibZcrhytT0aDUUc+a+kpTUZocBK0=";
+    hash = "sha256-nkDYjqEixE1zRJj/AiqVNIHQC5XnzqTf5hZREBX1UFc=";
   };
 
   buildInputs = [
@@ -42,7 +42,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_kittest = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-c33mZKKmttDf9jIhmm43bRguGnwQyXhhjg+tC1Ibk4o=";
+  cargoHash = "sha256-JJiPU/L2My3aGpw00NlGwmSg4CHTpr4QiA0XvbdK0Ps=";
 
   cargoBuildFlags = [
     "-p"
