@@ -152,7 +152,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.15.1` |
 | `figcraft-bin` | `0.15.1` |
-| `filmcraft` | `0.17.0` |
+| `filmcraft` | `0.17.1` |
 | `filmcraft-bin` | `0.17.1` |
 | `fogpanther` | `0.8.3` |
 | `fourget` | `unstable-2026-11-01` |
@@ -164,7 +164,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
-| `keeper-sh` | `2.28.11` |
+| `keeper-sh` | `2.29.2` |
 | `lidarr` | `3.1.6.5078` |
 | `lightcraft` | `0.18.0` |
 | `lightcraft-bin` | `0.18.0` |
