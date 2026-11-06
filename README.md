@@ -140,13 +140,13 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `craft-anything` | `0.3.0` |
 | `craft-anything-bin` | `0.5.0` |
 | `deckcraft` | `0.15.1` |
-| `deckcraft-bin` | `0.15.1` |
+| `deckcraft-bin` | `0.16.0` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.17.2` |
-| `designcraft-bin` | `0.17.2` |
+| `designcraft-bin` | `0.18.0` |
 | `effectcraft` | `0.21.1` |
-| `effectcraft-bin` | `0.21.1` |
+| `effectcraft-bin` | `0.22.0` |
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
 | `ferroxide` | `0.5.0` |
