@@ -133,14 +133,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `blink-qt` | `7.2.4` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.6-0` |
-| `cadcraft` | `0.17.0` |
+| `cadcraft` | `0.17.1` |
 | `cadcraft-bin` | `0.17.1` |
 | `cli-microsoft365` | `12.0.0` |
 | `commet` | `0.5.1` |
 | `craft-anything` | `0.3.0` |
 | `craft-anything-bin` | `0.3.0` |
 | `deckcraft` | `0.15.0` |
-| `deckcraft-bin` | `0.15.0` |
+| `deckcraft-bin` | `0.15.1` |
 | `degoog` | `1.1.0` |
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.17.1` |
