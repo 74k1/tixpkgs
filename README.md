@@ -145,7 +145,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.17.2` |
 | `designcraft-bin` | `0.17.2` |
-| `effectcraft` | `0.21.0` |
+| `effectcraft` | `0.21.1` |
 | `effectcraft-bin` | `0.21.1` |
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
