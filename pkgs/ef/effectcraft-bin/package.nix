@@ -18,11 +18,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "effectcraft-bin";
-  version = "0.21.1";
+  version = "0.22.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/effectcraft/releases/download/v${finalAttrs.version}/effectcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-Lehd/0VSlgTYOlOSO/8OOgfuzSlpBAnz9KfXkPOwmfA=";
+    hash = "sha256-bvb+vKz4koIQQAlgwshDrVHhJbJNobBpGe3UiSOPPA8=";
   };
 
   nativeBuildInputs = [
