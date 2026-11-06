@@ -178,7 +178,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `parallels-ras-client` | `22.0.28160` |
 | `pdfcraft` | `0.18.2` |
 | `pdfcraft-bin` | `0.18.2` |
-| `photocraft` | `0.20.1` |
+| `photocraft` | `0.20.2` |
 | `photocraft-bin` | `0.20.2` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.1` |
