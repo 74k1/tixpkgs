@@ -188,7 +188,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
-| `vectorcraft` | `0.21.0` |
+| `vectorcraft` | `0.21.1` |
 | `vectorcraft-bin` | `0.21.1` |
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.15.1` |
