@@ -188,12 +188,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `4.3.3` |
-| `vectorcraft` | `0.21.1` |
+| `vectorcraft` | `0.22.0` |
 | `vectorcraft-bin` | `0.22.0` |
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.15.1` |
 | `wordcraft-bin` | `0.16.0` |
-| `yopass` | `16.0.0` |
+| `yopass` | `16.0.1` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 
