@@ -19,20 +19,20 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "soundcraft";
-  version = "0.17.1";
+  version = "0.18.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "soundcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-i8gkY6eZDhoia3KMJAiZrhW0Kfmta2TI4A3VdWV7vUY=";
+    hash = "sha256-KxTP6R6jrGVX9SkMEepccThk3FKIhn+V7e01kXLIIZQ=";
   };
 
   postPatch = ''
     sed -i '/^egui_demo_lib = /d; /^egui_extras = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-fPf8auSs5fW4Nhclk97qzVSaYC22m/Xc1j0gF7p/p+0=";
+  cargoHash = "sha256-ExKqLiUi8EeqJyvftaNwpdx/oYuQ/nnVqefXBC9jVCM=";
 
   nativeBuildInputs = [
     autoPatchelfHook
