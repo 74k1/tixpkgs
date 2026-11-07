@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "vectorcraft-bin";
-  version = "0.21.1";
+  version = "0.22.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/vectorcraft/releases/download/v${finalAttrs.version}/vectorcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-YnLqsGxyLSrzH6sbqW72Mx2cJVGxWE2PWv9gibzX1WI=";
+    hash = "sha256-CyZAgFZ2Hg00USrQrAcUZNohNYgH93pSHWfvTeNQfBU=";
   };
 
   nativeBuildInputs = [
