@@ -1,0 +1,75 @@
+name: Rebuild on comment
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  actions: write
+  issues: write
+  pull-requests: read
+
+jobs:
+  rebuild:
+    if: >
+      github.event.issue.pull_request &&
+      (github.event.comment.body == '@74k2 rebuild' ||
+       github.event.comment.body == '@74k2 rebuild failed')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rerun PR checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          COMMAND: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+
+          permission="$(gh api "repos/$GH_REPO/collaborators/$COMMENT_AUTHOR/permission" --jq '.permission')"
+          case "$permission" in
+            admin|maintain|write) ;;
+            *)
+              echo "Comment author does not have write access; ignoring command."
+              exit 0
+              ;;
+          esac
+
+          pr="$(gh api "repos/$GH_REPO/pulls/$PR_NUMBER")"
+          if [ "$(jq -r '.state' <<< "$pr")" != open ]; then
+            echo "Pull request is not open; ignoring command."
+            exit 0
+          fi
+          head_sha="$(jq -r '.head.sha' <<< "$pr")"
+          head_repository="$(jq -r '.head.repo.full_name' <<< "$pr")"
+          head_branch="$(jq -r '.head.ref' <<< "$pr")"
+
+          run_id="$(gh api --method GET --paginate \
+            "repos/$GH_REPO/actions/workflows/check-pr.yml/runs" \
+            -f event=pull_request -f "head_sha=$head_sha" -f per_page=100 \
+            | jq -sr --arg repository "$head_repository" --arg branch "$head_branch" '
+                [.[].workflow_runs[]
+                  | select(.head_repository.full_name == $repository and .head_branch == $branch)]
+                | sort_by(.created_at) | last | .id // empty
+              ')"
+
+          if [ -z "$run_id" ]; then
+            gh api --method POST "repos/$GH_REPO/issues/$PR_NUMBER/comments" \
+              -f body="No Check PR run found for the current head ($head_sha)."
+            exit 1
+          fi
+
+          arguments=()
+          if [ "$COMMAND" = '@74k2 rebuild failed' ]; then
+            arguments+=(--failed)
+          fi
+
+          if gh run rerun "$run_id" "${arguments[@]}"; then
+            gh api --method POST "repos/$GH_REPO/issues/$PR_NUMBER/comments" \
+              -f body="Re-running Check PR for $head_sha: https://github.com/$GH_REPO/actions/runs/$run_id"
+          else
+            gh api --method POST "repos/$GH_REPO/issues/$PR_NUMBER/comments" \
+              -f body="Could not re-run Check PR for $head_sha: https://github.com/$GH_REPO/actions/runs/$run_id. Check that the run has completed and contains failed jobs when using \`rebuild failed\`."
+            exit 1
+          fi

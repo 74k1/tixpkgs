@@ -79,10 +79,12 @@ jobs:
             exit 0
           fi
 
+          log_directory="$(mktemp -d)"
+          trap 'rm -rf "$log_directory"' EXIT
           failed=()
           for pkg in "${packages[@]}"; do
             echo "::group::package ${pkg}"
-            if nix build --print-build-logs ".#${pkg}"; then
+            if nix build --print-build-logs ".#${pkg}" 2>&1 | tee "${log_directory}/${pkg}.log"; then
               echo "Built package ${pkg}"
             else
               failed+=("${pkg}")
@@ -91,6 +93,25 @@ jobs:
           done
 
           if [ "${#failed[@]}" -ne 0 ]; then
+            {
+              echo '## Failed packages'
+              echo
+              if [ "${#failed[@]}" -le 5 ]; then
+                for pkg in "${failed[@]}"; do
+                  printf '### `%s`\n\n' "$pkg"
+                  echo '````text'
+                  tail -n 30 "${log_directory}/${pkg}.log"
+                  echo '````'
+                  echo
+                done
+              else
+                for pkg in "${failed[@]}"; do
+                  printf -- '- `%s`\n' "$pkg"
+                done
+                echo
+                echo 'More than five packages failed. See the build logs for details.'
+              fi
+            } >> "$GITHUB_STEP_SUMMARY"
             printf 'Failed packages: %s\n' "${failed[*]}" >&2
             exit 1
           fi
