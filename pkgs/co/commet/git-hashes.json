@@ -9,9 +9,8 @@
   "flutter_local_notifications_linux": "sha256-AgvvFoJgos/gsTwcLGX/CxbHauWiH3OHksqtF0Dauuw=",
   "launcher_entry": "sha256-T/zQRvY6jOKroMrhVwBtsoSm2xCFjOd5jsJC0PA4cpc=",
   "markdown": "sha256-2rEMNJM9Vy7LrFLt30/Z3pyqERTYJei9D3mgOAAvVPg=",
-  "matrix": "sha256-PB7xjulxmV2jE0WGVG116T50BrT3G5LsdLreR1cJTPI=",
-  "matrix_dart_sdk_drift_db": "sha256-5cO5C2yL1ZVgQvByRoOvhtfb+Z8aTsnRK4gLMorsH0Y=",
-  "receive_intent": "sha256-wGIOZRH4O3a44I8zG5Q1hCwn4SMuTWB7i9wtGSLZWeQ=",
+  "matrix": "sha256-YEtP8n557pm0nNv3zHXIjLJCUG21PA8U7uPPpzxm0YY=",
+  "matrix_dart_sdk_drift_db": "sha256-TiBswdWhJRPN3SnQKnzhuzPga+t9AMJajSOd7j4XU64=",
   "signal_sticker_api": "sha256-L00iG1Qf0x0S3RvUfHle0XOINnp2fdAH46hwu8WREeY=",
   "starfield": "sha256-ebVRyVkyLfHCC6EBmx5evXL1U71S3tgCMo1yLWlIcw4="
 }

@@ -4,9 +4,10 @@
   fetchFromGitHub,
   fetchurl,
   fetchzip,
-  flutter341,
+  flutter347,
   rustPlatform,
   writeText,
+  writeScript,
   alsa-lib,
   atk,
   cairo,
@@ -38,6 +39,7 @@
   pipewire,
   pkg-config,
   sqlite,
+  sqlcipher,
   wayland,
   webkitgtk_4_1,
   xdg-utils,
@@ -46,13 +48,13 @@
 
 let
   libwebrtcZip = fetchurl {
-    url = "https://github.com/webrtc-sdk/libwebrtc/releases/download/libwebrtc.m150.7871.02/libwebrtc-linux-x64-release.zip";
-    hash = "sha256-QymFglKd1J4d2QOk/4JXMik6lxQ6PSdqrQjgGEPuIsw=";
+    url = "https://github.com/webrtc-sdk/libwebrtc/releases/download/libwebrtc.m150.7871.07/libwebrtc-linux-x64-release.zip";
+    hash = "sha256-7zgFJs+WFoSLwLl7JJkMvyrYUcIJ1dzpPMPrudN4n7w=";
   };
 
   libwebrtc = fetchzip {
-    url = "https://github.com/webrtc-sdk/libwebrtc/releases/download/libwebrtc.m150.7871.02/libwebrtc-linux-x64-release.zip";
-    hash = "sha256-0C+nRrTOlmERYMivgG/P/rQYwcr1Wc5c1gm+meHjpTc=";
+    url = "https://github.com/webrtc-sdk/libwebrtc/releases/download/libwebrtc.m150.7871.07/libwebrtc-linux-x64-release.zip";
+    hash = "sha256-vUyg8YDjNlrcuODXRfhJ2jK+syRfScbz7QLI60/Vzas=";
   };
 
   runtimeLibraries = [
@@ -94,21 +96,49 @@ let
     zlib
   ];
 in
-flutter341.buildFlutterApplication (finalAttrs: {
+flutter347.buildFlutterApplication (finalAttrs: {
   pname = "commet";
-  version = "0.5.1";
+  version = "0.5.2";
 
   src = fetchFromGitHub {
     owner = "commetchat";
     repo = "commet";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-WBAzN/7GsPoILwCLmjwSiuE19vOX9XcJ+fdw/uq2bgw=";
+    hash = "sha256-uJ9qZpGL+vNME0wcw96ai50TFzanBISTMYwpIFnNwb0=";
   };
 
   sourceRoot = "source";
 
   pubspecLock = lib.importJSON ./pubspec.lock.json;
   gitHashes = lib.importJSON ./git-hashes.json;
+
+  # The nixpkgs sqlite3 builder does not yet support pub sqlite3 3.8.0.
+  customSourceBuilders.sqlite3 =
+    { version, src, ... }:
+    stdenv.mkDerivation {
+      pname = "sqlite3";
+      inherit version src;
+      inherit (src) passthru;
+
+      setupHook = writeScript "sqlite3-setup-hook" ''
+        sqliteFixupHook() {
+          runtimeDependencies+=('${lib.getLib sqlite}' '${lib.getLib sqlcipher}')
+        }
+        preFixupHooks+=(sqliteFixupHook)
+      '';
+
+      postPatch = ''
+        substituteInPlace lib/src/hook/compile/description.dart \
+          --replace-fail "return fromGitHub(LibraryType.sqlite3);" "return LookupSystem('sqlite3');" \
+          --replace-fail "return fromGitHub(LibraryType.sqlcipher);" "return LookupSystem('sqlcipher');"
+      '';
+
+      installPhase = ''
+        runHook preInstall
+        cp --recursive . "$out"
+        runHook postInstall
+      '';
+    };
 
   customSourceBuilders.flutter_vodozemac =
     { version, src, ... }:
@@ -118,7 +148,7 @@ flutter341.buildFlutterApplication (finalAttrs: {
         inherit version src;
 
         sourceRoot = "${src.name}/rust";
-        cargoHash = "sha256-eKKrcroV2yl/FV2WmgZWFPO5MPAGz0xCvpr0fgIuGZ4=";
+        cargoHash = "sha256-FItk47LyzSkII1o7mn+ojLDctolfi5/X0el+/8tmO60=";
 
         passthru.libraryPath = "lib/libvodozemac_bindings_dart.so";
       };
