@@ -11,13 +11,13 @@
   yarnConfigHook,
 }:
 let
-  version = "16.0.1";
+  version = "16.1.0";
 
   src = fetchFromGitHub {
     owner = "jhaals";
     repo = "yopass";
     rev = version;
-    hash = "sha256-wnVoEOfx2OKkkm3FAZEIntt2xq0Kqi4RhCjLjeeHsFM=";
+    hash = "sha256-5FZUpdM9bf37vZ9TjtQ+VKq2L7JF9xF01Nv+J2rOYtM=";
   };
 
   website = stdenvNoCC.mkDerivation (finalAttrs: {
@@ -28,7 +28,7 @@ let
 
     yarnOfflineCache = fetchYarnDeps {
       yarnLock = "${finalAttrs.src}/yarn.lock";
-      hash = "sha256-pu/XLl7xgpVPWTqPB6Fkr6GZhbtQZjCQ1xccCgFmIRo=";
+      hash = "sha256-e3QdvLQra0etse1Upu2ve2UkSV3Cevu/k4hA9l6zJmw=";
     };
 
     nativeBuildInputs = [
@@ -50,7 +50,7 @@ buildGo127Module (finalAttrs: {
   inherit version src;
   pname = "yopass";
 
-  vendorHash = "sha256-FwKL2yQ62wZnDouQv3xt4cRi4rf+42SMSzXbm/T52+k=";
+  vendorHash = "sha256-Z2sz4UKR7IXueJFkUVhBsXjWLeXzsSsccSBOyhlVUJ8=";
 
   # Upstream ships a go.work since 14.10; vendor the module, not the workspace.
   env.GOWORK = "off";
