@@ -179,7 +179,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pdfcraft` | `0.20.0` |
 | `pdfcraft-bin` | `0.20.0` |
 | `photocraft` | `0.21.0` |
-| `photocraft-bin` | `0.21.0` |
+| `photocraft-bin` | `0.22.0` |
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.2` |
 | `server-mono` | `0.1.0` |
