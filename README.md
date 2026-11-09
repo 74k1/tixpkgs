@@ -133,7 +133,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `blink-qt` | `7.2.6` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.6-0` |
-| `cadcraft` | `0.17.1` |
+| `cadcraft` | `0.18.0` |
 | `cadcraft-bin` | `0.18.0` |
 | `cli-microsoft365` | `12.0.0` |
 | `commet` | `0.5.1` |
@@ -143,9 +143,9 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `deckcraft-bin` | `0.16.0` |
 | `degoog` | `1.1.1` |
 | `degoog-mcp` | `0.4.1` |
-| `designcraft` | `0.17.2` |
+| `designcraft` | `0.18.0` |
 | `designcraft-bin` | `0.18.0` |
-| `effectcraft` | `0.21.1` |
+| `effectcraft` | `0.22.0` |
 | `effectcraft-bin` | `0.22.0` |
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
@@ -166,7 +166,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.29.3` |
 | `lidarr` | `3.2.0.5144` |
-| `lightcraft` | `0.18.1` |
+| `lightcraft` | `0.19.0` |
 | `lightcraft-bin` | `0.19.0` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
