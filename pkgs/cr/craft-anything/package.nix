@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "craft-anything";
-  version = "0.3.0";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "craft-anything";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-wHQHqEpRW+eypP0y+rafAz8CBi/ei8lka8st5JxpqL4=";
+    hash = "sha256-4SpbjOMX40TC5Vq/HDjOuNAzfW97AoZ33zHJzxBHkVQ=";
   };
 
   buildInputs = [
@@ -53,15 +53,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
     substituteInPlace crates/engines/src/install.rs \
       --replace-fail 'Install it by hand and set its path in Settings → Engines.' \
       'Install it with your package manager and set its path in Settings → Engines. On NixOS, install it with nix shell nixpkgs#<package>.'
-    substituteInPlace crates/engine/src/lib.rs \
-      --replace-fail 'Install {} from Settings → Engines.' \
-      'Install {} from Settings → Engines, or put it on your PATH.'
+    substituteInPlace crates/engines/src/lib.rs \
+      --replace-fail 'Install {name} from Settings → Engines.' \
+      'Install {name} from Settings → Engines, or put it on your PATH.'
     substituteInPlace crates/engines/src/table.rs \
       --replace-fail 'Set up Ghidra from Settings → Engines (Deep mode); it brings its own Java.' \
       'Set up Ghidra from Settings → Engines (Deep mode); it brings its own Java. On NixOS, use the nixpkgs ghidra and JDK instead.'
   '';
 
-  cargoHash = "sha256-KcO+GSt9XlmrPbUrO4uF9TXj6BvgFF8XrZfI3eiyibk=";
+  cargoHash = "sha256-VC2ANtZRISPetfvAQei4/OF6tNop/rSEYK59iogSlDQ=";
 
   # The workspace also holds the wasm browser app and the CLI; build only the
   # desktop app.
