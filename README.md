@@ -191,7 +191,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `vectorcraft` | `0.23.0` |
 | `vectorcraft-bin` | `0.23.0` |
 | `whowatch` | `1.8.6` |
-| `wordcraft` | `0.15.2` |
+| `wordcraft` | `0.17.0` |
 | `wordcraft-bin` | `0.17.0` |
 | `yopass` | `16.1.0` |
 | `zui` | `1.18.0` |
