@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "craft-anything";
-  version = "0.5.0";
+  version = "0.6.0";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "craft-anything";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-4SpbjOMX40TC5Vq/HDjOuNAzfW97AoZ33zHJzxBHkVQ=";
+    hash = "sha256-7SwTbgkMmGbdcaqzDAZFHBGtaWe5LCPgj92XKh3Xl9g=";
   };
 
   buildInputs = [
@@ -61,7 +61,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
       'Set up Ghidra from Settings → Engines (Deep mode); it brings its own Java. On NixOS, use the nixpkgs ghidra and JDK instead.'
   '';
 
-  cargoHash = "sha256-VC2ANtZRISPetfvAQei4/OF6tNop/rSEYK59iogSlDQ=";
+  cargoHash = "sha256-SrfjzpIHzu9hV7CMCACX88V397yhnwGSGgRzixP1S9g=";
 
   # The workspace also holds the wasm browser app and the CLI; build only the
   # desktop app.
