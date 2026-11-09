@@ -153,9 +153,9 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `figcraft` | `0.17.0` |
 | `figcraft-bin` | `0.17.0` |
 | `filmcraft` | `0.18.0` |
-| `filmcraft-bin` | `0.18.0` |
+| `filmcraft-bin` | `0.19.0` |
 | `fogpanther` | `0.8.4` |
-| `fourget` | `unstable-2026-11-01` |
+| `fourget` | `unstable-2026-11-08` |
 | `g3m` | `3.4.5` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
