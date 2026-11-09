@@ -137,9 +137,9 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `cadcraft-bin` | `0.18.0` |
 | `cli-microsoft365` | `12.0.0` |
 | `commet` | `0.5.1` |
-| `craft-anything` | `0.3.0` |
+| `craft-anything` | `0.5.0` |
 | `craft-anything-bin` | `0.5.0` |
-| `deckcraft` | `0.15.1` |
+| `deckcraft` | `0.16.0` |
 | `deckcraft-bin` | `0.16.0` |
 | `degoog` | `1.1.1` |
 | `degoog-mcp` | `0.4.1` |
@@ -152,14 +152,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.16.0` |
 | `figcraft-bin` | `0.16.0` |
-| `filmcraft` | `0.17.1` |
+| `filmcraft` | `0.18.0` |
 | `filmcraft-bin` | `0.18.0` |
 | `fogpanther` | `0.8.4` |
 | `fourget` | `unstable-2026-11-01` |
 | `g3m` | `3.4.5` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
-| `gridcraft` | `0.16.1` |
+| `gridcraft` | `0.17.0` |
 | `gridcraft-bin` | `0.17.0` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
@@ -183,7 +183,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pipemixer` | `0.5.1` |
 | `rybbit` | `2.9.2` |
 | `server-mono` | `0.1.0` |
-| `soundcraft` | `0.17.1` |
+| `soundcraft` | `0.18.0` |
 | `soundcraft-bin` | `0.18.0` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
