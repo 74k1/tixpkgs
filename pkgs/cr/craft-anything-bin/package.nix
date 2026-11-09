@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "craft-anything-bin";
-  version = "0.5.0";
+  version = "0.6.0";
 
   src = fetchurl {
     url = "https://github.com/storytold/craft-anything/releases/download/v${finalAttrs.version}/craft-anything-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-GM10cFPmLlZxic2X6FrQdl/mvM0/9eyzOOfEUvwqeww=";
+    hash = "sha256-MQrtIalgqrwwJ03mmpkuxeiWddVA04o1WpvGzN3zbLY=";
   };
 
   nativeBuildInputs = [
