@@ -129,7 +129,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 <!-- BEGIN PACKAGES -->
 | Package | Version |
 |---|---|
-| `arcbrush` | `1.7.2` |
+| `arcbrush` | `1.7.3` |
 | `blink-qt` | `7.2.6` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.6-0` |
