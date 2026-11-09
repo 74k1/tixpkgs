@@ -139,7 +139,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `commet` | `0.5.1` |
 | `craft-anything` | `0.6.0` |
 | `craft-anything-bin` | `0.6.0` |
-| `deckcraft` | `0.16.0` |
+| `deckcraft` | `0.17.0` |
 | `deckcraft-bin` | `0.17.0` |
 | `degoog` | `1.1.1` |
 | `degoog-mcp` | `0.4.1` |
