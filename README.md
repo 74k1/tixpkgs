@@ -160,12 +160,12 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
 | `gridcraft` | `0.17.0` |
-| `gridcraft-bin` | `0.17.0` |
+| `gridcraft-bin` | `0.18.0` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
 | `keeper-sh` | `2.29.3` |
-| `lidarr` | `3.2.0.5144` |
+| `lidarr` | `3.2.1.5196` |
 | `lightcraft` | `0.19.0` |
 | `lightcraft-bin` | `0.19.0` |
 | `logria` | `0.6.0` |
