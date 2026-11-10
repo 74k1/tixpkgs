@@ -2,10 +2,12 @@
   lib,
   rustPlatform,
   autoPatchelfHook,
+  aws-lc,
   stdenv,
   dbus,
   fetchFromGitHub,
   libxkbcommon,
+  pkg-config,
   vulkan-loader,
   wayland,
 }:
@@ -21,9 +23,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
     hash = "sha256-jaWcKhwOLygHFawczt/zkf4ypaVfdB2jV88DfhcqDxM=";
   };
 
-  buildInputs = [ stdenv.cc.cc.lib ];
+  buildInputs = [
+    aws-lc
+    stdenv.cc.cc.lib
+  ];
 
-  nativeBuildInputs = [ autoPatchelfHook ];
+  nativeBuildInputs = [
+    autoPatchelfHook
+    pkg-config
+  ];
 
   postPatch = ''
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml

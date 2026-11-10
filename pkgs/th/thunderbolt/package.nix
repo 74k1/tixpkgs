@@ -114,7 +114,7 @@ in
       runHook postInstall
     '';
 
-    outputHash = "sha256-HU5e/dQbrtI4eCNUeLtQQtXOWtrcsxOILySFB6JIgUY=";
+    outputHash = "sha256-0YS6Iyh+xwRs4OzmAriyVgJ58oRcu2+DymjIylGfDHs=";
     outputHashMode = "recursive";
   };
 

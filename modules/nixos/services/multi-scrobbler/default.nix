@@ -48,106 +48,16 @@ let
     };
   };
 
-  sourceTypes = [
-    "spotify"
-    "plex"
-    "subsonic"
-    "jellyfin"
-    "lastfm"
-    "librefm"
-    "deezer"
-    "endpointlz"
-    "endpointlfm"
-    "ytmusic"
-    "mpris"
-    "mopidy"
-    "musiccast"
-    "listenbrainz"
-    "jriver"
-    "kodi"
-    "webscrobbler"
-    "chromecast"
-    "maloja"
-    "musikcube"
-    "mpd"
-    "vlc"
-    "icecast"
-    "azuracast"
-    "koito"
-    "tealfm"
-    "rocksky"
-    "sonos"
-    "ymbridge"
-    "applemusic"
-  ];
-
-  clientTypes = [
-    "maloja"
-    "lastfm"
-    "librefm"
-    "listenbrainz"
-    "koito"
-    "tealfm"
-    "rocksky"
-    "discord"
-  ];
-
-  configFileTypes = lib.unique (sourceTypes ++ clientTypes);
-
-  # ENV prefixes upstream matches against when looking for single-user (ENV based)
-  # source/client configs, one entry per type. Taken from the `prefix` of each type's
-  # envSchema in src/backend/common/infrastructure/config/{source,client}, verified
-  # against 0.18.1.
-  #
-  # Types that share a name with a client use the SOURCE_ form, and several prefixes
-  # are abbreviated: chromecast -> CC, webscrobbler -> WS, musikcube -> MC,
-  # musiccast -> MCAST, ytmusic -> YTM, azuracast -> AZURA, endpointlfm -> LFM,
-  # endpointlz -> LZE.
-  upstreamAutoConfigEnvPrefixes = [
-    "APPLEMUSIC_"
-    "AZURA_"
-    "CC_"
-    "DEEZER_"
-    "DISCORD_"
-    "ICECAST_"
-    "JELLYFIN_"
-    "JRIVER_"
-    "KODI_"
-    "KOITO_"
-    "LASTFM_"
-    "LFM_"
-    "LIBREFM_"
-    "LZ_"
-    "LZE_"
-    "MALOJA_"
-    "MC_"
-    "MCAST_"
-    "MOPIDY_"
-    "MPD_"
-    "MPRIS_"
-    "PLEX_"
-    "ROCKSKY_"
-    "SONOS_"
-    "SOURCE_KOITO_"
-    "SOURCE_LASTFM_"
-    "SOURCE_LIBREFM_"
-    "SOURCE_LZ_"
-    "SOURCE_MALOJA_"
-    "SOURCE_ROCKSKY_"
-    "SOURCE_TEALFM_"
-    "SPOTIFY_"
-    "SUBSONIC_"
-    "TEALFM_"
-    "VLC_"
-    "WS_"
-    "YMBRIDGE_"
-    "YTM_"
-  ];
+  # Checked against the packaged upstream registries by the module test.
+  contract = builtins.fromJSON (builtins.readFile ./contract.json);
+  configFileTypes = lib.unique (contract.sourceTypes ++ contract.clientTypes);
+  upstreamAutoConfigEnvPrefixes = contract.environmentPrefixes;
 
   reservedEnvironmentKeys = [
     "BASE_URL"
     "CONFIG_DIR"
     "DATA_DIR"
+    "LOGS_DIR"
     "PORT"
   ];
 
@@ -196,6 +106,7 @@ let
     // {
       CONFIG_DIR = cfg.stateDir;
       DATA_DIR = cfg.stateDir;
+      LOGS_DIR = "${cfg.stateDir}/logs";
       PORT = cfg.port;
     }
     // lib.optionalAttrs (cfg.baseUrl != null) {
@@ -297,8 +208,9 @@ in
         neutral names like `CUSTOM_SPOTIFY_CLIENT_ID` and reference them from JSON
         as `[[CUSTOM_SPOTIFY_CLIENT_ID]]`.
 
-        `PORT`, `BASE_URL`, `CONFIG_DIR`, and `DATA_DIR` are managed by
-        dedicated module options and must not be set here.
+        `PORT` and `BASE_URL` are managed by dedicated module options, and
+        `CONFIG_DIR`, `DATA_DIR`, and `LOGS_DIR` are derived from `stateDir`.
+        None of them may be set here.
       '';
     };
 
@@ -390,6 +302,11 @@ in
         Directory used as multi-scrobbler's `CONFIG_DIR`, `DATA_DIR`, and
         working directory. Keeping both upstream directories together preserves
         databases, logs, and credentials across the 0.15.0 upgrade.
+
+        The module also sets upstream's `LOGS_DIR` to a `logs` subdirectory of
+        this path. Without it upstream resolves logs through `LOGS_DIR`,
+        `LOGS_DIRECTORY`, or the XDG state directory, which the service does not
+        manage.
 
         With `DynamicUser = true`, the service's mutable state is still managed by
         systemd. When this path differs from the default, the module exposes it as
