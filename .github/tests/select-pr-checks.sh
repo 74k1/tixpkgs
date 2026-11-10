@@ -161,6 +161,16 @@ mv package-inventory-updated.json package-inventory.json
 assert_selection 'companion package is selected from the same source tree' '["enclosed","enclosed-cli"]' '[]' \
   pkgs/en/enclosed/package.nix
 
+touch modules/tests/nixos/services/multi-scrobbler/contract.nix
+jq '. + ["module-nixos-services-multi-scrobbler-contract"]' check-inventory.json > check-inventory-updated.json
+mv check-inventory-updated.json check-inventory.json
+assert_selection 'multi-scrobbler update selects runtime and contract checks' '["multi-scrobbler"]' \
+  '["module-nixos-services-multi-scrobbler-basic","module-nixos-services-multi-scrobbler-contract"]' \
+  pkgs/mu/multi-scrobbler/package.nix
+assert_selection 'multi-scrobbler contract change selects both checks' '[]' \
+  '["module-nixos-services-multi-scrobbler-basic","module-nixos-services-multi-scrobbler-contract"]' \
+  modules/nixos/services/multi-scrobbler/contract.json
+
 printf '%s\n' '[]' > package-inventory.json
 printf '%s\n' '[]' > check-inventory.json
 assert_selection 'empty inventories do not produce empty target names' '[]' '[]' flake.lock

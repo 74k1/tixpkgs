@@ -29,7 +29,7 @@ jobs:
     outputs:
       packages: ${{ steps.filter.outputs.packages_json }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -137,6 +137,22 @@ jobs:
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
           swap-storage: false
+          # The upstream action fails its combined removal when a package is absent.
+          large-packages: false
+
+      - name: Remove large packages
+        run: |
+          set -euo pipefail
+          mapfile -t packages < <(
+            dpkg-query -W -f='${db:Status-Abbrev} ${binary:Package}\n' |
+              awk '$1 == "ii" { print $2 }' |
+              grep -E '^(aspnetcore-|dotnet-|llvm-|php|mongodb-|mysql-|azure-cli$|google-chrome-stable$|firefox$|powershell$|mono-devel$|libgl1-mesa-dri$|google-cloud-sdk$|google-cloud-cli$)' || true
+          )
+          if [ "${#packages[@]}" -gt 0 ]; then
+            sudo apt-get remove -y -- "${packages[@]}"
+          fi
+          sudo apt-get autoremove -y
+          sudo apt-get clean
 
       - name: Add build swap
         run: |
@@ -147,7 +163,7 @@ jobs:
           sudo swapon /mnt/nix-build-swapfile
           free -h
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: cachix/install-nix-action@v31
         with:
