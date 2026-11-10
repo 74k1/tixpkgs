@@ -9,19 +9,19 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "trek";
-  version = "4.3.3";
+  version = "5.1.2";
 
   src = fetchFromGitHub {
     owner = "liketrek";
     repo = "TREK";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-6bZN38p15ailK5tjOGj+3vePSv8iik+ABfCu0qyakKE=";
+    hash = "sha256-g6EAHu2gU6GlbWsvZe74ahHvidbeNfkgszHKEmpLqes=";
   };
 
   # TREK is an npm workspaces monorepo (client + server + shared) driven by a
   # single root package-lock.json. Fetcher v2 enables packument caching, which
   # is required for workspaces to resolve through `npm ci`.
-  npmDepsHash = "sha256-8ONt4MtlYsWzVlr0v4QQ0cWvbQ1bmWPSudQiRidshN0=";
+  npmDepsHash = "sha256-oyNO/aQf1I0FUzQBuZsz3dJrXybmgYx42TfurAVNQmc=";
   npmDepsFetcherVersion = 2;
 
   nodejs = nodejs_22;
@@ -41,17 +41,20 @@ buildNpmPackage (finalAttrs: {
   # after prebuild-install fails fast in the no-network sandbox.
 
   postPatch = ''
-    cat > path-redirect.sed << 'SEDEOF'
-    s#path\.join\(__dirname, '(\.\./)+uploads/([^']+)', ([^)]*)\)#path.join(process.env.TREK_UPLOADS_DIR, '\2', \3)#g
-    s#path\.join\(__dirname, '(\.\./)+uploads', ([^)]*)\)#path.join(process.env.TREK_UPLOADS_DIR, \2)#g
-    s#path\.(join|resolve)\(__dirname, '(\.\./)+uploads/([^']+)'\)#path.join(process.env.TREK_UPLOADS_DIR, '\3')#g
-    s#path\.(join|resolve)\(__dirname, '(\.\./)+uploads'\)#process.env.TREK_UPLOADS_DIR#g
-    s#path\.(join|resolve)\(__dirname, '(\.\./)+data/([^']+)'\)#path.join(process.env.TREK_DATA_DIR, '\3')#g
-    s#path\.(join|resolve)\(__dirname, '(\.\./)+data'\)#process.env.TREK_DATA_DIR#g
-    s#path\.resolve\(__dirname, ('\.\.', )+'data'\)#process.env.TREK_DATA_DIR#g
-    s#path\.resolve\(__dirname, ('\.\.', )+'uploads'\)#process.env.TREK_UPLOADS_DIR#g
-    SEDEOF
-    find server/src -name '*.ts' -print0 | xargs -0 sed -E -i -f path-redirect.sed
+    # TREK 5 resolves writable paths centrally from the server root.
+    substituteInPlace server/src/app-config/data-paths.ts \
+      --replace-fail "const dataDir = path.join(root, 'data');" "const dataDir = process.env.TREK_DATA_DIR || path.join(root, 'data');" \
+      --replace-fail "uploadsDir: path.join(root, 'uploads')," "uploadsDir: process.env.TREK_UPLOADS_DIR || path.join(root, 'uploads'),"
+  '';
+
+  # npm workspaces can have their own node_modules outside the root tree.
+  # Patch their executable scripts after npmConfigHook installs dependencies.
+  preBuild = ''
+    for modules in node_modules shared/node_modules server/node_modules client/node_modules; do
+      if [ -d "$modules" ]; then
+        patchShebangs --build "$modules"
+      fi
+    done
   '';
 
   # The root "build" script orchestrates shared -> server -> client; leave

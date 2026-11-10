@@ -20,7 +20,9 @@
 
     machine.wait_for_unit("trek.service")
     machine.wait_for_open_port(3000)
+    machine.succeed("test -d /var/lib/trek/data/tmp")
+    machine.succeed("test -d /var/lib/trek/uploads")
 
-    machine.succeed("curl --fail --show-error http://127.0.0.1:3000/ | grep --quiet '<html'")
+    machine.succeed("curl --fail --show-error http://127.0.0.1:3000/ | grep '<html' > /dev/null")
   '';
 }
