@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "cadcraft";
-  version = "0.19.0";
+  version = "0.20.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "cadcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-lBoRJzfSno4LNjB3900cjF89fSpugGxkJS50+o1DE10=";
+    hash = "sha256-VwytPvrzszX3a2Kvibu0luUhTXVNzhrEk049/0jnRP4=";
   };
 
   buildInputs = [
@@ -42,7 +42,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-T7kYm4i6yxF+FNYVxKF+Kvx4uol92isvEDNJRzfu/Nk=";
+  cargoHash = "sha256-LgwdA0K8FhYvJFxXCNjm7y8m6A8qkayyMOgGFoxZS/E=";
 
   cargoBuildFlags = [
     "-p"
