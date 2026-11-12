@@ -137,7 +137,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `cadcraft-bin` | `0.20.1` |
 | `cli-microsoft365` | `12.0.0` |
 | `commet` | `0.5.2` |
-| `craft-anything` | `0.6.0` |
+| `craft-anything` | `0.6.1` |
 | `craft-anything-bin` | `0.6.1` |
 | `deckcraft` | `0.17.0` |
 | `deckcraft-bin` | `0.18.1` |
