@@ -9,22 +9,25 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "trek";
-  version = "5.1.2";
+  version = "5.1.4";
 
   src = fetchFromGitHub {
     owner = "liketrek";
     repo = "TREK";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-g6EAHu2gU6GlbWsvZe74ahHvidbeNfkgszHKEmpLqes=";
+    hash = "sha256-wJKg+Msnl75lUxk6V6MqcKZKh2XZ3aH6+V9LM1F8ZN8=";
   };
 
   # TREK is an npm workspaces monorepo (client + server + shared) driven by a
   # single root package-lock.json. Fetcher v2 enables packument caching, which
   # is required for workspaces to resolve through `npm ci`.
-  npmDepsHash = "sha256-oyNO/aQf1I0FUzQBuZsz3dJrXybmgYx42TfurAVNQmc=";
+  npmDepsHash = "sha256-510Q0O5HhA9TN9YT6WQ0ukSK/O90VWgb7UIT5Tz+vFw=";
   npmDepsFetcherVersion = 2;
 
   nodejs = nodejs_22;
+
+  # Defer lifecycle scripts until plyr's pnpm-only preinstall is removed.
+  npmRebuildFlags = [ "--ignore-scripts" ];
 
   # The root package.json pins musl prebuilds in optionalDependencies, and
   # npm's libc auto-detection on NixOS does not reliably filter them, so by
@@ -50,6 +53,9 @@ buildNpmPackage (finalAttrs: {
   # npm workspaces can have their own node_modules outside the root tree.
   # Patch their executable scripts after npmConfigHook installs dependencies.
   preBuild = ''
+    node -e 'const fs = require("fs"); const path = "node_modules/plyr/package.json"; const pkg = JSON.parse(fs.readFileSync(path)); if (pkg.scripts?.preinstall !== "npx only-allow pnpm") throw new Error("Unexpected plyr preinstall script"); delete pkg.scripts.preinstall; fs.writeFileSync(path, JSON.stringify(pkg, null, 2));'
+    npm rebuild
+
     for modules in node_modules shared/node_modules server/node_modules client/node_modules; do
       if [ -d "$modules" ]; then
         patchShebangs --build "$modules"
