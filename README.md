@@ -184,7 +184,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `rybbit` | `2.9.2` |
 | `server-mono` | `0.1.0` |
 | `soundcraft` | `0.19.0` |
-| `soundcraft-bin` | `0.19.0` |
+| `soundcraft-bin` | `0.20.1` |
 | `thunderbolt` | `0.1.107` |
 | `thunderbolt-cli` | `0.1.107` |
 | `trek` | `5.1.2` |
