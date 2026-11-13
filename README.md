@@ -152,14 +152,14 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `ferroxide` | `0.5.0` |
 | `figcraft` | `0.18.1` |
 | `figcraft-bin` | `0.18.1` |
-| `filmcraft` | `0.19.0` |
+| `filmcraft` | `0.20.1` |
 | `filmcraft-bin` | `0.20.1` |
 | `fogpanther` | `0.8.4` |
 | `fourget` | `unstable-2026-11-12` |
 | `g3m` | `3.4.5` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
-| `gridcraft` | `0.18.0` |
+| `gridcraft` | `0.19.1` |
 | `gridcraft-bin` | `0.19.1` |
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
