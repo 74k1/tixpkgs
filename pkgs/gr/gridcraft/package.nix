@@ -17,13 +17,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "gridcraft";
-  version = "0.18.0";
+  version = "0.19.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "gridcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-fSWqYnyhNceNaFpvjZs9B4wlvrvCm9JQSSNu397MHVE=";
+    hash = "sha256-/dkhjj+BcL/+b/psYpRdO/vEG0zpiAt5fpIqkG7WLMw=";
   };
 
   buildInputs = [
@@ -42,7 +42,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-FURL0xFpzRx8mgM/sQFSJ2Z7dCmVKvf1kDMID7BUszA=";
+  cargoHash = "sha256-vkNDu60fJy9GOqQSqZItees+XOmta1qB5x5ibm8nBuM=";
 
   cargoBuildFlags = [
     "-p"
