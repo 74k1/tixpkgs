@@ -12,13 +12,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "vectorcraft";
-  version = "0.23.0";
+  version = "0.24.1";
 
   src = fetchFromGitHub {
     owner = "storytold";
     repo = "vectorcraft";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-JDUneS7md/q2ZLKqSuKILuIHGUOXyDuuWoGgDQyW510=";
+    hash = "sha256-d6euwjY0zs+JW7hM2Sqgsb+nHoLps7JhmDCGo24elHc=";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
@@ -29,7 +29,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     sed -i '/^egui_demo_lib = /d; /^egui_inspection = /d; /^egui_system_font_provider = /d' Cargo.toml
   '';
 
-  cargoHash = "sha256-tDdES5pjOLASkVDeIxcM4voURybuDpFfwTvBPmrhCCo=";
+  cargoHash = "sha256-K5Pm4G+8alH0mtyu6kyWP7/wc+OPmI1JBp15wvBKsb0=";
 
   cargoBuildFlags = [
     "-p"
