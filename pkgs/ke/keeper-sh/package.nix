@@ -9,13 +9,13 @@
 }:
 
 let
-  version = "2.29.6";
+  version = "2.31.0";
 
   src = fetchFromGitHub {
     owner = "ridafkih";
     repo = "keeper.sh";
     rev = "v${version}";
-    hash = "sha256-ndbmAjrv6SQQyQ8nnwtnq/16Ncdn4gE5br0k/v63qUQ=";
+    hash = "sha256-WctrGU8qM/m52zd80NV/b34/2Xg5Ih/pbnCf8IO4l9Y=";
   };
 
   # Fixed-output derivation that runs `bun install` with network access and
@@ -49,7 +49,7 @@ let
       runHook postInstall
     '';
 
-    outputHash = "sha256-x0OhEG3h5jrUC9ZVTa7tr8pPRaaFL7rBBOSNbDtmc1A=";
+    outputHash = "sha256-SfQBK008MGOkXG15KobavI+zAAyoJU0sAeSxUS9yP7E=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
 
