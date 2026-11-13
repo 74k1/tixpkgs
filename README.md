@@ -143,10 +143,10 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `deckcraft-bin` | `0.18.1` |
 | `degoog` | `1.1.1` |
 | `degoog-mcp` | `0.4.1` |
-| `designcraft` | `0.19.0` |
+| `designcraft` | `0.20.1` |
 | `designcraft-bin` | `0.20.1` |
 | `effectcraft` | `0.23.0` |
-| `effectcraft-bin` | `0.23.0` |
+| `effectcraft-bin` | `0.24.1` |
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
 | `ferroxide` | `0.5.0` |
