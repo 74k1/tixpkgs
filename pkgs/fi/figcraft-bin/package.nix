@@ -17,11 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "figcraft-bin";
-  version = "0.17.0";
+  version = "0.18.1";
 
   src = fetchurl {
     url = "https://github.com/storytold/figcraft/releases/download/v${finalAttrs.version}/figcraft-${finalAttrs.version}-linux-x86_64.deb";
-    hash = "sha256-+gLpV/G9j5IGTGSKy/qW2u5tyHQkm9w06az/j7a48Yc=";
+    hash = "sha256-7Zq+6aAs+M4f6xod4Q5cBBSMTR97kSgIDX/mzbHw77Q=";
   };
 
   nativeBuildInputs = [
