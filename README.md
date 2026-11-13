@@ -173,7 +173,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `moonlight-qt-fork` | `6.21.46` |
 | `mpdq` | `2.4.5` |
 | `mtkclient` | `2.1.4` |
-| `multi-scrobbler` | `0.20.3` |
+| `multi-scrobbler` | `0.21.0` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `22.0.28160` |
 | `pdfcraft` | `0.20.0` |
