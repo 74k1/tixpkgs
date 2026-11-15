@@ -1,0 +1,18 @@
+.snqnOled {
+    --accent: #7777ff;
+    --green: #58d49c;
+    --text: #bebdca;
+    --foreground: #282635;
+    --background: #000000;
+    --outside: #14121b;
+    --post: #14121b;
+    --panel-border: 1px solid #282635;
+    --highlighted: #56536a;
+    --visited: #77748c;
+    --spoiler: #e4e3eb;
+    --shadow: none;
+}
+
+html:has(> .snqnOled) {
+    color-scheme: dark;
+}

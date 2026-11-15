@@ -1,0 +1,18 @@
+.snqnDark {
+    --accent: #7777ff;
+    --green: #58d49c;
+    --text: #c1bfcc;
+    --foreground: #353142;
+    --background: #120e14;
+    --outside: #221f29;
+    --post: #221f29;
+    --panel-border: 1px solid #353142;
+    --highlighted: #5c5971;
+    --visited: #7d7a94;
+    --spoiler: #e0dfe7;
+    --shadow: none;
+}
+
+html:has(> .snqnDark) {
+    color-scheme: dark;
+}

@@ -1,0 +1,18 @@
+.snqnLight {
+    --accent: #6356ff;
+    --green: #006647;
+    --text: #554b5f;
+    --foreground: #dedde5;
+    --background: #fafafd;
+    --outside: #f0eff5;
+    --post: #f0eff5;
+    --panel-border: 1px solid #dedde5;
+    --highlighted: #92909d;
+    --visited: #726d7e;
+    --spoiler: #3e2f43;
+    --shadow: none;
+}
+
+html:has(> .snqnLight) {
+    color-scheme: light;
+}

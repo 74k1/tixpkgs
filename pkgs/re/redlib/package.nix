@@ -10,6 +10,20 @@
   git,
 }:
 
+let
+  rev = "856c6e060a23373ae8fa290b5daff7588c6260a2";
+
+  # Changes when a theme file changes, so browsers drop the cached stylesheet.
+  themesHash = builtins.substring 0 7 (
+    builtins.hashString "sha256" (
+      lib.concatMapStrings builtins.readFile [
+        ./snqnDark.css
+        ./snqnLight.css
+        ./snqnOled.css
+      ]
+    )
+  );
+in
 rustPlatform.buildRustPackage {
   pname = "redlib";
   version = "0.36.0-unstable-2026-11-15";
@@ -17,7 +31,7 @@ rustPlatform.buildRustPackage {
   src = fetchFromGitHub {
     owner = "Nachtalb";
     repo = "redlib";
-    rev = "856c6e060a23373ae8fa290b5daff7588c6260a2";
+    inherit rev;
     hash = "sha256-O4vCQlkSkLWHLaoYcDkBn6UTCAxgHJ1jqSigoxH7m8U=";
   };
 
@@ -30,6 +44,20 @@ rustPlatform.buildRustPackage {
     rustPlatform.bindgenHook
   ];
   buildInputs = [ zstd ];
+
+  postPatch = ''
+    cp ${./snqnDark.css} static/themes/snqnDark.css
+    cp ${./snqnLight.css} static/themes/snqnLight.css
+    cp ${./snqnOled.css} static/themes/snqnOled.css
+    substituteInPlace src/utils.rs \
+      --replace-fail '"rosebox" => "Rosebox",' '"rosebox" => "Rosebox",
+        "snqnDark" => "snqn Dark",
+        "snqnLight" => "snqn Light",
+        "snqnOled" => "snqn OLED",'
+    substituteInPlace templates/base.html \
+      --replace-fail 'style.css?v={{ crate::utils::short_git_hash() }}' \
+        'style.css?v={{ crate::utils::short_git_hash() }}-${themesHash}'
+  '';
 
   postInstall = ''
     install --mode=444 -D contrib/redlib.service $out/lib/systemd/system/redlib.service
@@ -73,6 +101,8 @@ rustPlatform.buildRustPackage {
   ];
 
   env = {
+    # The source has no .git directory. Without this, every build reports "dev".
+    GIT_HASH = rev;
     SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
 
