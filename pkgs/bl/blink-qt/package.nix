@@ -8,14 +8,14 @@
 
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "blink-qt";
-  version = "7.2.11";
+  version = "7.3.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "AGProjects";
     repo = "blink-qt";
     tag = finalAttrs.version;
-    hash = "sha256-V+4TEwOaHXF4iIRuuZVxh2o4nOu1F14kzBh9SgxoQ+A=";
+    hash = "sha256-dyjBhZjdJskfwrENOP6007fkSCoXsel8MDkCDufSeIM=";
   };
 
   nativeBuildInputs = [ qt6Packages.wrapQtAppsHook ];
