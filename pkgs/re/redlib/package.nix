@@ -26,7 +26,7 @@ let
 in
 rustPlatform.buildRustPackage {
   pname = "redlib";
-  version = "0.36.0-unstable-2026-11-15";
+  version = "latest-unstable-2026-11-15";
 
   src = fetchFromGitHub {
     owner = "Nachtalb";
