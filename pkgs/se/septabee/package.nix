@@ -30,6 +30,8 @@ stdenv.mkDerivation rec {
     hash = "sha256-J6oXQhoQkCs4UbrdWhiRjbO+PCDLdcLKmKVZ7fHuWHk=";
   };
 
+  passthru.updateScript = ./update.sh;
+
   nativeBuildInputs = [
     _7zz
     autoPatchelfHook
