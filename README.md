@@ -183,7 +183,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pipemixer` | `0.5.1` |
 | `redlib` | `0.36.0-unstable-2026-11-15` |
 | `rybbit` | `2.9.2` |
-| `septabee` | `B_T28` |
+| `septabee` | `B_T31` |
 | `server-mono` | `0.1.0` |
 | `soundcraft` | `0.20.1` |
 | `soundcraft-bin` | `0.20.1` |
