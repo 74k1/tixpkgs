@@ -23,11 +23,11 @@
 
 stdenv.mkDerivation rec {
   pname = "septabee";
-  version = "B_T28";
+  version = "B_T31";
 
   src = fetchurl {
     url = "https://downloads.septabee.com/SEPTABEE_DOWNLOADS/septabee_linux_${version}_offline.7z";
-    hash = "sha256-J6oXQhoQkCs4UbrdWhiRjbO+PCDLdcLKmKVZ7fHuWHk=";
+    hash = "sha256-Sbg0yDCYNSUO4aicETWYlpdpYtwh5hJ6bjW3/Kpo+hw=";
   };
 
   passthru.updateScript = ./update.sh;
