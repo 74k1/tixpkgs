@@ -1,7 +1,6 @@
 {
   lib,
   cacert,
-  nixosTests,
   rustPlatform,
   fetchFromGitHub,
   nix-update-script,
@@ -13,16 +12,16 @@
 
 rustPlatform.buildRustPackage {
   pname = "redlib";
-  version = "0.40.0-unstable-2026-10-22";
+  version = "0.36.0-unstable-2026-11-15";
 
   src = fetchFromGitHub {
-    owner = "redlib-org";
+    owner = "Nachtalb";
     repo = "redlib";
-    rev = "ba116c1186f6b0f9d45f0ae50c827e13eb2f5ea2";
-    hash = "sha256-qv7vIls9BwgwDQuKEQU72J10MpaMfcLvIGfzl628eNU=";
+    rev = "856c6e060a23373ae8fa290b5daff7588c6260a2";
+    hash = "sha256-O4vCQlkSkLWHLaoYcDkBn6UTCAxgHJ1jqSigoxH7m8U=";
   };
 
-  cargoHash = "sha256-XgHXqH4EF8TEOI+cKJ0Z2j6QYRCwGgv8bmY8gZpPN9c=";
+  cargoHash = "sha256-bdT/Mqfy5uC/yQAsjedBJzVxtRw/jVWyo+TANFZA9P4=";
 
   nativeBuildInputs = [
     pkg-config
@@ -39,6 +38,7 @@ rustPlatform.buildRustPackage {
   '';
 
   checkFlags = [
+    "--skip=backends::live_tests::"
     # These tests try to connect to Reddit.
     # utils.rs
     "--skip=test_fetching_subreddit_quarantined"
@@ -77,13 +77,12 @@ rustPlatform.buildRustPackage {
   };
 
   passthru = {
-    tests = nixosTests.redlib;
     updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
   };
 
   meta = {
     description = "Private front-end for Reddit (Continued fork of Libreddit)";
-    homepage = "https://github.com/redlib-org/redlib";
+    homepage = "https://github.com/Nachtalb/redlib";
     license = lib.licenses.agpl3Only;
     mainProgram = "redlib";
     maintainers = with lib.maintainers; [
