@@ -130,7 +130,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | Package | Version |
 |---|---|
 | `arcbrush` | `1.7.3` |
-| `blink-qt` | `7.2.11` |
+| `blink-qt` | `7.3.0` |
 | `brimcap` | `1.18.0` |
 | `brscan-skey` | `0.3.6-0` |
 | `cadcraft` | `0.20.1` |
