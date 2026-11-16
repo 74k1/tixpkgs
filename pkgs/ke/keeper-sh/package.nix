@@ -9,13 +9,13 @@
 }:
 
 let
-  version = "2.31.0";
+  version = "2.32.0";
 
   src = fetchFromGitHub {
     owner = "ridafkih";
     repo = "keeper.sh";
     rev = "v${version}";
-    hash = "sha256-WctrGU8qM/m52zd80NV/b34/2Xg5Ih/pbnCf8IO4l9Y=";
+    hash = "sha256-J5QtYcdpIkT/Q36wetnLk1OitHPPihCh/snvRhFjDmw=";
   };
 
   # Fixed-output derivation that runs `bun install` with network access and
