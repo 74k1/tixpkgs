@@ -9,7 +9,6 @@
   sqlite,
   curl,
   makeWrapper,
-  chromaprint,
   openssl,
   zlib,
 }:

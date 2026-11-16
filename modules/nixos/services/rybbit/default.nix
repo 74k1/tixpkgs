@@ -1,7 +1,4 @@
-{
-  tixpkgs,
-  inputs ? null,
-}:
+{ tixpkgs }:
 {
   config,
   lib,

@@ -162,7 +162,6 @@ in
         Restart = "on-failure";
         RestartSec = "5s";
 
-        # Hardening
         LockPersonality = true;
         MemoryDenyWriteExecute = true;
         NoNewPrivileges = true;

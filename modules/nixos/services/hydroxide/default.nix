@@ -62,7 +62,6 @@ let
     svc.carddav.port
   ];
 
-  # CLI flag helpers
   flag =
     name: value: default:
     if value == default then "" else "--${name} ${lib.escapeShellArg (toString value)}";

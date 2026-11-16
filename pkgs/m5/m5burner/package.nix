@@ -3,7 +3,6 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
-  copyDesktopItems,
   makeDesktopItem,
   unzip,
   buildFHSEnv,
@@ -37,7 +36,6 @@
   libxshmfence,
   libGL,
   libusb1,
-  python3,
   zlib,
 }:
 

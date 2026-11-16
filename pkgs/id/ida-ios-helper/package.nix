@@ -8,7 +8,6 @@
 python3Packages.buildPythonPackage rec {
   pname = "ida-ios-helper";
   version = "1.0.23";
-  # format = "setuptools";
   pyproject = true;
 
   src = fetchFromGitHub {
@@ -32,7 +31,6 @@ python3Packages.buildPythonPackage rec {
   # Skip tests if they require IDA Pro to be installed
   doCheck = false;
 
-  # pythonImportsCheck = [ "ida_ios_helper" ];
   pythonImportsCheck = [ ];
 
   passthru.updateScript = nix-update-script { };

@@ -88,7 +88,6 @@ buildGoModule rec {
         ]
       } \
       --set BRIM_SURICATA_USER_DIR "."
-      # --set BRIM_SURICATA_USER_DIR "\$HOME/.local/share/brimcap"
 
     runHook postInstall
   '';
