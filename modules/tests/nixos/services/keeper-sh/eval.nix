@@ -122,7 +122,6 @@ let
       assertion = !(cfg.systemd.services ? keeper-sh-mcp);
       message = "keeper-mcp should not be defined when mcp.enable = false.";
     }
-    # MCP-enabled config
     {
       assertion = mcpCfg.systemd.services ? keeper-sh-mcp;
       message = "keeper-mcp service should exist when mcp.enable = true.";
@@ -131,7 +130,6 @@ let
       assertion = mcpCfg.services.nginx.virtualHosts."keeper-mcp.example.test".locations ? "/mcp/";
       message = "Keeper nginx config should proxy /mcp/ when MCP is enabled.";
     }
-    # External config
     {
       assertion = extCfg.services.postgresql.enable == false;
       message = "Keeper external database config should not enable local PostgreSQL.";

@@ -1,7 +1,6 @@
 {
   nix-update-script,
   lib,
-  stdenv,
   fetchurl,
   appimageTools,
 }:

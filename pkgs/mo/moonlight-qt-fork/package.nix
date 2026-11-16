@@ -21,7 +21,7 @@
   pipewire,
 }:
 
-stdenv.mkDerivation (finalAttrs: {
+stdenv.mkDerivation {
   pname = "moonlight-qt-fork";
   version = "6.21.46";
 
@@ -91,4 +91,4 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = lib.platforms.all;
     mainProgram = "moonlight";
   };
-})
+}

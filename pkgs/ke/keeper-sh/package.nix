@@ -60,7 +60,7 @@ let
   };
 
 in
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenvNoCC.mkDerivation {
   pname = "keeper-sh";
   inherit version src;
 
@@ -195,4 +195,4 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     maintainers = with lib.maintainers; [ _74k1 ];
     platforms = lib.platforms.linux;
   };
-})
+}

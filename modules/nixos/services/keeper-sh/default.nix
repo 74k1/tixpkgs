@@ -18,7 +18,6 @@ let
     mkPackageOption
     optional
     optionalAttrs
-    optionals
     optionalString
     types
     ;
@@ -102,7 +101,6 @@ let
     Restart = "always";
     RestartSec = 10;
     UMask = "0027";
-    # Systemd hardening
     ProtectSystem = "strict";
     ProtectHome = true;
     PrivateTmp = true;
@@ -469,7 +467,6 @@ in
           {
             locations = mkMerge [
               {
-                # Proxy all web traffic to the Keeper web SSR server.
                 "/" = {
                   proxyPass = "http://127.0.0.1:${toString cfg.web.port}";
                   proxyWebsockets = true;

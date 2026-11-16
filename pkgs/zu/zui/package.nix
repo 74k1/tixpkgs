@@ -39,7 +39,6 @@
   xdg-utils,
   xdg-desktop-portal,
   xdg-desktop-portal-gtk,
-  # brimcap,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -95,7 +94,6 @@ stdenv.mkDerivation (finalAttrs: {
     xdg-desktop-portal
     xdg-desktop-portal-gtk
     xdg-utils
-    # brimcap
   ];
 
   installPhase = ''
@@ -111,11 +109,9 @@ stdenv.mkDerivation (finalAttrs: {
     rm -f $out/opt/Zui/resources/app.asar.unpacked/zdeps/suricata/bin/libssl*.so*
     rm -f $out/opt/Zui/resources/app.asar.unpacked/zdeps/suricata/bin/libsoftokn*.so*
 
-    # Fix desktop file
     substituteInPlace $out/share/applications/zui.desktop \
       --replace "/opt/Zui/zui" "$out/bin/zui"
 
-    # Set executable permissions on bundled binaries
     if [ -d $out/opt/Zui/resources/app.asar.unpacked/zdeps/brimcap ]; then
       find $out/opt/Zui/resources/app.asar.unpacked/zdeps/brimcap/bin -type f -exec chmod +x {} \;
     fi
@@ -127,7 +123,6 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   postFixup = ''
-    # Create a more robustly wrapped executable
     makeWrapper ${electron}/bin/electron $out/bin/zui \
       --add-flags "$out/opt/Zui/resources/app.asar" \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath finalAttrs.buildInputs}" \
@@ -142,7 +137,6 @@ stdenv.mkDerivation (finalAttrs: {
       --add-flags "--enable-features=UseOzonePlatform,WaylandWindowDecorations" \
       --add-flags "--no-sandbox"
 
-    # Patch bundled binaries to use system libraries
     if [ -d $out/opt/Zui/resources/app.asar.unpacked/zdeps/brimcap ]; then
       find $out/opt/Zui/resources/app.asar.unpacked/zdeps/brimcap/bin -type f -executable -exec \
         patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
