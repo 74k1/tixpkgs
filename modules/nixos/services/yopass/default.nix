@@ -72,6 +72,9 @@ let
   );
 in
 {
+  # nixpkgs ships a module with the same option names.
+  disabledModules = [ "services/web-apps/yopass.nix" ];
+
   options.services.yopass = {
     enable = mkEnableOption "Yopass, a secure sharing service for secrets, passwords and files";
 

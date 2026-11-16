@@ -97,6 +97,9 @@ let
   '';
 in
 {
+  # nixpkgs ships a module with the same option names.
+  disabledModules = [ "services/web-apps/grimmory.nix" ];
+
   options.services.grimmory = {
     enable = mkEnableOption "Grimmory, a self-hosted digital library";
 
