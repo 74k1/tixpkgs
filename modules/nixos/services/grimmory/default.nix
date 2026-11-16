@@ -1,7 +1,4 @@
-{
-  tixpkgs,
-  inputs ? null,
-}:
+{ tixpkgs }:
 {
   config,
   lib,
@@ -14,7 +11,6 @@ let
     mkDefault
     mkEnableOption
     mkIf
-    mkMerge
     mkOption
     mkPackageOption
     optional
@@ -35,8 +31,6 @@ let
   secretFileType = types.nullOr pathStringType;
 
   envVarNameType = types.strMatching "[A-Za-z_][A-Za-z0-9_]*";
-
-  nixpkgsPath = "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 
   # Grimmory connects to MariaDB over TCP. Connector/J's `unixSocket` URL
   # parameter requires the native libmariadb library via JNA, which the
@@ -220,12 +214,6 @@ in
       '';
     };
 
-    settings.maxBodySize = mkOption {
-      type = types.str;
-      default = "1024M";
-      description = "Maximum request body size used by the optional nginx reverse proxy.";
-    };
-
     database = {
       createLocally = mkEnableOption "a local MariaDB database for Grimmory" // {
         default = true;
@@ -267,186 +255,121 @@ in
         '';
       };
     };
-
-    hostname = mkOption {
-      type = types.str;
-      default = "localhost";
-      example = "books.example.com";
-      description = "Hostname for the optional nginx reverse proxy.";
-    };
-
-    nginx = mkOption {
-      type = types.nullOr (types.submodule (import nixpkgsPath { inherit config lib; }));
-      default = null;
-      example = literalExpression ''
-        {
-          forceSSL = true;
-          enableACME = true;
-        }
-      '';
-      description = ''
-        nginx virtual host configuration for Grimmory, merged into
-        `services.nginx.virtualHosts.''${config.services.grimmory.hostname}`.
-
-        This is a full nixpkgs nginx vhost submodule (see
-        `services.nginx.virtualHosts`), not an attribute set with `enable`/
-        `virtualHost` keys. Set it to a non-null value to enable the reverse
-        proxy, and set `services.grimmory.hostname` to name the vhost.
-
-        The proxy already forwards `/` and `/ws` (websockets) to the service,
-        and applies `settings.maxBodySize` as `client_max_body_size`.
-      '';
-    };
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
-      assertions = [
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.secretFiles == lib.filterAttrs (name: _: envVarNameType.check name) cfg.secretFiles;
+        message = "services.grimmory.secretFiles attribute names must be valid environment variable names.";
+      }
+    ];
+
+    systemd.services.grimmory = {
+      description = "Grimmory digital library";
+      after = [ "network-online.target" ] ++ optional cfg.database.createLocally "mysql.service";
+      wants = [ "network-online.target" ];
+      requires = optional cfg.database.createLocally "mysql.service";
+      wantedBy = [ "multi-user.target" ];
+      restartTriggers = [ cfg.package ];
+
+      environment = {
+        APP_VERSION = cfg.package.version or "";
+        # Grimmory (forked from Booklore) reads APP_PATH_CONFIG and
+        # APP_BOOKDROP_FOLDER in v3+; SERVER_PORT is primary with
+        # BOOKLORE_PORT kept as a fallback for older packaged versions.
+        APP_PATH_CONFIG = cfg.dataDir;
+        APP_BOOKDROP_FOLDER = cfg.bookdropDir;
+        SERVER_PORT = toString cfg.port;
+        BOOKLORE_PORT = toString cfg.port;
+        SERVER_ADDRESS = cfg.host;
+        DATABASE_NAME = cfg.database.name;
+        DATABASE_USERNAME = cfg.database.user;
+        DATABASE_URL = databaseUrl;
+      }
+      // cfg.environment;
+
+      serviceConfig = {
+        Type = "simple";
+        User = cfg.user;
+        Group = cfg.group;
+        StateDirectory = serviceName;
+        StateDirectoryMode = "0750";
+        WorkingDirectory = stateDir;
+        ExecStartPre = optional cfg.database.createLocally "+${localDatabaseSetupScript}";
+        ExecStart = startupScript;
+        EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
+        Restart = "on-failure";
+
+        ReadWritePaths = [
+          stateDir
+          cfg.dataDir
+          cfg.bookdropDir
+        ]
+        ++ cfg.libraryDirs;
+
+        CapabilityBoundingSet = "";
+        LockPersonality = true;
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        PrivateTmp = true;
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectSystem = "strict";
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+          "AF_UNIX"
+        ];
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        SystemCallArchitectures = "native";
+        UMask = "0027";
+      };
+    };
+
+    systemd.tmpfiles.rules = [
+      "d ${stateDir} 0750 ${cfg.user} ${cfg.group} -"
+      "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
+      "d ${cfg.bookdropDir} 0750 ${cfg.user} ${cfg.group} -"
+    ]
+    ++ (map (dir: "d ${dir} 0750 ${cfg.user} ${cfg.group} -") cfg.libraryDirs);
+
+    services.mysql = mkIf cfg.database.createLocally {
+      enable = true;
+      package = mkDefault pkgs.mariadb;
+      ensureDatabases = [ cfg.database.name ];
+      ensureUsers = [
         {
-          assertion = cfg.secretFiles == lib.filterAttrs (name: _: envVarNameType.check name) cfg.secretFiles;
-          message = "services.grimmory.secretFiles attribute names must be valid environment variable names.";
+          name = cfg.database.user;
+          ensurePermissions = {
+            "${cfg.database.name}.*" = "ALL PRIVILEGES";
+          };
         }
       ];
+    };
 
-      systemd.services.grimmory = {
-        description = "Grimmory digital library";
-        after = [ "network-online.target" ] ++ optional cfg.database.createLocally "mysql.service";
-        wants = [ "network-online.target" ];
-        requires = optional cfg.database.createLocally "mysql.service";
-        wantedBy = [ "multi-user.target" ];
-        restartTriggers = [ cfg.package ];
-
-        environment = {
-          APP_VERSION = cfg.package.version or "";
-          # Grimmory (forked from Booklore) reads APP_PATH_CONFIG and
-          # APP_BOOKDROP_FOLDER in v3+; SERVER_PORT is primary with
-          # BOOKLORE_PORT kept as a fallback for older packaged versions.
-          APP_PATH_CONFIG = cfg.dataDir;
-          APP_BOOKDROP_FOLDER = cfg.bookdropDir;
-          SERVER_PORT = toString cfg.port;
-          BOOKLORE_PORT = toString cfg.port;
-          SERVER_ADDRESS = cfg.host;
-          DATABASE_NAME = cfg.database.name;
-          DATABASE_USERNAME = cfg.database.user;
-          DATABASE_URL = databaseUrl;
-        }
-        // cfg.environment;
-
-        serviceConfig = {
-          Type = "simple";
-          User = cfg.user;
-          Group = cfg.group;
-          StateDirectory = serviceName;
-          StateDirectoryMode = "0750";
-          WorkingDirectory = stateDir;
-          ExecStartPre = optional cfg.database.createLocally "+${localDatabaseSetupScript}";
-          ExecStart = startupScript;
-          EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
-          Restart = "on-failure";
-
-          ReadWritePaths = [
-            stateDir
-            cfg.dataDir
-            cfg.bookdropDir
-          ]
-          ++ cfg.libraryDirs;
-
-          CapabilityBoundingSet = "";
-          LockPersonality = true;
-          NoNewPrivileges = true;
-          PrivateDevices = true;
-          PrivateTmp = true;
-          ProtectClock = true;
-          ProtectControlGroups = true;
-          ProtectHome = true;
-          ProtectHostname = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          ProtectSystem = "strict";
-          RestrictAddressFamilies = [
-            "AF_INET"
-            "AF_INET6"
-            "AF_UNIX"
-          ];
-          RestrictNamespaces = true;
-          RestrictRealtime = true;
-          RestrictSUIDSGID = true;
-          SystemCallArchitectures = "native";
-          UMask = "0027";
-        };
+    users.users = optionalAttrs (cfg.user == serviceName) {
+      grimmory = {
+        description = "Grimmory service user";
+        group = cfg.group;
+        home = stateDir;
+        isSystemUser = true;
       };
+    };
 
-      systemd.tmpfiles.rules =
-        [
-          "d ${stateDir} 0750 ${cfg.user} ${cfg.group} -"
-          "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
-          "d ${cfg.bookdropDir} 0750 ${cfg.user} ${cfg.group} -"
-        ]
-        ++ (map (dir: "d ${dir} 0750 ${cfg.user} ${cfg.group} -") cfg.libraryDirs);
+    users.groups = optionalAttrs (cfg.group == serviceName) {
+      grimmory = { };
+    };
 
-      services.mysql = mkIf cfg.database.createLocally {
-        enable = true;
-        package = mkDefault pkgs.mariadb;
-        ensureDatabases = [ cfg.database.name ];
-        ensureUsers = [
-          {
-            name = cfg.database.user;
-            ensurePermissions = {
-              "${cfg.database.name}.*" = "ALL PRIVILEGES";
-            };
-          }
-        ];
-      };
-
-      users.users = optionalAttrs (cfg.user == serviceName) {
-        grimmory = {
-          description = "Grimmory service user";
-          group = cfg.group;
-          home = stateDir;
-          isSystemUser = true;
-        };
-      };
-
-      users.groups = optionalAttrs (cfg.group == serviceName) {
-        grimmory = { };
-      };
-
-      networking.firewall.allowedTCPPorts = optional cfg.openFirewall cfg.port;
-    }
-
-    (mkIf (cfg.nginx != null) {
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = mkDefault true;
-        recommendedGzipSettings = mkDefault true;
-        recommendedOptimisation = mkDefault true;
-        recommendedTlsSettings = mkDefault true;
-
-        virtualHosts.${cfg.hostname} = mkMerge [
-          cfg.nginx
-          {
-            extraConfig = optionalString (cfg.settings.maxBodySize != null) ''
-              client_max_body_size ${cfg.settings.maxBodySize};
-            '';
-
-            locations = {
-              "/" = {
-                proxyPass = "http://${cfg.host}:${toString cfg.port}";
-                recommendedProxySettings = true;
-              };
-
-              "/ws" = {
-                proxyPass = "http://${cfg.host}:${toString cfg.port}/ws";
-                recommendedProxySettings = true;
-                proxyWebsockets = true;
-              };
-            };
-          }
-        ];
-      };
-    })
-  ]);
+    networking.firewall.allowedTCPPorts = optional cfg.openFirewall cfg.port;
+  };
 
   meta.maintainers = with lib.maintainers; [ _74k1 ];
 }

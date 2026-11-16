@@ -1,7 +1,4 @@
-{
-  tixpkgs,
-  inputs ? null,
-}:
+{ tixpkgs }:
 {
   config,
   lib,
@@ -28,8 +25,6 @@ let
 
   serviceName = "degoog";
   stateDir = "/var/lib/${serviceName}";
-
-  nixpkgsPath = "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix";
 in
 {
   meta.maintainers = with lib.maintainers; [ _74k1 ];
@@ -252,33 +247,6 @@ in
         '';
       };
     };
-
-    hostname = mkOption {
-      type = types.str;
-      default = "localhost";
-      example = "search.example.com";
-      description = ''
-        Hostname for the nginx virtual host.
-
-        Only used when {option}`services.degoog.nginx` is set.
-      '';
-    };
-
-    nginx = mkOption {
-      type = types.nullOr (types.submodule (import nixpkgsPath { inherit config lib; }));
-      default = null;
-      example = literalExpression ''
-        {
-          forceSSL = true;
-          enableACME = true;
-        }
-      '';
-      description = ''
-        nginx virtual host configuration for Degoog. Set to a non-null value to
-        enable the nginx reverse proxy. See `services.nginx.virtualHosts` for
-        available options.
-      '';
-    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -473,27 +441,6 @@ in
       };
 
       networking.firewall.allowedTCPPorts = optional cfg.mcp.openFirewall cfg.mcp.port;
-    })
-
-    (mkIf (cfg.nginx != null) {
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = mkDefault true;
-        recommendedGzipSettings = mkDefault true;
-        recommendedOptimisation = mkDefault true;
-        recommendedTlsSettings = mkDefault true;
-
-        virtualHosts.${cfg.hostname} = mkMerge [
-          cfg.nginx
-          {
-            locations."/" = {
-              proxyPass = "http://${cfg.host}:${toString cfg.port}";
-              recommendedProxySettings = true;
-              proxyWebsockets = true;
-            };
-          }
-        ];
-      };
     })
   ]);
 }

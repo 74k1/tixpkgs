@@ -28,7 +28,6 @@ Degoog is a search engine aggregator with a comprehensive plugin/extension syste
 
   services.degoog = {
     enable = true;
-    hostname = "search.example.com";
     environment = {
       DEGOOG_WIZARD = "true";
       DEGOOG_DEFAULT_SEARCH_LANGUAGE = "en-US";
@@ -50,8 +49,6 @@ services.degoog = {
   host = "0.0.0.0"; # listen on all interfaces | 127.0.0.1 by default
   port = 3333; # 4444 by default
   openFirewall = true; # open the port in the firewall
-  hostname = "search.example.com"; # hostname for nginx
-  nginx = { }; # nginx submodule
   environment = { # upstream environment variables
     DEGOOG_WIZARD = "false";
     DEGOOG_DEFAULT_SEARCH_LANGUAGE = "en-US";

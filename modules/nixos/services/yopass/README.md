@@ -14,7 +14,7 @@ Yopass is a secure sharing service for secrets, passwords and files.
 
 ## Quick start
 
-This is all you need for a single-domain setup with automatic HTTPS:
+This is all you need:
 
 ```nix
 {
@@ -29,16 +29,14 @@ This is all you need for a single-domain setup with automatic HTTPS:
 
   services.yopass = {
     enable = true;
-    hostname = "secrets.example.com";
-    nginx = {
-      forceSSL = true;
-      enableACME = true;
-    };
   };
 }
 ```
 
-That's it. Yopass figures out the URL for share links on its own,
+Yopass listens on `127.0.0.1:1337`. The module does not configure a reverse
+proxy, so point your own proxy at that port, with websocket support.
+
+Yopass figures out the URL for share links on its own,
 using whatever domain the visitor is connecting from, so you
 don't need to tell it twice.
 
@@ -48,7 +46,7 @@ If you'd rather use Redis (with a unix socket), set `services.yopass.database.ba
 ## Multiple domains on one instance
 
 You can point several domains at the same yopass without any extra config.
-Just add more nginx `virtualHosts` entries. Secrets are stored by UUID so they
+Point each domain at the same port in your reverse proxy. Secrets are stored by UUID so they
 work across all domains, and as long as you leave `publicUrl` unset (which is
 the default), each domain generates links pointing to itself.
 

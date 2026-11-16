@@ -22,12 +22,6 @@ let
 
   minimal = evalEnclosed { enable = true; };
 
-  withNginx = evalEnclosed {
-    enable = true;
-    domain = "notes.example.test";
-    nginx = { };
-  };
-
   withAuthentication = evalEnclosed {
     enable = true;
     authenticationRequired = true;
@@ -48,17 +42,10 @@ let
     environment.PUBLIC_DEFAULT_NOTE_TTL_SECONDS = "86400";
   };
 
-  missingDomain = evalEnclosed {
-    enable = true;
-    nginx = { };
-  };
-
   cfg = minimal.config;
-  nginxCfg = withNginx.config;
   authCfg = withAuthentication.config;
   incompleteAuthCfg = incompleteAuthentication.config;
   overrideCfg = withOverrides.config;
-  missingDomainCfg = missingDomain.config;
 
   checks = [
     {
@@ -120,16 +107,6 @@ let
     {
       assertion = cfg.networking.firewall.allowedTCPPorts == [ ];
       message = "Enclosed module should not open the firewall by default.";
-    }
-    {
-      assertion = !(cfg.services.nginx.virtualHosts ? "notes.example.test");
-      message = "Enclosed should not configure nginx by default.";
-    }
-    {
-      assertion =
-        nginxCfg.services.nginx.virtualHosts."notes.example.test".locations."/".proxyPass
-        == "http://127.0.0.1:8787";
-      message = "Enclosed nginx config should proxy / to the local port.";
     }
     {
       assertion =
@@ -219,12 +196,6 @@ let
       assertion =
         overrideCfg.systemd.services.enclosed.environment.PUBLIC_DEFAULT_NOTE_TTL_SECONDS == "86400";
       message = "Enclosed service should pass extra environment variables.";
-    }
-    {
-      assertion = builtins.any (
-        assertion: lib.hasInfix "services.enclosed.domain must be set" assertion.message
-      ) missingDomainCfg.assertions;
-      message = "Enclosed should assert that domain is set when nginx is enabled.";
     }
   ];
 
