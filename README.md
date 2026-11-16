@@ -117,6 +117,7 @@ This flake exports NixOS modules in two ways:
 | `services.multi-scrobbler` | [README](modules/nixos/services/multi-scrobbler/README.md) |
 | `services.rsshub` | [README](modules/nixos/services/rsshub/README.md) |
 | `services.rybbit` | [README](modules/nixos/services/rybbit/README.md) |
+| `services.shitter` | [README](modules/nixos/services/shitter/README.md) |
 | `services.thunderbolt` | [README](modules/nixos/services/thunderbolt/README.md) |
 | `services.trek` | [README](modules/nixos/services/trek/README.md) |
 | `services.yopass` | [README](modules/nixos/services/yopass/README.md) |
@@ -176,6 +177,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `multi-scrobbler` | `0.21.0` |
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `22.0.28160` |
+| `pcre` | `8.45` |
 | `pdfcraft` | `0.21.1` |
 | `pdfcraft-bin` | `0.21.1` |
 | `photocraft` | `0.23.1` |
@@ -185,6 +187,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `rybbit` | `2.9.2` |
 | `septabee` | `B_T31` |
 | `server-mono` | `0.1.0` |
+| `shitter` | `0-unstable-2026-11-13` |
 | `soundcraft` | `0.20.1` |
 | `soundcraft-bin` | `0.20.1` |
 | `thunderbolt` | `0.1.107` |
