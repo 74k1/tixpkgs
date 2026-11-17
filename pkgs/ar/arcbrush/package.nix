@@ -6,11 +6,11 @@
 
 let
   pname = "arcbrush";
-  version = "1.7.3";
+  version = "1.7.4";
 
   src = fetchurl {
     url = "https://arcbrush.com/downloads/ArcBrush-${version}-x86_64.AppImage";
-    hash = "sha256-4ODvuEi+mQes0ED3Dj6QSneA7fVHe3depHnk6y2SbFQ=";
+    hash = "sha256-jlHXOAc0i1v8Hg+uVaQ7lHjUpJ5zclmyGhstokqrm6c=";
   };
 in
 appimageTools.wrapType2 {
