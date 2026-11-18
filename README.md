@@ -185,7 +185,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `photocraft-bin` | `0.23.1` |
 | `pipemixer` | `0.5.1` |
 | `redlib` | `latest-unstable-2026-11-15` |
-| `rybbit` | `2.9.2` |
+| `rybbit` | `2.9.3` |
 | `septabee` | `B_T31` |
 | `server-mono` | `0.1.0` |
 | `shitter` | `0-unstable-2026-11-13` |
@@ -199,7 +199,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `whowatch` | `1.8.6` |
 | `wordcraft` | `0.18.1` |
 | `wordcraft-bin` | `0.18.1` |
-| `yopass` | `16.1.0` |
+| `yopass` | `16.2.0` |
 | `zui` | `1.18.0` |
 <!-- END PACKAGES -->
 
