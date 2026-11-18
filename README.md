@@ -171,6 +171,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `lightcraft-bin` | `0.21.1` |
 | `logria` | `0.6.0` |
 | `m5burner` | `3-beta` |
+| `m5stack-imager` | `3.0.0` |
 | `moonlight-qt-fork` | `6.21.46` |
 | `mpdq` | `2.4.5` |
 | `mtkclient` | `2.1.4` |
