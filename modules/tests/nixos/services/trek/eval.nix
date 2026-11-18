@@ -25,28 +25,14 @@ let
     domain = "trek.example.test";
   };
 
-  withNginx = evalTrek {
-    enable = true;
-    domain = "trek-nginx.example.test";
-    nginx = { };
-  };
-
   withEncryptionKey = evalTrek {
     enable = true;
     domain = "trek-enc.example.test";
     encryptionKeyFile = "/run/secrets/trek-encryption-key";
   };
 
-  withoutNginx = evalTrek {
-    enable = true;
-    domain = "trek-nonginx.example.test";
-    nginx = null;
-  };
-
   cfg = minimal.config;
-  nginxCfg = withNginx.config;
   encCfg = withEncryptionKey.config;
-  noNginxCfg = withoutNginx.config;
 
   checks = [
     {
@@ -86,15 +72,9 @@ let
       message = "TREK module should create a trek group.";
     }
     {
-      assertion = nginxCfg.services.nginx.virtualHosts."trek-nginx.example.test".locations ? "/";
-      message = "TREK nginx config should proxy / when nginx != null.";
+      assertion = cfg.systemd.services.trek.environment.APP_URL == "http://trek.example.test";
+      message = "trek service should default APP_URL to http and the domain.";
     }
-    # default: no nginx
-    {
-      assertion = !(cfg.services.nginx.virtualHosts ? "trek.example.test");
-      message = "TREK should NOT configure nginx by default.";
-    }
-    # encryptionKeyFile
     {
       assertion = lib.hasInfix "ENCRYPTION_KEY" encCfg.systemd.services.trek.script;
       message = "trek service should export ENCRYPTION_KEY when encryptionKeyFile is set.";
@@ -102,11 +82,6 @@ let
     {
       assertion = lib.hasInfix "/run/secrets/trek-encryption-key" encCfg.systemd.services.trek.script;
       message = "trek service script should reference the encryptionKeyFile path.";
-    }
-    # nginx = null
-    {
-      assertion = !(noNginxCfg.services.nginx.virtualHosts ? "trek-nonginx.example.test");
-      message = "TREK should not configure nginx when nginx = null.";
     }
   ];
 

@@ -32,6 +32,9 @@ let
   );
 in
 {
+  # nixpkgs ships a module with the same option names.
+  disabledModules = [ "services/web-apps/rsshub.nix" ];
+
   options.services.rsshub = {
     enable = mkEnableOption "RSSHub service";
 

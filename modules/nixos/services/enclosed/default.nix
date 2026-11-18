@@ -11,10 +11,8 @@ let
   inherit (lib)
     boolToString
     literalExpression
-    mkDefault
     mkEnableOption
     mkIf
-    mkMerge
     mkOption
     mkPackageOption
     optional
@@ -24,14 +22,6 @@ let
     ;
 
   serviceName = "enclosed";
-
-  nginxVhostOptions =
-    import "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
-      {
-        inherit config lib;
-      };
-
-  nginxEnabled = cfg.nginx != null;
 in
 {
   meta.maintainers = with lib.maintainers; [ _74k1 ];
@@ -64,16 +54,8 @@ in
       default = 8787;
       description = ''
         TCP port for the Enclosed HTTP server. Enclosed listens on all
-        interfaces; use {option}`services.enclosed.nginx` or the firewall to
-        restrict access.
+        interfaces; use a reverse proxy or the firewall to restrict access.
       '';
-    };
-
-    domain = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "Public domain for Enclosed. Required when `nginx` is set.";
-      example = "notes.example.com";
     };
 
     publicBaseApiUrl = mkOption {
@@ -155,21 +137,6 @@ in
       '';
     };
 
-    nginx = mkOption {
-      type = types.nullOr (types.submodule (lib.recursiveUpdate nginxVhostOptions { }));
-      default = null;
-      example = literalExpression ''
-        {
-          forceSSL = true;
-          enableACME = true;
-        }
-      '';
-      description = ''
-        nginx virtual host configuration for Enclosed.
-        Set to a non-null value to enable the nginx reverse proxy.
-      '';
-    };
-
     openFirewall = mkOption {
       type = types.bool;
       default = false;
@@ -179,10 +146,6 @@ in
 
   config = mkIf cfg.enable {
     assertions = [
-      {
-        assertion = !nginxEnabled || cfg.domain != null;
-        message = "services.enclosed.domain must be set when services.enclosed.nginx is enabled.";
-      }
       {
         assertion = lib.hasPrefix "/" cfg.dataDir;
         message = "services.enclosed.dataDir must be an absolute path.";
@@ -298,18 +261,5 @@ in
     };
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
-
-    services.nginx = mkIf nginxEnabled {
-      enable = true;
-      recommendedProxySettings = mkDefault true;
-      virtualHosts.${cfg.domain} = mkMerge [
-        cfg.nginx
-        {
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:${toString cfg.port}";
-          };
-        }
-      ];
-    };
   };
 }

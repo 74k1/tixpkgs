@@ -9,11 +9,8 @@ let
   cfg = config.services.trek;
 
   inherit (lib)
-    literalExpression
-    mkDefault
     mkEnableOption
     mkIf
-    mkMerge
     mkOption
     mkPackageOption
     optionalAttrs
@@ -22,21 +19,6 @@ let
     ;
 
   serviceName = "trek";
-
-  nginxVhostOptions =
-    import "${pkgs.path}/nixos/modules/services/web-servers/nginx/vhost-options.nix"
-      {
-        inherit config lib;
-      };
-
-  nginxEnabled = cfg.nginx != null;
-
-  protocol =
-    if nginxEnabled && (cfg.nginx.forceSSL or false || cfg.nginx.enableACME or false) then
-      "https"
-    else
-      "http";
-  publicUrl = "${protocol}://${cfg.domain}";
 in
 {
   meta.maintainers = with lib.maintainers; [ _74k1 ];
@@ -56,10 +38,9 @@ in
       default = null;
       description = ''
         Public URL of the TREK instance as APP_URL (scheme + host, no
-        trailing slash). Set this when the vhost is managed outside of
-        `services.trek.nginx` (hand-written vhost or proxy on another host)
-        so TREK sees https. Defaults to an https or http URL derived from
-        the `nginx` option.
+        trailing slash). Set this when a reverse proxy serves TREK over
+        https. Defaults to `http://` followed by
+        {option}`services.trek.domain`.
       '';
       example = "https://trek.example.com";
     };
@@ -125,21 +106,6 @@ in
       '';
       example = "/run/secrets/trek.env";
     };
-
-    nginx = mkOption {
-      type = types.nullOr (types.submodule (lib.recursiveUpdate nginxVhostOptions { }));
-      default = null;
-      example = literalExpression ''
-        {
-          forceSSL = true;
-          enableACME = true;
-        }
-      '';
-      description = ''
-        nginx virtual host configuration for TREK.
-        Set to a non-null value to enable the nginx reverse proxy.
-      '';
-    };
   };
 
   config = mkIf cfg.enable {
@@ -178,7 +144,7 @@ in
         NODE_ENV = "production";
         PORT = toString cfg.port;
         HOST = cfg.host;
-        APP_URL = if cfg.appUrl != null then cfg.appUrl else publicUrl;
+        APP_URL = if cfg.appUrl != null then cfg.appUrl else "http://${cfg.domain}";
         # Redirect __dirname-relative paths to the writable state directory.
         TREK_DATA_DIR = "${cfg.dataDir}/data";
         TREK_UPLOADS_DIR = "${cfg.dataDir}/uploads";
@@ -228,20 +194,6 @@ in
         RestrictSUIDSGID = true;
         SystemCallArchitectures = "native";
       };
-    };
-
-    services.nginx = mkIf nginxEnabled {
-      enable = true;
-      recommendedProxySettings = mkDefault true;
-      virtualHosts.${cfg.domain} = mkMerge [
-        cfg.nginx
-        {
-          locations."/" = {
-            proxyPass = "http://${cfg.host}:${toString cfg.port}";
-            proxyWebsockets = true;
-          };
-        }
-      ];
     };
   };
 }

@@ -34,20 +34,19 @@ TREK is a self-hosted, real-time collaborative travel planner with maps, budgets
 
 This starts TREK on port 3000, reachable at `http://trek.example.com:3000`.
 
-## With SSL
+## Behind a reverse proxy
+
+The module does not configure a reverse proxy. Point your own proxy at port 3000, with websocket support.
+
+If the proxy serves TREK over HTTPS, set `appUrl`. If you do not, TREK uses `http://` followed by `domain` as its public URL.
 
 ```nix
 services.trek = {
   enable = true;
   domain = "trek.example.com";
-  nginx = {
-    forceSSL = true;
-    enableACME = true;
-  };
+  appUrl = "https://trek.example.com";
 };
 ```
-
-Setting `nginx` to a non-null value wires up nginx as a reverse proxy on port 80/443.
 
 ## Encryption key
 

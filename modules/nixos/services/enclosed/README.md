@@ -34,23 +34,9 @@ The server and its storage have zero knowledge of the note content.
 ```
 
 This starts Enclosed on port 8787.
-The service listens on all interfaces. Use `nginx` or the firewall to restrict access.
+The service listens on all interfaces. Use a reverse proxy or the firewall to restrict access.
 
-## With SSL
-
-```nix
-services.enclosed = {
-  enable = true;
-  domain = "notes.example.com";
-  nginx = {
-    forceSSL = true;
-    enableACME = true;
-  };
-};
-```
-
-Set `nginx` to a non-null value to enable the nginx reverse proxy.
-`domain` is required in that case.
+The module does not configure a reverse proxy. For HTTPS, point your own proxy at the port.
 
 ## Authentication
 
@@ -60,8 +46,6 @@ Supply the users and the JWT secret as files:
 ```nix
 services.enclosed = {
   enable = true;
-  domain = "notes.example.com";
-  nginx.forceSSL = true;
   authenticationRequired = true;
   jwtSecretFile = "/run/secrets/enclosed-jwt-secret";
   usersFile = "/run/secrets/enclosed-users";
@@ -154,4 +138,4 @@ The service runs with a hardened systemd unit:
 `MemoryDenyWriteExecute` stays off: V8 compiles JavaScript into executable memory.
 
 Enclosed binds all interfaces and has no bind-address setting.
-Before you expose it to the internet, enable `authenticationRequired` with real secrets, and put it behind nginx or the firewall.
+Before you expose it to the internet, enable `authenticationRequired` with real secrets, and put it behind a reverse proxy or the firewall.
