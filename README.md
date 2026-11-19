@@ -110,6 +110,7 @@ This flake exports NixOS modules in two ways:
 | `services.degoog` | [README](modules/nixos/services/degoog/README.md) |
 | `services.enclosed` | [README](modules/nixos/services/enclosed/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
+| `services.gpt-load` | - |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
 | `services.hydroxide` | [README](modules/nixos/services/hydroxide/README.md) |
 | `services.keeper-sh` | [README](modules/nixos/services/keeper-sh/README.md) |
@@ -160,6 +161,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `g3m` | `3.4.5` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
+| `gpt-load` | `2.0.0-rc.65` |
 | `gridcraft` | `0.19.1` |
 | `gridcraft-bin` | `0.19.1` |
 | `grimmory` | `3.5.0` |
