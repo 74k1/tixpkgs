@@ -167,7 +167,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
-| `keeper-sh` | `2.34.0` |
+| `keeper-sh` | `2.34.2` |
 | `lidarr` | `3.2.1.5196` |
 | `lightcraft` | `0.21.1` |
 | `lightcraft-bin` | `0.21.1` |
