@@ -110,7 +110,7 @@ This flake exports NixOS modules in two ways:
 | `services.degoog` | [README](modules/nixos/services/degoog/README.md) |
 | `services.enclosed` | [README](modules/nixos/services/enclosed/README.md) |
 | `services.fourget` | [README](modules/nixos/services/fourget/README.md) |
-| `services.gpt-load` | - |
+| `services.gpt-load` | [README](modules/nixos/services/gpt-load/README.md) |
 | `services.grimmory` | [README](modules/nixos/services/grimmory/README.md) |
 | `services.hydroxide` | [README](modules/nixos/services/hydroxide/README.md) |
 | `services.keeper-sh` | [README](modules/nixos/services/keeper-sh/README.md) |
