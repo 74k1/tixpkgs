@@ -36,8 +36,8 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bkerler";
     repo = "mtkclient";
-    rev = "118a000a83ea31c4f427fe5225abfe964546e05e";
-    hash = "sha256-liVOKrT6eaNhi6ROLiNJf+dmWazAniOnBwOJA+pbCoQ=";
+    rev = "a1e1b4d8c68ea6d711e789678f98a256ce848eab";
+    hash = "sha256-9B3IkF0a9ocJmYABjOR2R1k9/ilWOk8YHqjcjgDtnck=";
   };
 
   postFixup = ''
