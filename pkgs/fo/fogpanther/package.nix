@@ -48,7 +48,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "fogpanther";
-  version = "0.8.4";
+  version = "0.9.0";
 
   src = stdenv.mkDerivation {
     name = "fogpanther-${finalAttrs.version}.tar.xz";
@@ -57,7 +57,7 @@ stdenv.mkDerivation (finalAttrs: {
       cacert
     ];
 
-    outputHash = "sha256-FxN5KMp1gy62cjDHjp/ai4mRLkDyIs/iMZPSn5SyolE=";
+    outputHash = "sha256-k4bvfpO6Bh3GAKjU0uHzOp0m047eEpfy5NO3YLfDZtw=";
     outputHashAlgo = "sha256";
     outputHashMode = "flat";
 
