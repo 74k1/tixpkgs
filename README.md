@@ -156,7 +156,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `figcraft-bin` | `0.18.1` |
 | `filmcraft` | `0.20.1` |
 | `filmcraft-bin` | `0.20.1` |
-| `fogpanther` | `0.8.4` |
+| `fogpanther` | `0.9.0` |
 | `fourget` | `unstable-2026-11-19` |
 | `g3m` | `3.4.5` |
 | `godap` | `2.12.2` |
