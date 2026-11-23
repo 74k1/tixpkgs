@@ -181,7 +181,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `outerbase-studio-desktop` | `0.1.29` |
 | `parallels-ras-client` | `22.0.28160` |
 | `pcre` | `8.45` |
-| `pdfcraft` | `0.21.1` |
+| `pdfcraft` | `0.22.0` |
 | `pdfcraft-bin` | `0.22.0` |
 | `photocraft` | `0.23.1` |
 | `photocraft-bin` | `0.23.1` |
