@@ -11,7 +11,7 @@
 }:
 
 let
-  rev = "99fadfd286d3d80692354f598ab0e85fdaece8b5";
+  rev = "54cd683e61ac6b698703da6307f379895210c4a5";
 
   # Changes when a theme file changes, so browsers drop the cached stylesheet.
   themesHash = builtins.substring 0 7 (
@@ -26,16 +26,16 @@ let
 in
 rustPlatform.buildRustPackage {
   pname = "redlib";
-  version = "latest-unstable-2026-11-21";
+  version = "latest-unstable-2026-11-22";
 
   src = fetchFromGitHub {
     owner = "Nachtalb";
     repo = "redlib";
     inherit rev;
-    hash = "sha256-Bw8CKM/mb0Uf3J8bfvp7BygNVmpfL7AcBjMhXAnEK8A=";
+    hash = "sha256-lXX3oxXGtpvUeSyrR2DfwNdCniZdJ1z8oCfp5AcBsH8=";
   };
 
-  cargoHash = "sha256-FonBAl9QqAVVxzSDq1OCENnsIkM5j5V3uDU5hr9YEmQ=";
+  cargoHash = "sha256-Pubx+IBu6in1xG+rI9l+OtKUvbGkURlL4Hy77sVzSH8=";
 
   nativeBuildInputs = [
     pkg-config
