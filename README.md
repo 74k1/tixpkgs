@@ -182,7 +182,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `parallels-ras-client` | `22.0.28160` |
 | `pcre` | `8.45` |
 | `pdfcraft` | `0.21.1` |
-| `pdfcraft-bin` | `0.21.1` |
+| `pdfcraft-bin` | `0.22.0` |
 | `photocraft` | `0.23.1` |
 | `photocraft-bin` | `0.23.1` |
 | `pipemixer` | `0.5.1` |
