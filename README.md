@@ -147,7 +147,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `degoog-mcp` | `0.4.1` |
 | `designcraft` | `0.21.1` |
 | `designcraft-bin` | `0.21.1` |
-| `effectcraft` | `0.24.1` |
+| `effectcraft` | `0.25.1` |
 | `effectcraft-bin` | `0.25.1` |
 | `enclosed` | `1.16.1` |
 | `enclosed-cli` | `1.16.1` |
@@ -188,7 +188,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `pipemixer` | `0.5.1` |
 | `redlib` | `latest-unstable-2026-11-22` |
 | `rybbit` | `2.9.3` |
-| `septabee` | `B_T31` |
+| `septabee` | `B_T32` |
 | `server-mono` | `0.1.0` |
 | `shitter` | `0-unstable-2026-11-13` |
 | `soundcraft` | `0.20.1` |
