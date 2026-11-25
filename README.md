@@ -186,7 +186,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `photocraft` | `0.23.1` |
 | `photocraft-bin` | `0.23.1` |
 | `pipemixer` | `0.5.1` |
-| `redlib` | `2026.1123.1-unstable-2026-11-23` |
+| `redlib` | `2026.1123.1-unstable-2026-11-24` |
 | `rybbit` | `2.9.3` |
 | `septabee` | `B_T32` |
 | `server-mono` | `0.1.0` |
