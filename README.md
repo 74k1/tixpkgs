@@ -141,7 +141,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `commet` | `0.5.2` |
 | `craft-anything` | `0.6.1` |
 | `craft-anything-bin` | `0.6.1` |
-| `deckcraft` | `0.18.1` |
+| `deckcraft` | `0.19.1` |
 | `deckcraft-bin` | `0.19.1` |
 | `degoog` | `1.2.0` |
 | `degoog-mcp` | `0.4.1` |
@@ -167,7 +167,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `grimmory` | `3.5.0` |
 | `ida-ios-helper` | `1.0.23` |
 | `idahelper` | `1.0.18` |
-| `keeper-sh` | `2.34.3` |
+| `keeper-sh` | `2.34.5` |
 | `lidarr` | `3.2.1.5196` |
 | `lightcraft` | `0.21.1` |
 | `lightcraft-bin` | `0.21.1` |
