@@ -9,19 +9,19 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "trek";
-  version = "5.2.0";
+  version = "5.2.1";
 
   src = fetchFromGitHub {
     owner = "liketrek";
     repo = "TREK";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-htSGDHHmK0i/IHrMp5LxUIDD799nbpR8ZG5EOxUQ+P4=";
+    hash = "sha256-4gz4MMJjHS1I6kZyvWsQ2pjNEWTrblWHNs3MYcQBRZg=";
   };
 
   # TREK is an npm workspaces monorepo (client + server + shared) driven by a
   # single root package-lock.json. Fetcher v2 enables packument caching, which
   # is required for workspaces to resolve through `npm ci`.
-  npmDepsHash = "sha256-lWpem5nWPGvE0XUKx25uid+1PM8P3ThAF52EXWHZRv0=";
+  npmDepsHash = "sha256-REtwWCab7bvRCrVfO6CRz3zaEpArkANkIAZvKgTbrl0=";
   npmDepsFetcherVersion = 2;
 
   nodejs = nodejs_22;
