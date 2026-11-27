@@ -158,7 +158,7 @@ Packages can be used using `inputs.tixpkgs.packages.${pkgs.stdenv.hostPlatform.s
 | `filmcraft-bin` | `0.20.1` |
 | `fogpanther` | `0.9.0` |
 | `fourget` | `unstable-2026-11-25` |
-| `g3m` | `3.4.5` |
+| `g3m` | `3.4.6` |
 | `godap` | `2.12.2` |
 | `gpd-pocket-4-pipewire` | `0-unstable-2025-04-08` |
 | `gpt-load` | `2.0.0-rc.65` |
