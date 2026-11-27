@@ -9,7 +9,7 @@
 }:
 
 let
-  version = "2.34.5";
+  version = "2.34.6";
 
   src = fetchFromGitHub {
     owner = "ridafkih";
